@@ -1,0 +1,292 @@
+export const DEFAULT_CONFIG = {
+  "id": "campeonato_brasileiro",
+  "zone": "Campeonato Brasileiro de Futebol",
+  "leagues": [
+    "Série A",
+    "Série B",
+    "Série C",
+    "Série D"
+  ],
+  "teams": [
+    {
+      "id": "flamengo",
+      "name": "Flamengo",
+      "city": "Rio de Janeiro",
+      "state": "RJ",
+      "rating": 88
+    },
+    {
+      "id": "palmeiras",
+      "name": "Palmeiras",
+      "city": "São Paulo",
+      "state": "SP",
+      "rating": 88
+    },
+    {
+      "id": "sao_paulo",
+      "name": "São Paulo",
+      "city": "São Paulo",
+      "state": "SP",
+      "rating": 84
+    },
+    {
+      "id": "corinthians",
+      "name": "Corinthians",
+      "city": "São Paulo",
+      "state": "SP",
+      "rating": 83
+    },
+    {
+      "id": "santos",
+      "name": "Santos",
+      "city": "Santos",
+      "state": "SP",
+      "rating": 80
+    },
+    {
+      "id": "gremio",
+      "name": "Grêmio",
+      "city": "Porto Alegre",
+      "state": "RS",
+      "rating": 82
+    },
+    {
+      "id": "internacional",
+      "name": "Internacional",
+      "city": "Porto Alegre",
+      "state": "RS",
+      "rating": 82
+    },
+    {
+      "id": "atletico_mineiro",
+      "name": "Atlético Mineiro",
+      "city": "Belo Horizonte",
+      "state": "MG",
+      "rating": 85
+    },
+    {
+      "id": "cruzeiro",
+      "name": "Cruzeiro",
+      "city": "Belo Horizonte",
+      "state": "MG",
+      "rating": 82
+    },
+    {
+      "id": "fluminense",
+      "name": "Fluminense",
+      "city": "Rio de Janeiro",
+      "state": "RJ",
+      "rating": 83
+    },
+    {
+      "id": "vasco",
+      "name": "Vasco",
+      "city": "Rio de Janeiro",
+      "state": "RJ",
+      "rating": 78
+    },
+    {
+      "id": "botafogo",
+      "name": "Botafogo",
+      "city": "Rio de Janeiro",
+      "state": "RJ",
+      "rating": 84
+    },
+    {
+      "id": "bahia",
+      "name": "Bahia",
+      "city": "Salvador",
+      "state": "BA",
+      "rating": 80
+    },
+    {
+      "id": "vitoria",
+      "name": "Vitória",
+      "city": "Salvador",
+      "state": "BA",
+      "rating": 76
+    },
+    {
+      "id": "sport",
+      "name": "Sport",
+      "city": "Recife",
+      "state": "PE",
+      "rating": 75
+    },
+    {
+      "id": "ceara",
+      "name": "Ceará",
+      "city": "Fortaleza",
+      "state": "CE",
+      "rating": 76
+    },
+    {
+      "id": "fortaleza",
+      "name": "Fortaleza",
+      "city": "Fortaleza",
+      "state": "CE",
+      "rating": 82
+    },
+    {
+      "id": "athletico_paranaense",
+      "name": "Athletico Paranaense",
+      "city": "Curitiba",
+      "state": "PR",
+      "rating": 81
+    },
+    {
+      "id": "coritiba",
+      "name": "Coritiba",
+      "city": "Curitiba",
+      "state": "PR",
+      "rating": 74
+    },
+    {
+      "id": "goias",
+      "name": "Goiás",
+      "city": "Goiânia",
+      "state": "GO",
+      "rating": 74
+    },
+    {
+      "id": "atletico_goianiense",
+      "name": "Atlético Goianiense",
+      "city": "Goiânia",
+      "state": "GO",
+      "rating": 75
+    },
+    {
+      "id": "cuiaba",
+      "name": "Cuiabá",
+      "city": "Cuiabá",
+      "state": "MT",
+      "rating": 74
+    },
+    {
+      "id": "juventude",
+      "name": "Juventude",
+      "city": "Caxias do Sul",
+      "state": "RS",
+      "rating": 73
+    },
+    {
+      "id": "bragantino",
+      "name": "Red Bull Bragantino",
+      "city": "Bragança Paulista",
+      "state": "SP",
+      "rating": 80
+    },
+    {
+      "id": "america_mineiro",
+      "name": "América Mineiro",
+      "city": "Belo Horizonte",
+      "state": "MG",
+      "rating": 74
+    },
+    {
+      "id": "avai",
+      "name": "Avaí",
+      "city": "Florianópolis",
+      "state": "SC",
+      "rating": 71
+    },
+    {
+      "id": "figueirense",
+      "name": "Figueirense",
+      "city": "Florianópolis",
+      "state": "SC",
+      "rating": 70
+    },
+    {
+      "id": "chapecoense",
+      "name": "Chapecoense",
+      "city": "Chapecó",
+      "state": "SC",
+      "rating": 72
+    },
+    {
+      "id": "criciuma",
+      "name": "Criciúma",
+      "city": "Criciúma",
+      "state": "SC",
+      "rating": 73
+    },
+    {
+      "id": "ponte_preta",
+      "name": "Ponte Preta",
+      "city": "Campinas",
+      "state": "SP",
+      "rating": 71
+    },
+    {
+      "id": "guarani",
+      "name": "Guarani",
+      "city": "Campinas",
+      "state": "SP",
+      "rating": 70
+    },
+    {
+      "id": "nautico",
+      "name": "Náutico",
+      "city": "Recife",
+      "state": "PE",
+      "rating": 69
+    },
+    {
+      "id": "santa_cruz",
+      "name": "Santa Cruz",
+      "city": "Recife",
+      "state": "PE",
+      "rating": 68
+    },
+    {
+      "id": "paysandu",
+      "name": "Paysandu",
+      "city": "Belém",
+      "state": "PA",
+      "rating": 70
+    },
+    {
+      "id": "remo",
+      "name": "Remo",
+      "city": "Belém",
+      "state": "PA",
+      "rating": 70
+    },
+    {
+      "id": "abc",
+      "name": "ABC",
+      "city": "Natal",
+      "state": "RN",
+      "rating": 67
+    },
+    {
+      "id": "sampaio_correa",
+      "name": "Sampaio Corrêa",
+      "city": "São Luís",
+      "state": "MA",
+      "rating": 68
+    },
+    {
+      "id": "londrina",
+      "name": "Londrina",
+      "city": "Londrina",
+      "state": "PR",
+      "rating": 68
+    },
+    {
+      "id": "operario",
+      "name": "Operário",
+      "city": "Ponta Grossa",
+      "state": "PR",
+      "rating": 69
+    },
+    {
+      "id": "novorizontino",
+      "name": "Novorizontino",
+      "city": "Novo Horizonte",
+      "state": "SP",
+      "rating": 72
+    }
+  ]
+};
