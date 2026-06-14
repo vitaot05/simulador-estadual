@@ -1,18 +1,18 @@
 <!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>SFA</title><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"><link rel="stylesheet" href="../css/style.css"></head><body>
 <header class="topbar game-topbar">
-  <div class="brand"><select id="season-select" class="input season-select" aria-label="Temporada"></select></div>
-  <nav class="tabs">
+  <nav class="tabs main-tabs">
     <button class="tab active" data-panel="panel-table">Classificação</button>
     <button class="tab" data-panel="panel-results">Resultados</button>
   </nav>
   <div class="top-actions game-actions">
     <select id="competition-select" class="input competition-select" aria-label="Competição"></select>
+    <select id="season-select" class="input season-select" aria-label="Temporada"></select>
     <button class="btn icon-btn" id="settings-btn" title="Configurações"><i class="fa-solid fa-gear"></i></button>
   </div>
 </header>
 <main class="content game-content">
   <section id="panel-table" class="panel"><div id="competition-view"></div></section>
-  <section id="panel-results" class="panel hidden"><div class="panel-bar"><select id="results-round-select" class="input small-input" aria-label="Rodada ou fase"></select></div><div id="results"></div></section>
+  <section id="panel-results" class="panel hidden"><div id="results"></div></section>
   <section id="panel-simulation" class="panel hidden"><div id="simulation-view"></div></section>
   <section id="panel-calendar" class="panel hidden"><div id="calendar"></div></section>
   <section id="panel-museum" class="panel hidden"><div id="museum"></div></section>

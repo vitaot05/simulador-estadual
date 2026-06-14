@@ -245,26 +245,25 @@ function resultOptionsForCompetition(season, comp){
 }
 function renderResults(){
   const box=document.getElementById('results'); if(!box) return;
-  const sel=document.getElementById('results-round-select');
   const season=currentViewSeason();
   const comp=activeCompetition;
-  const opts=resultOptionsForCompetition(season, comp);
-  activeResultsRound = opts.some(o=>o.value===activeResultsRound) ? activeResultsRound : (opts[0]?.value || '');
-  if(sel){
-    sel.innerHTML=opts.length ? opts.map(o=>`<option value="${escapeHTML(o.value)}" ${o.value===activeResultsRound?'selected':''}>${escapeHTML(o.label)}</option>`).join('') : '<option>Sem resultados</option>';
-    sel.disabled=!opts.length;
-    sel.onchange=()=>{ activeResultsRound=sel.value; renderResults(); };
-  }
   let html='';
   if(isLeagueCompetition(comp)){
-    const matches=resultsForSeason(season).filter(r=>r.league===comp && String(r.round)===String(activeResultsRound));
-    html = matches.length ? `<section class="round-results"><div class="results-list">${matches.map(matchLine).join('')}</div></section>` : '<p class="empty-text">Sem resultados.</p>';
+    const byRound={};
+    resultsForSeason(season).filter(r=>r.league===comp).forEach(r=>{
+      const key=Number(r.round)||0;
+      (byRound[key] ||= []).push(r);
+    });
+    const rounds=Object.keys(byRound).map(Number).sort((a,b)=>a-b);
+    html = rounds.length ? rounds.map(r=>`<section class="round-results"><h3>Rodada ${r}</h3><div class="results-list">${byRound[r].map(matchLine).join('')}</div></section>`).join('') : '<p class="empty-text">Sem resultados.</p>';
   } else if(isCupCompetition(comp)){
-    const matches=cupResultsForSeason(season).filter(r=>(r.name||comp)===activeResultsRound);
-    html = matches.length ? `<section class="round-results"><div class="results-list">${matches.map(matchLine).join('')}</div></section>` : '<p class="empty-text">Sem resultados.</p>';
+    const byPhase={};
+    cupResultsForSeason(season).forEach(r=>{ const key=r.name||comp; (byPhase[key] ||= []).push(r); });
+    const phases=Object.keys(byPhase);
+    html = phases.length ? phases.map(name=>`<section class="round-results"><h3>${escapeHTML(name)}</h3><div class="results-list">${byPhase[name].map(matchLine).join('')}</div></section>`).join('') : '<p class="empty-text">Sem resultados.</p>';
   } else if(isSupercupCompetition(comp)){
     const sc=supercupForSeason(season);
-    html = sc ? `<div class="results-list">${matchLine(sc)}</div><p class="cup-winner">Campeão: ${escapeHTML(sc.winner)}</p>` : '<p class="empty-text">Sem resultados.</p>';
+    html = sc ? `<section class="round-results"><h3>${escapeHTML(comp)}</h3><div class="results-list">${matchLine(sc)}</div><p class="cup-winner">Campeão: ${escapeHTML(sc.winner)}</p></section>` : '<p class="empty-text">Sem resultados.</p>';
   }
   box.innerHTML=html;
 }
@@ -343,12 +342,13 @@ function currentWeekLabel(){
 function renderBottomNav(){
   document.querySelectorAll('.bottom-icon').forEach(b=>{
     b.classList.toggle('active', b.dataset.panel===activePanel);
-    b.onclick=()=>{ clearSimulationTimer(); simulationContext=null; showPanel(b.dataset.panel); };
+    b.onclick=()=>{ clearSimulationTimer(); simulationContext=null; syncSimulationMode(); showPanel(b.dataset.panel); };
   });
   const label=document.getElementById('week-label'); if(label) label.textContent=simulationContext ? simulationStatusLabel() : currentWeekLabel();
   const sim=document.getElementById('sim-round'); if(sim) sim.textContent = nextActionLabel();
 }
 function render(){
+  syncSimulationMode();
   renderSeasonSelect(); renderCompetitionSelect(); renderCompetition(); renderResults(); renderCalendar(); renderMuseum(); renderSimulation(); renderSettings(); renderBottomNav();
 }
 function simulateCupRound(){
@@ -381,6 +381,13 @@ function simulationStatusLabel(){
   const type=simulationContext?.label || 'Simulação';
   const names={warmup:'Aquecimento',first:'1º tempo',halftime:'Intervalo',second:'2º tempo',penalties:'Pênaltis',result:'Resultado'};
   return `${type}: ${names[stage] || ''}`;
+}
+function simulationClockLabel(stage){
+  const labels={warmup:'00:00',first:'45:00',halftime:'INT',second:'90:00',penalties:'PEN',result:'FIM'};
+  return labels[stage] || '00:00';
+}
+function syncSimulationMode(){
+  document.body.classList.toggle('simulation-active', !!simulationContext);
 }
 function simulationStages(ctx){
   if(ctx.type==='seasonEnd') return ['result'];
@@ -433,19 +440,34 @@ function buildSimulationContext(){
 }
 function renderSimulationMatches(ctx, stage){
   if(ctx.type==='seasonEnd') return '<p class="empty-text">A temporada será encerrada e os acessos/rebaixamentos serão aplicados.</p>';
-  return `<div class="simulation-list">${ctx.matches.map(m=>{
+  const line = m => {
     const score = (stage==='warmup') ? '×' : `${m.homeGoals} × ${m.awayGoals}`;
     const pen = (stage==='penalties' || stage==='result') && m.penalties ? `<small>${m.penalties[0]}-${m.penalties[1]} pen.</small>` : '';
     return `<div class="simulation-match"><span>${escapeHTML(m.home)}</span><strong>${score}${pen}</strong><span>${escapeHTML(m.away)}</span></div>`;
-  }).join('')}</div>`;
+  };
+  if(ctx.type==='league'){
+    const grouped={};
+    ctx.matches.forEach(m=>{ (grouped[m.league] ||= []).push(m); });
+    return `<div class="simulation-groups">${Object.entries(grouped).map(([league,matches])=>`<section class="simulation-group"><h3>${escapeHTML(league)}</h3><div class="simulation-list">${matches.map(line).join('')}</div></section>`).join('')}</div>`;
+  }
+  return `<div class="simulation-list">${ctx.matches.map(line).join('')}</div>`;
 }
 function renderSimulation(){
   const box=document.getElementById('simulation-view'); if(!box) return;
   if(!simulationContext){ box.innerHTML=''; return; }
   const stage=currentSimulationStage();
-  const title=simulationStatusLabel();
-  const note={warmup:'Jogos definidos.',first:'Primeira etapa em andamento.',halftime:'Intervalo.',second:'Segunda etapa em andamento.',penalties:'Decisão por pênaltis.',result:'Resultados finais.'}[stage] || '';
-  box.innerHTML=`<section class="simulation-card"><div class="simulation-head"><span>${escapeHTML(simulationContext.label)}</span><strong>${escapeHTML(note)}</strong></div>${renderSimulationMatches(simulationContext, stage)}</section>`;
+  const note={warmup:'Pré-rodada',first:'1º tempo',halftime:'Intervalo',second:'2º tempo',penalties:'Pênaltis',result:'Resultado'}[stage] || '';
+  const actionLabel = nextActionLabel();
+  box.innerHTML=`<section class="simulation-card">
+    <div class="simulation-head">
+      <div><span>${escapeHTML(simulationContext.label)}</span><strong>${escapeHTML(note)}</strong></div>
+      <div class="simulation-clock" aria-label="Cronômetro">${simulationClockLabel(stage)}</div>
+    </div>
+    ${renderSimulationMatches(simulationContext, stage)}
+    <div class="simulation-actions"><button class="btn primary" id="simulation-step">${escapeHTML(actionLabel)}</button></div>
+  </section>`;
+  const step=document.getElementById('simulation-step');
+  if(step) step.onclick=()=>stepSimulation(false);
 }
 function commitLeagueSimulation(ctx){
   ctx.matches.forEach(m=>{ const h=team(m.league,m.homeId), a=team(m.league,m.awayId); applyResult(m.league,h,a,m.homeGoals,m.awayGoals); game.results.push({season:game.season, round:ctx.round, league:m.league, home:m.home, away:m.away, homeGoals:m.homeGoals, awayGoals:m.awayGoals}); });

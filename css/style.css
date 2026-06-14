@@ -44,3 +44,78 @@ body{padding-bottom:58px}.game-topbar{grid-template-columns:112px 1fr auto}.bran
 body{font-size:13px;background:#030303}.topbar{height:46px;padding:0 12px}.game-topbar{grid-template-columns:104px 1fr auto}.brand{min-width:104px}.season-select{height:30px;width:96px;min-width:96px;padding:5px 7px;font-size:12px}.tabs{height:46px}.tab{font-size:12px;padding:0 11px}.game-actions{gap:6px}.competition-select{height:30px;min-width:172px;padding:5px 8px;font-size:12px}.btn{min-height:32px;padding:7px 10px;font-size:12px}.icon-btn{width:32px;height:32px}.content{padding:12px;min-height:calc(100vh - 104px)}.game-content{max-width:1040px}.panel-bar{margin-bottom:10px}.panel-bar .small-input{height:30px;min-width:172px;font-size:12px;padding:5px 8px}.tbl-wrap{background:#090909}table{min-width:560px}th{font-size:9px;padding:6px 7px}td{font-size:12px;padding:6px 7px}.standings-table .pos-col{width:28px!important;min-width:28px!important;max-width:28px!important}.club-col{min-width:180px}.match-line{min-height:32px;font-size:12px;padding:6px 7px;grid-template-columns:minmax(0,1fr) minmax(64px,auto) minmax(0,1fr)}.match-line strong{font-size:12px;padding:1px 5px}.match-line strong small{display:block;color:#444;font-size:9px;line-height:1.1}.round-results{margin:0 0 10px}.results-list{gap:4px;max-width:600px}.bottombar{height:54px;padding:0 12px}.bottom-icon{width:34px;height:34px;font-size:14px}.week-label{font-size:12px;color:#cfcfcf}.bottom-right .btn.primary{min-width:78px}.calendar-grid{grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:6px}.calendar-day{min-height:78px;padding:7px;gap:5px}.calendar-day span{width:20px;height:20px;font-size:10px}.calendar-day strong{font-size:12px}.calendar-day small{font-size:10px}.modal{width:min(390px,96vw);padding:14px}.field{margin:10px 0}.field label{font-size:10px}.menu-actions .btn{padding:9px 10px}
 .simulation-card{background:#080808;border:1px solid var(--line);border-radius:var(--r);padding:12px;max-width:760px;margin:0 auto}.simulation-head{display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:1px solid var(--line);padding-bottom:10px;margin-bottom:10px}.simulation-head span{font-size:12px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.04em}.simulation-head strong{font-size:13px;color:#fff}.simulation-list{display:grid;gap:6px}.simulation-match{display:grid;grid-template-columns:minmax(0,1fr) minmax(70px,auto) minmax(0,1fr);gap:8px;align-items:center;border:1px solid #202020;background:#050505;border-radius:var(--r);padding:8px}.simulation-match span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.simulation-match span:first-child{text-align:right}.simulation-match strong{text-align:center;background:#fff;color:#000;border-radius:2px;padding:2px 6px;font-family:Consolas,monospace}.simulation-match small{display:block;font-size:9px;color:#333;line-height:1.1}.panel#panel-simulation{padding-top:12px}
 @media(max-width:720px){.game-topbar{grid-template-columns:1fr auto}.topbar{height:auto;min-height:46px}.tabs{height:40px}.content{padding:10px}.competition-select,.panel-bar .small-input{min-width:0;width:100%}.bottombar{height:64px}.bottom-right{gap:6px}.week-label{max-width:140px}.simulation-match{grid-template-columns:minmax(0,1fr) 58px minmax(0,1fr);font-size:12px}.simulation-head{align-items:flex-start;flex-direction:column;gap:4px}}
+
+/* V15: simulação em tela limpa com cronômetro */
+body.simulation-active{padding-bottom:0;}
+body.simulation-active .game-topbar,
+body.simulation-active .bottombar{display:none!important;}
+body.simulation-active .content{min-height:100vh;max-width:none;padding:16px;display:flex;align-items:center;justify-content:center;}
+body.simulation-active .panel{width:min(880px,100%);}
+body.simulation-active #panel-simulation{padding-top:0;}
+.simulation-card{width:100%;}
+.simulation-head>div:first-child{display:flex;flex-direction:column;gap:3px;}
+.simulation-clock{min-width:82px;text-align:center;border:1px solid #fff;background:#fff;color:#000;border-radius:var(--r);font-family:Consolas,monospace;font-size:22px;font-weight:900;line-height:1;padding:8px 10px;letter-spacing:.02em;}
+.simulation-actions{display:flex;justify-content:flex-end;margin-top:12px;padding-top:10px;border-top:1px solid var(--line);}
+.simulation-actions .btn{min-width:92px;}
+@media(max-width:720px){body.simulation-active .content{padding:10px}.simulation-clock{font-size:18px;min-width:74px}.simulation-actions .btn{width:100%;}.simulation-head{flex-direction:row;align-items:center;}}
+
+/* V16 - barra superior e simulação/resultados */
+.game-topbar{
+  grid-template-columns: 1fr auto !important;
+  justify-content: space-between;
+}
+.game-topbar .main-tabs{
+  justify-content: flex-start !important;
+  overflow: visible;
+}
+.game-topbar .game-actions{
+  display:flex !important;
+  align-items:center;
+  gap:6px;
+}
+.season-select{
+  width:96px !important;
+  min-width:96px !important;
+  text-align:center;
+}
+.competition-select{
+  min-width:170px;
+}
+#panel-results .round-results{
+  margin:0 0 14px;
+}
+#panel-results .round-results h3{
+  margin:0 0 6px;
+}
+#panel-results .results-list{
+  max-width:640px;
+}
+.simulation-groups{
+  display:grid;
+  gap:12px;
+}
+.simulation-group{
+  border:1px solid #1d1d1d;
+  border-radius:var(--r);
+  background:#050505;
+  padding:8px;
+}
+.simulation-group h3{
+  margin:0 0 7px;
+  color:#fff;
+  font-size:11px;
+  text-transform:uppercase;
+  letter-spacing:.05em;
+}
+.simulation-group .simulation-match{
+  background:#090909;
+}
+body.simulation-active .panel{
+  width:min(960px,100%);
+}
+@media(max-width:720px){
+  .game-topbar{grid-template-columns:1fr !important; gap:0; padding-bottom:6px;}
+  .game-topbar .main-tabs{height:38px; order:1; grid-column:auto; width:100%;}
+  .game-topbar .game-actions{order:2; width:100%; display:grid !important; grid-template-columns:1fr 86px 32px;}
+  .competition-select,.season-select{width:100% !important; min-width:0 !important;}
+}
