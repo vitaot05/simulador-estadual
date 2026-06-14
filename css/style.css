@@ -268,3 +268,99 @@ body.simulation-active .content{align-items:flex-start;justify-content:center;pa
   #competition-view table{min-width:680px!important;}
   #competition-view th,#competition-view td{padding:7px 6px!important;}
 }
+
+/* V21: coesão visual — cards de tabela restaurados, zonas e copa centralizada */
+.game-content{
+  max-width:none!important;
+  width:100%!important;
+  margin:0!important;
+}
+.content.game-content{
+  padding:12px!important;
+}
+#competition-view{
+  width:100%!important;
+}
+#competition-view .competition-title{
+  display:none!important;
+}
+#competition-view .tbl-wrap,
+#museum .tbl-wrap{
+  width:100%!important;
+  background:var(--panel)!important;
+  border:1px solid var(--line)!important;
+  border-radius:var(--r)!important;
+  overflow:auto!important;
+}
+#competition-view table,
+#museum table{
+  width:100%!important;
+}
+#competition-view .result-section{
+  margin:0!important;
+}
+#competition-view .result-section h3{
+  display:none!important;
+}
+#competition-view .compact,
+#competition-view .compact table{
+  width:100%!important;
+  min-width:590px!important;
+}
+.standings-table .pos-promo td,
+#competition-view tr.pos-promo td{
+  background:rgba(46,204,113,.12)!important;
+}
+.standings-table .pos-releg td,
+#competition-view tr.pos-releg td{
+  background:rgba(231,76,60,.12)!important;
+}
+.standings-table .pos-promo td:first-child,
+#competition-view tr.pos-promo td:first-child{
+  box-shadow:inset 3px 0 0 #2ecc71!important;
+}
+.standings-table .pos-releg td:first-child,
+#competition-view tr.pos-releg td:first-child{
+  box-shadow:inset 3px 0 0 #e74c3c!important;
+}
+#competition-view tbody tr:hover td{
+  background:#171717!important;
+}
+#competition-view tbody tr.pos-promo:hover td{
+  background:rgba(46,204,113,.18)!important;
+}
+#competition-view tbody tr.pos-releg:hover td{
+  background:rgba(231,76,60,.18)!important;
+}
+#competition-view .round-results,
+#competition-view .cup-card{
+  max-width:760px!important;
+  margin:10px auto 16px!important;
+  background:var(--panel)!important;
+  border:1px solid var(--line)!important;
+  border-radius:var(--r)!important;
+  padding:10px!important;
+}
+#competition-view .round-results h3,
+#competition-view .cup-card h3{
+  text-align:center!important;
+}
+#competition-view .results-list,
+#competition-view .results-grid{
+  max-width:620px!important;
+  margin:0 auto!important;
+  display:grid!important;
+  grid-template-columns:1fr!important;
+  gap:4px!important;
+}
+#competition-view .match-line{
+  width:100%!important;
+}
+#competition-view .cup-winner{
+  text-align:center!important;
+}
+@media(max-width:720px){
+  .content.game-content{padding:8px!important;}
+  #competition-view .round-results,
+  #competition-view .cup-card{max-width:none!important;}
+}
