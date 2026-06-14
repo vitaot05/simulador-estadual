@@ -1,213 +1,333 @@
 {
-  "id": "br",
-  "zone": "Brasil",
+  "id": "campeonato_brasileiro",
+  "zone": "Campeonato Brasileiro de Futebol",
   "cup": "Copa do Brasil",
   "supercup": "Supercopa do Brasil",
   "leagues": [
-    "Brasileirão Série A",
-    "Brasileirão Série B",
-    "Brasileirão Série C",
-    "Brasileirão Série D"
+    "Série A",
+    "Série B",
+    "Série C",
+    "Série D"
   ],
   "teams": [
     {
-      "id": "aurora_manaus",
-      "name": "Aurora Manaus",
-      "reputation": 5
-    },
-    {
-      "id": "estrelas_de_belem",
-      "name": "Estrelas de Belém",
-      "reputation": 4
-    },
-    {
-      "id": "real_macapa",
-      "name": "Real Macapá",
-      "reputation": 2
-    },
-    {
-      "id": "rio_branco_do_norte",
-      "name": "Rio Branco do Norte",
-      "reputation": 2
-    },
-    {
-      "id": "palmeiras_do_tocantins",
-      "name": "Palmeiras do Tocantins",
-      "reputation": 3
-    },
-    {
-      "id": "serra_do_acre",
-      "name": "Serra do Acre",
-      "reputation": 2
-    },
-    {
-      "id": "porto_velho_atletico",
-      "name": "Porto Velho Atlético",
-      "reputation": 3
-    },
-    {
-      "id": "amazonas_ocidental",
-      "name": "Amazonas Ocidental",
-      "reputation": 1
-    },
-    {
-      "id": "bahia_do_sol",
-      "name": "Bahia do Sol",
-      "reputation": 5
-    },
-    {
-      "id": "fortaleza_litoranea",
-      "name": "Fortaleza Litorânea",
-      "reputation": 5
-    },
-    {
-      "id": "recife_navegantes",
-      "name": "Recife Navegantes",
-      "reputation": 4
-    },
-    {
-      "id": "natal_estrelado",
-      "name": "Natal Estrelado",
-      "reputation": 3
-    },
-    {
-      "id": "maceio_praiano",
-      "name": "Maceió Praiano",
-      "reputation": 3
-    },
-    {
-      "id": "aracaju_marinho",
-      "name": "Aracaju Marinho",
-      "reputation": 2
-    },
-    {
-      "id": "teresina_rubro",
-      "name": "Teresina Rubro",
-      "reputation": 2
-    },
-    {
-      "id": "sertao_carcara",
-      "name": "Sertão Carcará",
-      "reputation": 1
-    },
-    {
-      "id": "capital_cerrado",
-      "name": "Capital Cerrado",
-      "reputation": 5
-    },
-    {
-      "id": "goiania_esporte",
-      "name": "Goiânia Esporte",
-      "reputation": 4
-    },
-    {
-      "id": "campo_grande_uniao",
-      "name": "Campo Grande União",
-      "reputation": 3
-    },
-    {
-      "id": "cuiaba_dourado",
-      "name": "Cuiabá Dourado",
-      "reputation": 4
-    },
-    {
-      "id": "rondonia_central",
-      "name": "Rondônia Central",
-      "reputation": 2
-    },
-    {
-      "id": "brasiliense_real",
-      "name": "Brasiliense Real",
-      "reputation": 3
-    },
-    {
-      "id": "verde_pantanal",
-      "name": "Verde Pantanal",
-      "reputation": 2
-    },
-    {
-      "id": "araguaia_clube",
-      "name": "Araguaia Clube",
-      "reputation": 1
-    },
-    {
-      "id": "metropole_atletico",
-      "name": "Metrópole Atlético",
+      "id": "flamengo",
+      "name": "Flamengo",
       "reputation": 7
     },
     {
-      "id": "rio_imperial",
-      "name": "Rio Imperial",
+      "id": "palmeiras",
+      "name": "Palmeiras",
       "reputation": 7
     },
     {
-      "id": "belo_horizonte_ferro",
-      "name": "Belo Horizonte Ferro",
+      "id": "corinthians",
+      "name": "Corinthians",
+      "reputation": 7
+    },
+    {
+      "id": "sao_paulo",
+      "name": "São Paulo",
+      "reputation": 7
+    },
+    {
+      "id": "santos",
+      "name": "Santos",
       "reputation": 6
     },
     {
-      "id": "vitoria_do_mar",
-      "name": "Vitória do Mar",
-      "reputation": 4
+      "id": "fluminense",
+      "name": "Fluminense",
+      "reputation": 6
     },
     {
-      "id": "campinas_estudantil",
-      "name": "Campinas Estudantil",
+      "id": "vasco_da_gama",
+      "name": "Vasco da Gama",
+      "reputation": 6
+    },
+    {
+      "id": "botafogo",
+      "name": "Botafogo",
+      "reputation": 6
+    },
+    {
+      "id": "gremio",
+      "name": "Grêmio",
+      "reputation": 6
+    },
+    {
+      "id": "internacional",
+      "name": "Internacional",
+      "reputation": 6
+    },
+    {
+      "id": "atletico_mineiro",
+      "name": "Atlético Mineiro",
+      "reputation": 6
+    },
+    {
+      "id": "cruzeiro",
+      "name": "Cruzeiro",
+      "reputation": 6
+    },
+    {
+      "id": "athletico_paranaense",
+      "name": "Athletico Paranaense",
       "reputation": 5
     },
     {
-      "id": "niteroi_canoas",
-      "name": "Niterói Canoas",
-      "reputation": 3
-    },
-    {
-      "id": "triangulo_mineiro",
-      "name": "Triângulo Mineiro",
-      "reputation": 4
-    },
-    {
-      "id": "vale_do_paraiba",
-      "name": "Vale do Paraíba",
-      "reputation": 3
-    },
-    {
-      "id": "curitiba_pioneiros",
-      "name": "Curitiba Pioneiros",
-      "reputation": 6
-    },
-    {
-      "id": "porto_alegre_federal",
-      "name": "Porto Alegre Federal",
-      "reputation": 6
-    },
-    {
-      "id": "florianopolis_ilha",
-      "name": "Florianópolis Ilha",
+      "id": "bahia",
+      "name": "Bahia",
       "reputation": 5
     },
     {
-      "id": "londrina_norte",
-      "name": "Londrina Norte",
+      "id": "fortaleza",
+      "name": "Fortaleza",
+      "reputation": 5
+    },
+    {
+      "id": "ceara",
+      "name": "Ceará",
+      "reputation": 5
+    },
+    {
+      "id": "sport",
+      "name": "Sport",
+      "reputation": 5
+    },
+    {
+      "id": "vitoria",
+      "name": "Vitória",
+      "reputation": 5
+    },
+    {
+      "id": "coritiba",
+      "name": "Coritiba",
+      "reputation": 5
+    },
+    {
+      "id": "goias",
+      "name": "Goiás",
+      "reputation": 5
+    },
+    {
+      "id": "america_mineiro",
+      "name": "América Mineiro",
       "reputation": 4
     },
     {
-      "id": "caxias_serrana",
-      "name": "Caxias Serrana",
+      "id": "juventude",
+      "name": "Juventude",
       "reputation": 4
     },
     {
-      "id": "joinville_operario",
-      "name": "Joinville Operário",
+      "id": "cuiaba",
+      "name": "Cuiabá",
+      "reputation": 4
+    },
+    {
+      "id": "atletico_goianiense",
+      "name": "Atlético Goianiense",
+      "reputation": 4
+    },
+    {
+      "id": "ponte_preta",
+      "name": "Ponte Preta",
+      "reputation": 4
+    },
+    {
+      "id": "guarani",
+      "name": "Guarani",
+      "reputation": 4
+    },
+    {
+      "id": "portuguesa",
+      "name": "Portuguesa",
+      "reputation": 4
+    },
+    {
+      "id": "criciuma",
+      "name": "Criciúma",
+      "reputation": 4
+    },
+    {
+      "id": "avai",
+      "name": "Avaí",
+      "reputation": 4
+    },
+    {
+      "id": "chapecoense",
+      "name": "Chapecoense",
+      "reputation": 4
+    },
+    {
+      "id": "nautico",
+      "name": "Náutico",
+      "reputation": 4
+    },
+    {
+      "id": "santa_cruz",
+      "name": "Santa Cruz",
+      "reputation": 4
+    },
+    {
+      "id": "paysandu",
+      "name": "Paysandu",
+      "reputation": 4
+    },
+    {
+      "id": "remo",
+      "name": "Remo",
+      "reputation": 4
+    },
+    {
+      "id": "vila_nova",
+      "name": "Vila Nova",
+      "reputation": 4
+    },
+    {
+      "id": "figueirense",
+      "name": "Figueirense",
+      "reputation": 4
+    },
+    {
+      "id": "botafogo_sp",
+      "name": "Botafogo SP",
       "reputation": 3
     },
     {
-      "id": "pelotas_sulino",
-      "name": "Pelotas Sulino",
+      "id": "mirassol",
+      "name": "Mirassol",
+      "reputation": 3
+    },
+    {
+      "id": "novorizontino",
+      "name": "Novorizontino",
+      "reputation": 3
+    },
+    {
+      "id": "operario_pr",
+      "name": "Operário PR",
+      "reputation": 3
+    },
+    {
+      "id": "londrina",
+      "name": "Londrina",
+      "reputation": 3
+    },
+    {
+      "id": "parana_clube",
+      "name": "Paraná Clube",
+      "reputation": 3
+    },
+    {
+      "id": "joinville",
+      "name": "Joinville",
+      "reputation": 3
+    },
+    {
+      "id": "brasil_de_pelotas",
+      "name": "Brasil de Pelotas",
+      "reputation": 3
+    },
+    {
+      "id": "caxias",
+      "name": "Caxias",
+      "reputation": 3
+    },
+    {
+      "id": "abc",
+      "name": "ABC",
+      "reputation": 3
+    },
+    {
+      "id": "america_rn",
+      "name": "América RN",
+      "reputation": 3
+    },
+    {
+      "id": "csa",
+      "name": "CSA",
+      "reputation": 3
+    },
+    {
+      "id": "crb",
+      "name": "CRB",
+      "reputation": 3
+    },
+    {
+      "id": "sampaio_correa",
+      "name": "Sampaio Corrêa",
+      "reputation": 3
+    },
+    {
+      "id": "maranhao",
+      "name": "Maranhão",
       "reputation": 2
     },
     {
-      "id": "foz_fronteira",
-      "name": "Foz Fronteira",
+      "id": "ferroviario",
+      "name": "Ferroviário",
+      "reputation": 2
+    },
+    {
+      "id": "confianca",
+      "name": "Confiança",
+      "reputation": 2
+    },
+    {
+      "id": "sergipe",
+      "name": "Sergipe",
+      "reputation": 2
+    },
+    {
+      "id": "botafogo_pb",
+      "name": "Botafogo PB",
+      "reputation": 2
+    },
+    {
+      "id": "treze",
+      "name": "Treze",
+      "reputation": 2
+    },
+    {
+      "id": "campinense",
+      "name": "Campinense",
+      "reputation": 2
+    },
+    {
+      "id": "volta_redonda",
+      "name": "Volta Redonda",
+      "reputation": 2
+    },
+    {
+      "id": "bangu",
+      "name": "Bangu",
+      "reputation": 2
+    },
+    {
+      "id": "madureira",
+      "name": "Madureira",
+      "reputation": 2
+    },
+    {
+      "id": "ituano",
+      "name": "Ituano",
+      "reputation": 2
+    },
+    {
+      "id": "santo_andre",
+      "name": "Santo André",
+      "reputation": 2
+    },
+    {
+      "id": "sao_bernardo",
+      "name": "São Bernardo",
+      "reputation": 2
+    },
+    {
+      "id": "brusque",
+      "name": "Brusque",
       "reputation": 2
     }
   ]

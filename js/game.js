@@ -7,6 +7,8 @@ let activeCompetition = null;
 let activePanel = 'panel-table';
 let activeViewSeason = null;
 let activeResultsRound = null;
+let simulationContext = null;
+let simulationTimer = null;
 const PROMOTION_SLOTS = 2;
 const RELEGATION_SLOTS = 2;
 
@@ -22,7 +24,14 @@ function maxRounds(){ return Math.max(0, ...Object.values(game.schedules||{}).ma
 function cupSize(total){ if(total>=64)return 64; if(total>=32)return 32; if(total>=16)return 16; if(total>=8)return 8; return 0; }
 function cupRoundName(size, remaining){ if(remaining===2)return 'Final'; if(remaining===4)return 'Semifinal'; if(remaining===8)return 'Quartas'; if(remaining===16)return 'Oitavas'; return `${remaining/2}ª fase`; }
 function cupRoundCount(){ return game?.cup?.size ? Math.log2(game.cup.size) : 0; }
-function nextActionLabel(){ return game.round>=maxRounds() && (!game.cup?.size || game.cup?.winner) ? 'Encerrar' : 'Avançar'; }
+function nextActionLabel(){
+  if(simulationContext){
+    const stage = currentSimulationStage();
+    if(stage==='result') return 'Voltar';
+    return 'Pular';
+  }
+  return game.round>=maxRounds() && (!game.cup?.size || game.cup?.winner) ? 'Encerrar' : 'Simular';
+}
 function shouldPlayCupNow(){ return game.cup?.size && !game.cup?.winner && game.phase==='cup'; }
 function shouldPlaySupercupNow(){ return game.phase==='supercup' && game.pendingSupercup && !game.supercup; }
 function cupRoundsTotal(){ return game?.cup?.size ? Math.log2(game.cup.size) : 0; }
@@ -223,8 +232,6 @@ function renderMiniTable(league, rows){
 function resultOptionsForCompetition(season, comp){
   if(isLeagueCompetition(comp)){
     const opts=[];
-    const finals=finalTablesForSeason(season);
-    if(finals?.[comp]) opts.push({value:'final', label:'Tabela final'});
     const rounds=[...new Set(resultsForSeason(season).filter(r=>r.league===comp).map(r=>Number(r.round)))].sort((a,b)=>b-a);
     rounds.forEach(r=>opts.push({value:String(r), label:`Rodada ${r}`}));
     return opts;
@@ -250,13 +257,8 @@ function renderResults(){
   }
   let html='';
   if(isLeagueCompetition(comp)){
-    if(activeResultsRound==='final'){
-      const finals=finalTablesForSeason(season);
-      html = finals?.[comp] ? renderMiniTable(comp, finals[comp]||[]) : '<p class="empty-text">Sem tabela final.</p>';
-    } else {
-      const matches=resultsForSeason(season).filter(r=>r.league===comp && String(r.round)===String(activeResultsRound));
-      html = matches.length ? `<section class="round-results"><div class="results-list">${matches.map(matchLine).join('')}</div></section>` : '<p class="empty-text">Sem resultados.</p>';
-    }
+    const matches=resultsForSeason(season).filter(r=>r.league===comp && String(r.round)===String(activeResultsRound));
+    html = matches.length ? `<section class="round-results"><div class="results-list">${matches.map(matchLine).join('')}</div></section>` : '<p class="empty-text">Sem resultados.</p>';
   } else if(isCupCompetition(comp)){
     const matches=cupResultsForSeason(season).filter(r=>(r.name||comp)===activeResultsRound);
     html = matches.length ? `<section class="round-results"><div class="results-list">${matches.map(matchLine).join('')}</div></section>` : '<p class="empty-text">Sem resultados.</p>';
@@ -322,7 +324,13 @@ function renderHistory(){
   const seasons=game.history?.length ? game.history.slice().reverse().map(h=>`<div class="save-card"><strong>${escapeHTML(game.zone)} · ${h.season}</strong>${Object.entries(h.winners).map(([l,w])=>`<p class="muted">${escapeHTML(l)}: ${escapeHTML(w)}</p>`).join('')}${h.cupWinner?`<p class="muted">${escapeHTML(game.config.cup)}: ${escapeHTML(h.cupWinner)}</p>`:''}${h.supercupWinner?`<p class="muted">${escapeHTML(game.config.supercup)}: ${escapeHTML(h.supercupWinner)}</p>`:''}</div>`).join('') : '<p class="muted">Nenhuma temporada concluída.</p>';
   box.innerHTML = moves + seasons;
 }
-function renderSettings(){ const settings=getSettings(); const sel=document.getElementById('autosave-frequency'); if(sel && document.activeElement!==sel) sel.value=settings.autosaveFrequency||'1'; }
+function renderSettings(){
+  const settings=getSettings();
+  const auto=document.getElementById('autosave-frequency');
+  const speed=document.getElementById('simulation-speed');
+  if(auto && document.activeElement!==auto) auto.value=settings.autosaveFrequency||'1';
+  if(speed && document.activeElement!==speed) speed.value=String(settings.simulationSpeed||600);
+}
 function currentWeekLabel(){
   const done = (game.supercup ? 1 : 0) + Number(game.round||0) + cupRoundsPlayed();
   let type = 'Liga';
@@ -335,13 +343,13 @@ function currentWeekLabel(){
 function renderBottomNav(){
   document.querySelectorAll('.bottom-icon').forEach(b=>{
     b.classList.toggle('active', b.dataset.panel===activePanel);
-    b.onclick=()=>showPanel(b.dataset.panel);
+    b.onclick=()=>{ clearSimulationTimer(); simulationContext=null; showPanel(b.dataset.panel); };
   });
-  const label=document.getElementById('week-label'); if(label) label.textContent=currentWeekLabel();
+  const label=document.getElementById('week-label'); if(label) label.textContent=simulationContext ? simulationStatusLabel() : currentWeekLabel();
+  const sim=document.getElementById('sim-round'); if(sim) sim.textContent = nextActionLabel();
 }
 function render(){
-  const sim=document.getElementById('sim-round'); if(sim) sim.textContent = nextActionLabel();
-  renderSeasonSelect(); renderCompetitionSelect(); renderCompetition(); renderResults(); renderCalendar(); renderMuseum(); renderSettings(); renderBottomNav();
+  renderSeasonSelect(); renderCompetitionSelect(); renderCompetition(); renderResults(); renderCalendar(); renderMuseum(); renderSimulation(); renderSettings(); renderBottomNav();
 }
 function simulateCupRound(){
   const cup=game.cup; if(!cup || !cup.size || cup.winner || cup.participants.length<2) return;
@@ -365,37 +373,142 @@ function playPendingSupercup(){
   game.pendingSupercup=null;
   return res;
 }
-function simulateRound(){
-  if(shouldPlaySupercupNow()){
-    playPendingSupercup();
-    game.phase='league';
-    game.updatedAt=new Date().toISOString();
-    if(shouldAutosave(game)) autosave(true);
-    render();
-    return;
-  }
-  if(shouldPlayCupNow()){
-    simulateCupRound();
-    if(game.cup?.winner && game.round>=maxRounds()) { finishSeason(); return; }
-    game.phase='league';
-    game.updatedAt=new Date().toISOString();
-    if(shouldAutosave(game)) autosave(true);
-    render();
-    return;
-  }
+function simulationDelay(){ return Number(getSettings().simulationSpeed || 600); }
+function clearSimulationTimer(){ if(simulationTimer){ clearTimeout(simulationTimer); simulationTimer=null; } }
+function currentSimulationStage(){ return simulationContext?.stages?.[simulationContext.stageIndex] || null; }
+function simulationStatusLabel(){
+  const stage=currentSimulationStage();
+  const type=simulationContext?.label || 'Simulação';
+  const names={warmup:'Aquecimento',first:'1º tempo',halftime:'Intervalo',second:'2º tempo',penalties:'Pênaltis',result:'Resultado'};
+  return `${type}: ${names[stage] || ''}`;
+}
+function simulationStages(ctx){
+  if(ctx.type==='seasonEnd') return ['result'];
+  const hasPenalties = ctx.matches?.some(m=>m.penalties);
+  return ['warmup','first','halftime','second', ...(hasPenalties?['penalties']:[]), 'result'];
+}
+function buildLeagueSimulationContext(){
   const matches=currentRoundMatches();
-  if(!matches.length){
-    if(game.cup?.size && !game.cup.winner){ game.phase='cup'; simulateRound(); return; }
-    finishSeason();
-    return;
+  if(!matches.length) return null;
+  const round=game.round+1;
+  const simMatches=matches.map(m=>{ const [homeGoals,awayGoals]=simMatch(m.home,m.away); return {league:m.league, homeId:m.home.id, awayId:m.away.id, home:m.home.name, away:m.away.name, homeGoals, awayGoals}; });
+  return {type:'league', label:`Rodada ${round}`, round, matches:simMatches};
+}
+function buildCupSimulationContext(){
+  const cup=game.cup; if(!cup || !cup.size || cup.winner || cup.participants.length<2) return null;
+  const remaining=cup.participants.length;
+  const roundName=cupRoundName(cup.size, remaining);
+  const matches=[];
+  for(let i=0;i<cup.participants.length;i+=2){
+    const home=findTeam(cup.participants[i]), away=findTeam(cup.participants[i+1]);
+    const r=simKnockout(home,away);
+    matches.push({homeId:home.id, awayId:away.id, home:home.name, away:away.name, homeGoals:r.homeGoals, awayGoals:r.awayGoals, penalties:r.penalties, winnerId:r.winner.id, winner:r.winner.name});
   }
-  matches.forEach(m=>{ const [homeGoals,awayGoals]=simMatch(m.home,m.away); applyResult(m.league,m.home,m.away,homeGoals,awayGoals); game.results.push({season:game.season, round:game.round+1, league:m.league, home:m.home.name, away:m.away.name, homeGoals, awayGoals}); });
+  return {type:'cup', label:roundName, roundName, matches};
+}
+function buildSupercupSimulationContext(){
+  const pending=game.pendingSupercup; if(!pending) return null;
+  let mainChampion=pending.mainChampion, cupWinner=pending.cupWinner;
+  if(!mainChampion || !cupWinner || mainChampion==='-' || cupWinner==='-') return null;
+  let opponent=cupWinner;
+  if(opponent===mainChampion && game.cup?.runnerUp) opponent=game.cup.runnerUp;
+  if(opponent===mainChampion) return null;
+  const home=allTeams().find(t=>t.name===mainChampion) || {id:mainChampion,name:mainChampion,rating:78,reputation:4};
+  const away=allTeams().find(t=>t.name===opponent) || {id:opponent,name:opponent,rating:78,reputation:4};
+  const r=simKnockout(home, away);
+  return {type:'supercup', label:game.config.supercup || 'Supercopa', matches:[{homeId:home.id, awayId:away.id, home:home.name, away:away.name, homeGoals:r.homeGoals, awayGoals:r.awayGoals, penalties:r.penalties, winnerId:r.winner.id, winner:r.winner.name}]};
+}
+function buildSimulationContext(){
+  let ctx=null;
+  if(shouldPlaySupercupNow()) ctx=buildSupercupSimulationContext();
+  else if(shouldPlayCupNow()) ctx=buildCupSimulationContext();
+  else ctx=buildLeagueSimulationContext();
+  if(!ctx){
+    if(game.cup?.size && !game.cup.winner){ game.phase='cup'; ctx=buildCupSimulationContext(); }
+    else ctx={type:'seasonEnd', label:'Fim da temporada', matches:[]};
+  }
+  ctx.stageIndex=0;
+  ctx.stages=simulationStages(ctx);
+  return ctx;
+}
+function renderSimulationMatches(ctx, stage){
+  if(ctx.type==='seasonEnd') return '<p class="empty-text">A temporada será encerrada e os acessos/rebaixamentos serão aplicados.</p>';
+  return `<div class="simulation-list">${ctx.matches.map(m=>{
+    const score = (stage==='warmup') ? '×' : `${m.homeGoals} × ${m.awayGoals}`;
+    const pen = (stage==='penalties' || stage==='result') && m.penalties ? `<small>${m.penalties[0]}-${m.penalties[1]} pen.</small>` : '';
+    return `<div class="simulation-match"><span>${escapeHTML(m.home)}</span><strong>${score}${pen}</strong><span>${escapeHTML(m.away)}</span></div>`;
+  }).join('')}</div>`;
+}
+function renderSimulation(){
+  const box=document.getElementById('simulation-view'); if(!box) return;
+  if(!simulationContext){ box.innerHTML=''; return; }
+  const stage=currentSimulationStage();
+  const title=simulationStatusLabel();
+  const note={warmup:'Jogos definidos.',first:'Primeira etapa em andamento.',halftime:'Intervalo.',second:'Segunda etapa em andamento.',penalties:'Decisão por pênaltis.',result:'Resultados finais.'}[stage] || '';
+  box.innerHTML=`<section class="simulation-card"><div class="simulation-head"><span>${escapeHTML(simulationContext.label)}</span><strong>${escapeHTML(note)}</strong></div>${renderSimulationMatches(simulationContext, stage)}</section>`;
+}
+function commitLeagueSimulation(ctx){
+  ctx.matches.forEach(m=>{ const h=team(m.league,m.homeId), a=team(m.league,m.awayId); applyResult(m.league,h,a,m.homeGoals,m.awayGoals); game.results.push({season:game.season, round:ctx.round, league:m.league, home:m.home, away:m.away, homeGoals:m.homeGoals, awayGoals:m.awayGoals}); });
   game.round++;
   game.phase = shouldInsertCupAfterLeague() ? 'cup' : 'league';
-  game.updatedAt=new Date().toISOString();
-  if(shouldAutosave(game)) autosave(true);
-  render();
 }
+function commitCupSimulation(ctx){
+  const cup=game.cup; const next=[];
+  const matches=ctx.matches.map(m=>{ next.push(m.winnerId); return {season:game.season, name:ctx.roundName, home:m.home, away:m.away, homeGoals:m.homeGoals, awayGoals:m.awayGoals, penalties:m.penalties, winner:m.winner}; });
+  cup.history.push({name:ctx.roundName, matches});
+  game.cupResults.push(...matches);
+  cup.roundIndex++;
+  cup.participants=next;
+  if(next.length===1){ cup.winner=findTeam(next[0]).name; const finalMatch=matches[0]; cup.runnerUp = finalMatch ? (finalMatch.winner===finalMatch.home ? finalMatch.away : finalMatch.home) : null; addTitle(cup.winner, game.config.cup); }
+  game.phase='league';
+}
+function commitSupercupSimulation(ctx){
+  const m=ctx.matches[0];
+  const res={season:game.season, home:m.home, away:m.away, homeGoals:m.homeGoals, awayGoals:m.awayGoals, penalties:m.penalties, winner:m.winner};
+  addTitle(res.winner, game.config.supercup);
+  game.supercup=res;
+  game.pendingSupercup=null;
+  game.phase='league';
+}
+function commitSimulation(ctx){
+  if(ctx.type==='league') commitLeagueSimulation(ctx);
+  else if(ctx.type==='cup') commitCupSimulation(ctx);
+  else if(ctx.type==='supercup') commitSupercupSimulation(ctx);
+  else if(ctx.type==='seasonEnd'){ finishSeason(); return; }
+  game.updatedAt=new Date().toISOString();
+  if(ctx.type==='cup' && game.cup?.winner && game.round>=maxRounds()) { if(shouldAutosave(game)) autosave(true); finishSeason(); return; }
+  if(shouldAutosave(game)) autosave(true);
+}
+function autoAdvanceSimulation(){
+  clearSimulationTimer();
+  if(!simulationContext) return;
+  const stage=currentSimulationStage();
+  if(stage==='result') return;
+  simulationTimer=setTimeout(()=>stepSimulation(true), simulationDelay());
+}
+function beginSimulation(){
+  simulationContext=buildSimulationContext();
+  showPanel('panel-simulation');
+  render();
+  autoAdvanceSimulation();
+}
+function stepSimulation(auto=false){
+  if(!simulationContext){ beginSimulation(); return; }
+  clearSimulationTimer();
+  const stage=currentSimulationStage();
+  if(stage==='result'){
+    const ctx=simulationContext;
+    simulationContext=null;
+    commitSimulation(ctx);
+    showPanel('panel-table');
+    render();
+    return;
+  }
+  simulationContext.stageIndex++;
+  render();
+  autoAdvanceSimulation();
+}
+function simulateRound(){ stepSimulation(false); }
 function simulateSupercup(mainChampion, cupWinner){
   if(!mainChampion || !cupWinner || mainChampion==='-' || cupWinner==='-') return null;
   let opponent = cupWinner;
@@ -442,6 +555,7 @@ async function init(){
   document.getElementById('export-save').onclick=()=>downloadJSON(`${game.id}.json`, game);
   document.getElementById('import-save').onchange=async e=>{ if(!e.target.files[0])return; try{ const imported=await readJSONFile(e.target.files[0]); imported.slot=game.slot; imported.id='slot_'+game.slot; game=imported; game.config=normalizeConfig(game.config); activeCompetition=game.config?.leagues?.[0] || Object.keys(game.divisions||{})[0]; autosave(true); render(); closeSettings(); }catch(err){ alert('Save inválido: '+err.message); } };
   document.getElementById('autosave-frequency').onchange=e=>setSettings({autosaveFrequency:e.target.value});
+  document.getElementById('simulation-speed').onchange=e=>setSettings({simulationSpeed:Number(e.target.value)});
   renderTabs(); render(); showPanel('panel-table');
 }
 window.addEventListener('DOMContentLoaded', init);
