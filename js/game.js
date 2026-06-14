@@ -445,9 +445,7 @@ function standingsTable(league) {
     })
     .join("")}</tbody></table></div>`;
 }
-function competitionTitle(name) {
-  return `<div class="competition-title">${escapeHTML(name)}</div>`;
-}
+
 function renderCompetition() {
   const box = document.getElementById("competition-view");
   if (!box) return;

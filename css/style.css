@@ -190,3 +190,81 @@ body.simulation-active .content{align-items:flex-start;justify-content:center;pa
 .bottom-right .btn.primary{
   min-width:86px;
 }
+
+
+/* V20: tabela em tela cheia, sem título e zonas coloridas */
+.content.game-content{
+  max-width:none!important;
+  width:100%!important;
+  margin:0!important;
+  padding:0!important;
+  min-height:calc(100vh - 100px)!important;
+}
+#panel-table,
+#competition-view{
+  width:100%!important;
+  margin:0!important;
+  padding:0!important;
+}
+.competition-title{display:none!important;}
+#competition-view .tbl-wrap{
+  width:100vw!important;
+  max-width:none!important;
+  margin:0!important;
+  border:0!important;
+  border-radius:0!important;
+  background:#030303!important;
+  overflow:auto!important;
+}
+#competition-view table{
+  width:100%!important;
+  min-width:760px!important;
+  table-layout:fixed;
+}
+#competition-view th,
+#competition-view td{
+  padding:7px 10px!important;
+}
+#competition-view .club-col{
+  width:42%!important;
+  min-width:0!important;
+}
+#competition-view .pos-col{
+  width:42px!important;
+  min-width:42px!important;
+  max-width:42px!important;
+}
+#competition-view .pos-promo{
+  background:rgba(35, 130, 72, .22)!important;
+}
+#competition-view .pos-promo:hover{
+  background:rgba(35, 130, 72, .30)!important;
+}
+#competition-view .pos-releg{
+  background:rgba(170, 50, 50, .22)!important;
+}
+#competition-view .pos-releg:hover{
+  background:rgba(170, 50, 50, .30)!important;
+}
+#competition-view .pos-promo td:first-child{
+  box-shadow:inset 4px 0 0 #2ecc71!important;
+  color:#d8ffe8!important;
+}
+#competition-view .pos-releg td:first-child{
+  box-shadow:inset 4px 0 0 #e05252!important;
+  color:#ffe0e0!important;
+}
+#competition-view thead th{
+  position:sticky;
+  top:0;
+  z-index:1;
+}
+#panel-results,
+#panel-calendar,
+#panel-museum{
+  padding:12px!important;
+}
+@media(max-width:720px){
+  #competition-view table{min-width:680px!important;}
+  #competition-view th,#competition-view td{padding:7px 6px!important;}
+}
