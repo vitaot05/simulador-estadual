@@ -298,7 +298,10 @@ function calendarEvents(){
 function renderCalendar(){
   const box=document.getElementById('calendar'); if(!box) return;
   const events=calendarEvents();
-  box.innerHTML = `<div class="calendar-grid">${events.map((it,idx)=>`<div class="calendar-day ${it.kind} ${it.status}"><span>${idx+1}</span><strong>${escapeHTML(it.title)}</strong><small>${escapeHTML(it.sub)}</small></div>`).join('')}</div>`;
+  box.innerHTML = `<div class="calendar-grid">${events.map((it,idx)=>`<button class="calendar-day ${it.kind} ${it.status}" data-calendar-index="${idx}" title="Pular até esta semana"><span>${idx+1}</span><strong>${escapeHTML(it.title)}</strong><small>${escapeHTML(it.sub)}</small></button>`).join('')}</div>`;
+  box.querySelectorAll('[data-calendar-index]').forEach(btn=>{
+    btn.onclick=()=>skipToCalendarIndex(Number(btn.dataset.calendarIndex));
+  });
 }
 function formatCupScore(r){ const pen = r.penalties ? ` (${r.penalties[0]}-${r.penalties[1]} pen.)` : ''; return `${r.homeGoals} × ${r.awayGoals}${pen}`; }
 function renderCups(){
@@ -508,6 +511,46 @@ function autoAdvanceSimulation(){
   if(stage==='result') return;
   simulationTimer=setTimeout(()=>stepSimulation(true), simulationDelay());
 }
+function commitNextInstant(){
+  clearSimulationTimer();
+  const ctx = buildSimulationContext();
+  if(!ctx) return false;
+  commitSimulation(ctx);
+  return true;
+}
+function completedCalendarEvents(){
+  return calendarEvents().filter(e=>e.status==='done').length;
+}
+function skipCurrentWeek(){
+  if(simulationContext){
+    const ctx=simulationContext;
+    simulationContext=null;
+    commitSimulation(ctx);
+  } else {
+    commitNextInstant();
+  }
+  syncSimulationMode();
+  showPanel('panel-table');
+  render();
+}
+function skipToCalendarIndex(targetIndex){
+  if(!Number.isFinite(targetIndex)) return;
+  const ok = confirm(`Simular automaticamente até a semana ${targetIndex+1}?`);
+  if(!ok) return;
+  clearSimulationTimer();
+  simulationContext=null;
+  let guard=0;
+  while(completedCalendarEvents() <= targetIndex && guard < 250){
+    const before = JSON.stringify({season:game.season, round:game.round, phase:game.phase, cup:game.cup?.history?.length, winner:game.cup?.winner, supercup:!!game.supercup});
+    if(!commitNextInstant()) break;
+    const after = JSON.stringify({season:game.season, round:game.round, phase:game.phase, cup:game.cup?.history?.length, winner:game.cup?.winner, supercup:!!game.supercup});
+    guard++;
+    if(before===after) break;
+  }
+  syncSimulationMode();
+  showPanel('panel-calendar');
+  render();
+}
 function beginSimulation(){
   simulationContext=buildSimulationContext();
   showPanel('panel-simulation');
@@ -573,7 +616,7 @@ async function init(){
   game.museum ||= {}; if(!game.tables || !game.schedules){ const built=buildSeason(game.divisions); game.tables=built.tables; game.schedules=built.schedules; }
   game.cup ||= buildCup(); game.cupResults ||= []; game.results ||= []; game.history ||= []; game.pendingSupercup ||= null; if(game.pendingSupercup && !game.supercup) game.phase='supercup'; game.phase ||= 'league';
   activeCompetition=competitionOptions().includes(activeCompetition) ? activeCompetition : competitionOptions()[0]; activeViewSeason=game.season;
-  document.getElementById('sim-round').onclick=simulateRound; document.getElementById('settings-btn').onclick=openSettings; document.getElementById('close-settings').onclick=closeSettings;
+  document.getElementById('sim-round').onclick=simulateRound; document.getElementById('skip-round').onclick=skipCurrentWeek; document.getElementById('settings-btn').onclick=openSettings; document.getElementById('close-settings').onclick=closeSettings;
   document.getElementById('export-save').onclick=()=>downloadJSON(`${game.id}.json`, game);
   document.getElementById('import-save').onchange=async e=>{ if(!e.target.files[0])return; try{ const imported=await readJSONFile(e.target.files[0]); imported.slot=game.slot; imported.id='slot_'+game.slot; game=imported; game.config=normalizeConfig(game.config); activeCompetition=game.config?.leagues?.[0] || Object.keys(game.divisions||{})[0]; autosave(true); render(); closeSettings(); }catch(err){ alert('Save inválido: '+err.message); } };
   document.getElementById('autosave-frequency').onchange=e=>setSettings({autosaveFrequency:e.target.value});
