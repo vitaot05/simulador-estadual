@@ -149,3 +149,44 @@ body.simulation-active .content{align-items:flex-start;justify-content:center;pa
 #skip-round{
   min-width:76px;
 }
+
+
+/* V19: botão único e tabelas sem card */
+#sim-round{display:none!important;}
+#competition-view{width:100%;}
+.competition-title{
+  font-size:13px;
+  font-weight:800;
+  color:#fff;
+  margin:0 0 8px;
+  text-align:left;
+}
+#competition-view .tbl-wrap,
+#museum .tbl-wrap{
+  width:100%;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  overflow-x:auto;
+}
+#competition-view table,
+#museum table{
+  width:100%;
+  min-width:0;
+}
+#competition-view th,
+#competition-view td,
+#museum th,
+#museum td{
+  border-bottom-color:#1d1d1d;
+}
+#competition-view th,
+#museum th{
+  background:#080808;
+}
+#competition-view .result-section{
+  margin:0;
+}
+.bottom-right .btn.primary{
+  min-width:86px;
+}
