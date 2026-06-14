@@ -1,11 +1,13 @@
 {
-  "id": "campeonato_brasileiro",
-  "zone": "Campeonato Brasileiro de Futebol",
+  "id": "br",
+  "zone": "Brasil",
+  "cup": "Copa do Brasil",
+  "supercup": "Supercopa do Brasil",
   "leagues": [
-    "Série A",
-    "Série B",
-    "Série C",
-    "Série D"
+    "Brasileirão Série A",
+    "Brasileirão Série B",
+    "Brasileirão Série C",
+    "Brasileirão Série D"
   ],
   "teams": [
     {

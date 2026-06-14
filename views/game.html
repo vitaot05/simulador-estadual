@@ -1,9 +1,27 @@
-<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Jogo</title><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"><link rel="stylesheet" href="../css/style.css"></head><body>
-<header class="topbar game-topbar"><div class="brand"><div class="brand-icon"><i class="fa-solid fa-shield-halved"></i></div><div><strong id="zone">Avanci Football Simulator</strong><br><span class="muted">Liga em andamento</span></div></div><nav class="tabs"><button class="tab active" data-panel="panel-table"><i class="fa-solid fa-table-list"></i>Classificação</button><button class="tab" data-panel="panel-results"><i class="fa-solid fa-futbol"></i>Últimos resultados</button><button class="tab" data-panel="panel-museum"><i class="fa-solid fa-landmark"></i>Museu</button><button class="tab" data-panel="panel-history"><i class="fa-solid fa-trophy"></i>Histórico</button></nav><div class="row"><select id="league-select" class="input league-select" aria-label="Divisão"></select><span class="pill" id="slot-pill"></span><span class="pill" id="season"></span><span class="pill" id="round"></span><button class="btn icon-btn" id="settings-btn" title="Configurações"><i class="fa-solid fa-gear"></i></button><a class="btn icon-btn" href="menu.html" title="Menu"><i class="fa-solid fa-house"></i></a></div></header>
-<main class="content game-content"><div class="manager-header"><div><div class="muted" id="dash-zone">-</div><h1>Temporada <span id="dash-season">-</span></h1><p class="muted" id="league-note"></p></div><div class="manager-actions"><button class="btn btn-gold" id="sim-round"><i class="fa-solid fa-forward-step"></i>Simular rodada</button><div class="round-box"><span class="muted">Rodada</span><strong id="dash-round">-</strong><small id="autosave-status" class="muted">Autosave ativo</small></div></div></div>
-<section id="panel-table" class="panel"><div class="tbl-wrap"><table class="standings-table"><thead><tr><th class="pos-col">#</th><th class="club-col">Clube</th><th>Pts</th><th>J</th><th>V</th><th>E</th><th>D</th><th>GP</th><th>GC</th><th>SG</th></tr></thead><tbody id="tbody"></tbody></table></div></section>
-<section id="panel-results" class="panel hidden"><h2 class="section-title"><i class="fa-solid fa-futbol"></i>Últimos resultados</h2><div id="results"></div></section>
-<section id="panel-museum" class="panel hidden"><h2 class="section-title"><i class="fa-solid fa-landmark"></i>Museu de títulos</h2><p class="muted">Títulos conquistados em <span id="museum-zone-name"></span>.</p><div id="museum"></div></section>
-<section id="panel-history" class="panel hidden"><h2 class="section-title"><i class="fa-solid fa-trophy"></i>Histórico</h2><div id="history"></div></section></main>
-<div class="modal-overlay" id="settings-modal"><section class="modal"><div class="section-head"><h2 class="section-title"><i class="fa-solid fa-gear"></i>Configurações</h2><button class="btn icon-btn" id="close-settings"><i class="fa-solid fa-xmark"></i></button></div><div class="field"><label>Frequência do autosave</label><select id="autosave-frequency" class="input"><option value="1">A cada rodada</option><option value="3">A cada 3 rodadas</option><option value="5">A cada 5 rodadas</option><option value="season">Por temporada</option></select></div><div class="sep"></div><div class="menu-actions"><button class="btn" id="export-save"><i class="fa-solid fa-file-export"></i>Exportar save JSON</button><label class="btn"><i class="fa-solid fa-file-import"></i>Importar save JSON<input id="import-save" type="file" accept="application/json" hidden></label></div></section></div>
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>SFA</title><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"><link rel="stylesheet" href="../css/style.css"></head><body>
+<header class="topbar game-topbar">
+  <div class="brand"><select id="season-select" class="input season-select" aria-label="Temporada"></select></div>
+  <nav class="tabs">
+    <button class="tab active" data-panel="panel-table">Classificação</button>
+    <button class="tab" data-panel="panel-results">Resultados</button>
+  </nav>
+  <div class="top-actions game-actions">
+    <select id="competition-select" class="input competition-select" aria-label="Competição"></select>
+    <button class="btn icon-btn" id="settings-btn" title="Configurações"><i class="fa-solid fa-gear"></i></button>
+  </div>
+</header>
+<main class="content game-content">
+  <section id="panel-table" class="panel"><div id="competition-view"></div></section>
+  <section id="panel-results" class="panel hidden"><div class="panel-bar"><select id="results-round-select" class="input small-input" aria-label="Rodada ou fase"></select></div><div id="results"></div></section>
+  <section id="panel-calendar" class="panel hidden"><div id="calendar"></div></section>
+  <section id="panel-museum" class="panel hidden"><div id="museum"></div></section>
+</main>
+<footer class="bottombar">
+  <div class="bottom-left">
+    <button class="bottom-icon" data-panel="panel-calendar" title="Calendário"><i class="fa-regular fa-calendar-days"></i></button>
+    <button class="bottom-icon" data-panel="panel-museum" title="Museu"><i class="fa-solid fa-trophy"></i></button>
+  </div>
+  <div class="bottom-right"><span id="week-label" class="week-label">Semana 1: Liga</span><button class="btn primary" id="sim-round">Avançar</button></div>
+</footer>
+<div class="modal-overlay" id="settings-modal"><section class="modal"><div class="section-head"><h2>Configurações</h2><button class="btn icon-btn" id="close-settings"><i class="fa-solid fa-xmark"></i></button></div><div class="field"><label>Autosave</label><select id="autosave-frequency" class="input"><option value="1">A cada rodada</option><option value="3">A cada 3 rodadas</option><option value="5">A cada 5 rodadas</option><option value="season">Por temporada</option></select></div><div class="sep"></div><div class="menu-actions"><a class="btn" href="menu.html"><i class="fa-solid fa-arrow-left"></i> Voltar ao menu principal</a><button class="btn" id="export-save"><i class="fa-solid fa-file-export"></i> Exportar save</button><label class="btn"><i class="fa-solid fa-file-import"></i> Importar save<input id="import-save" type="file" accept="application/json" hidden></label></div></section></div>
 <script type="module" src="../js/game.js"></script></body></html>

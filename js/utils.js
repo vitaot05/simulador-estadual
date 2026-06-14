@@ -32,6 +32,8 @@ export function normalizeConfig(input){
   const cfg=structuredClone(input||{});
   cfg.id = slugify(cfg.id || cfg.zone || 'custom_league');
   cfg.zone = String(cfg.zone || 'Liga Personalizada');
+  cfg.cup = String(cfg.cup || 'Copa Nacional');
+  cfg.supercup = String(cfg.supercup || 'Supercopa Nacional');
   cfg.leagues = Array.isArray(cfg.leagues) ? cfg.leagues.map(String).filter(Boolean) : ['Série A'];
   cfg.teams = Array.isArray(cfg.teams) ? cfg.teams.map((t,i)=>({
     id: slugify(t.id || t.name || `team_${i+1}`),
@@ -45,6 +47,8 @@ export function validateConfig(cfg){
   if(!cfg.id) errors.push('Falta id.');
   if(!cfg.zone) errors.push('Falta zone.');
   if(!cfg.leagues?.length) errors.push('Inclua pelo menos uma liga em leagues.');
+  if(!cfg.cup) errors.push('Falta cup.');
+  if(!cfg.supercup) errors.push('Falta supercup.');
   if((cfg.teams||[]).length < 2) errors.push('Inclua pelo menos 2 times.');
   const ids=new Set();
   for(const t of (cfg.teams||[])){

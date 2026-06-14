@@ -4,6 +4,8 @@ let data=null;
 function syncFromForm(){
   data.id=slugify(document.getElementById('id').value);
   data.zone=document.getElementById('zone').value.trim();
+  data.cup=document.getElementById('cup').value.trim();
+  data.supercup=document.getElementById('supercup').value.trim();
   data.leagues=document.getElementById('leagues').value.split('\n').map(x=>x.trim()).filter(Boolean);
   data.teams=[...document.querySelectorAll('.team-line')].map(row=>({
     id:slugify(row.querySelector('.t-name').value),
@@ -26,6 +28,8 @@ function render(){
   data=normalizeConfig(data);
   document.getElementById('id').value=data.id||'';
   document.getElementById('zone').value=data.zone||'';
+  document.getElementById('cup').value=data.cup||'';
+  document.getElementById('supercup').value=data.supercup||'';
   document.getElementById('leagues').value=(data.leagues||[]).join('\n');
   document.getElementById('teams').innerHTML=(data.teams||[]).map(t=>teamLine(t)).join('');
   bindLines(); updateTextAndValidation();
@@ -36,9 +40,9 @@ function bindLines(){
   document.querySelectorAll('.t-name,.t-reputation').forEach(i=>i.oninput=syncFromForm);
 }
 window.addEventListener('DOMContentLoaded',async()=>{
-  try{ data=await loadDefaultConfig(); }catch(err){ alert(err.message); data=normalizeConfig({id:'campeonato_brasileiro',zone:'Campeonato Brasileiro de Futebol',leagues:['Série A'],teams:[]}); }
+  try{ data=await loadDefaultConfig(); }catch(err){ alert(err.message); data=normalizeConfig({id:'campeonato_brasileiro',zone:'Campeonato Brasileiro de Futebol',cup:'Copa Nacional',supercup:'Supercopa Nacional',leagues:['Série A'],teams:[]}); }
   render();
-  ['id','zone','leagues'].forEach(id=>document.getElementById(id).oninput=syncFromForm);
+  ['id','zone','cup','supercup','leagues'].forEach(id=>document.getElementById(id).oninput=syncFromForm);
   document.getElementById('add-team').onclick=()=>{document.getElementById('teams').insertAdjacentHTML('beforeend',teamLine());bindLines();syncFromForm();};
   document.getElementById('apply-json').onclick=()=>{try{data=normalizeConfig(JSON.parse(document.getElementById('json').value));render();}catch(e){alert('JSON inválido: '+e.message)}};
   document.getElementById('download').onclick=()=>{syncFromForm();downloadJSON(`${data.id||'league'}.json`,normalizeConfig(data));};
