@@ -25,11 +25,6 @@ function cupSize(total){ if(total>=64)return 64; if(total>=32)return 32; if(tota
 function cupRoundName(size, remaining){ if(remaining===2)return 'Final'; if(remaining===4)return 'Semifinal'; if(remaining===8)return 'Quartas'; if(remaining===16)return 'Oitavas'; return `${remaining/2}ª fase`; }
 function cupRoundCount(){ return game?.cup?.size ? Math.log2(game.cup.size) : 0; }
 function nextActionLabel(){
-  if(simulationContext){
-    const stage = currentSimulationStage();
-    if(stage==='result') return 'Voltar';
-    return 'Pular';
-  }
   return game.round>=maxRounds() && (!game.cup?.size || game.cup?.winner) ? 'Encerrar' : 'Simular';
 }
 function shouldPlayCupNow(){ return game.cup?.size && !game.cup?.winner && game.phase==='cup'; }
@@ -347,7 +342,7 @@ function renderBottomNav(){
     b.classList.toggle('active', b.dataset.panel===activePanel);
     b.onclick=()=>{ clearSimulationTimer(); simulationContext=null; syncSimulationMode(); showPanel(b.dataset.panel); };
   });
-  const label=document.getElementById('week-label'); if(label) label.textContent=simulationContext ? simulationStatusLabel() : currentWeekLabel();
+  const label=document.getElementById('week-label'); if(label) label.textContent=currentWeekLabel();
   const sim=document.getElementById('sim-round'); if(sim) sim.textContent = nextActionLabel();
 }
 function render(){
@@ -522,15 +517,10 @@ function completedCalendarEvents(){
   return calendarEvents().filter(e=>e.status==='done').length;
 }
 function skipCurrentWeek(){
-  if(simulationContext){
-    const ctx=simulationContext;
-    simulationContext=null;
-    commitSimulation(ctx);
-  } else {
-    commitNextInstant();
-  }
+  clearSimulationTimer();
+  simulationContext=null;
+  commitNextInstant();
   syncSimulationMode();
-  showPanel('panel-table');
   render();
 }
 function skipToCalendarIndex(targetIndex){
@@ -552,28 +542,18 @@ function skipToCalendarIndex(targetIndex){
   render();
 }
 function beginSimulation(){
-  simulationContext=buildSimulationContext();
-  showPanel('panel-simulation');
-  render();
-  autoAdvanceSimulation();
+  simulateRound();
 }
 function stepSimulation(auto=false){
-  if(!simulationContext){ beginSimulation(); return; }
-  clearSimulationTimer();
-  const stage=currentSimulationStage();
-  if(stage==='result'){
-    const ctx=simulationContext;
-    simulationContext=null;
-    commitSimulation(ctx);
-    showPanel('panel-table');
-    render();
-    return;
-  }
-  simulationContext.stageIndex++;
-  render();
-  autoAdvanceSimulation();
+  simulateRound();
 }
-function simulateRound(){ stepSimulation(false); }
+function simulateRound(){
+  clearSimulationTimer();
+  simulationContext=null;
+  commitNextInstant();
+  syncSimulationMode();
+  render();
+}
 function simulateSupercup(mainChampion, cupWinner){
   if(!mainChampion || !cupWinner || mainChampion==='-' || cupWinner==='-') return null;
   let opponent = cupWinner;

@@ -125,3 +125,27 @@ body.simulation-active .panel{
 body.simulation-active .content{align-items:flex-start;justify-content:center;padding-top:22px;background:#030303}.simulation-card{max-width:980px;background:var(--panel);border-color:var(--line);padding:10px}.simulation-head{padding-bottom:8px;margin-bottom:8px}.simulation-head span{font-size:10px;color:var(--muted);letter-spacing:.05em}.simulation-head strong{font-size:12px;font-weight:700}.simulation-clock{min-width:58px;border-color:var(--line2);background:#0a0a0a;color:#eee;font-size:14px;font-weight:700;padding:5px 7px;border-radius:var(--r)}.simulation-groups{gap:8px}.simulation-group{background:#080808;border-color:var(--line);padding:0;overflow:hidden}.simulation-group h3{margin:0;padding:7px 9px;border-bottom:1px solid var(--line);background:#0a0a0a;color:#ddd;font-size:10px}.simulation-list{gap:0}.simulation-match{border:0;border-bottom:1px solid var(--line);border-radius:0;background:#080808;min-height:31px;padding:6px 8px;font-size:12px}.simulation-match:last-child{border-bottom:0}.simulation-match strong{background:transparent;color:#fff;border:1px solid #333;border-radius:2px;font-size:12px;min-width:58px}.simulation-actions{margin-top:9px;padding-top:9px}.simulation-actions .btn{min-width:82px}
 .calendar-grid{grid-template-columns:repeat(auto-fill,minmax(132px,1fr));gap:8px}.calendar-day{appearance:none;border:1px solid var(--line);text-align:left;color:var(--text);cursor:pointer;transition:filter .12s ease, transform .12s ease}.calendar-day:hover{filter:brightness(1.18);transform:translateY(-1px)}.calendar-day.league{background:#0d1b12;border-color:#1f4b2c}.calendar-day.cup{background:#221d08;border-color:#5b4b11}.calendar-day.supercup{background:#180e22;border-color:#3e245b}.calendar-day.done{opacity:.58}.calendar-day.todo{opacity:1}.calendar-day span{background:rgba(0,0,0,.35);color:#fff}.calendar-day strong{color:#fff}.calendar-day small{color:rgba(255,255,255,.72)}
 @media(max-width:720px){.bottom-right{gap:5px}.bottom-right .btn{min-width:58px;padding-left:8px;padding-right:8px}.simulation-head{flex-direction:row!important;align-items:center!important}.simulation-clock{font-size:13px}.calendar-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+
+/* V18: simulação direta e resultados centralizados */
+#results{
+  max-width:760px;
+  margin:0 auto;
+}
+#results .round-results{
+  max-width:760px;
+  margin:10px auto 16px;
+}
+#results .round-results h3{
+  text-align:center;
+}
+#results .results-list{
+  max-width:620px;
+  margin:0 auto;
+}
+#results .match-line{
+  width:100%;
+}
+#skip-round{
+  min-width:76px;
+}
