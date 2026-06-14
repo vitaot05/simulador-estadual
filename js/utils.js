@@ -8,6 +8,26 @@ export function shuffle(list){
   for(let i=arr.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [arr[i],arr[j]]=[arr[j],arr[i]]; }
   return arr;
 }
+export async function loadDefaultConfig(){
+  const candidates=['../data/default_teams.json','./data/default_teams.json','data/default_teams.json'];
+  let lastError=null;
+  for(const path of candidates){
+    try{
+      const response=await fetch(path,{cache:'no-store'});
+      if(!response.ok) throw new Error(`HTTP ${response.status}`);
+      return normalizeConfig(await response.json());
+    }catch(err){ lastError=err; }
+  }
+  throw new Error('Não foi possível carregar data/default_teams.json. Abra o projeto por um servidor local, por exemplo: python -m http.server 8000. Detalhe: '+(lastError?.message||lastError));
+}
+export function reputationLabel(rep){
+  return ['','Municipal','Estadual','Regional','Nacional','Continental','Intercontinental','Mundial'][Number(rep)] || 'Municipal';
+}
+export function generateRatingFromReputation(rep){
+  const ranges={1:[38,49],2:[48,59],3:[58,69],4:[68,79],5:[78,87],6:[86,94],7:[93,99]};
+  const [min,max]=ranges[Math.max(1,Math.min(7,Number(rep)||1))];
+  return Math.floor(min + Math.random()*(max-min+1));
+}
 export function normalizeConfig(input){
   const cfg=structuredClone(input||{});
   cfg.id = slugify(cfg.id || cfg.zone || 'custom_league');
@@ -18,7 +38,7 @@ export function normalizeConfig(input){
     name: String(t.name || t.id || `Time ${i+1}`),
     city: t.city || '',
     state: t.state || '',
-    rating: Math.max(1, Math.min(99, Number(t.rating)||70))
+    reputation: Math.max(1, Math.min(7, Number(t.reputation ?? t.rating ?? 1)))
   })) : [];
   return cfg;
 }
@@ -32,15 +52,16 @@ export function validateConfig(cfg){
   for(const t of (cfg.teams||[])){
     if(!t.id || !t.name) errors.push('Todos os times precisam de id e name.');
     if(ids.has(t.id)) errors.push(`ID de time duplicado: ${t.id}`);
+    if(Number(t.reputation)<1 || Number(t.reputation)>7) errors.push(`Reputação inválida em ${t.name}: use 1 a 7.`);
     ids.add(t.id);
   }
-  return errors;
+  return [...new Set(errors)];
 }
 export function splitTeams(config, shouldShuffle=false){
   const cfg=normalizeConfig(config);
   const leagues=cfg.leagues;
   let teams=shouldShuffle ? shuffle(cfg.teams) : [...cfg.teams];
-  if(teams.length % 2 === 1) teams = teams.slice(0, -1); // sempre quantidade par em competição jogável
+  if(teams.length % 2 === 1) teams = teams.slice(0, -1);
   const leagueCount = leagues.length;
   let perLeague = Math.floor(teams.length / leagueCount);
   if(perLeague % 2 === 1) perLeague--;

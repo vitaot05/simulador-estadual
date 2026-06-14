@@ -1,7 +1,6 @@
 import {downloadJSON, readJSONFile} from './storage.js';
-import {DEFAULT_CONFIG} from './defaultData.js';
-import {slugify, normalizeConfig, validateConfig, splitTeams, escapeHTML} from './utils.js';
-let data=normalizeConfig(DEFAULT_CONFIG);
+import {slugify, normalizeConfig, validateConfig, splitTeams, escapeHTML, loadDefaultConfig, reputationLabel} from './utils.js';
+let data=null;
 function syncFromForm(){
   data.id=slugify(document.getElementById('id').value);
   data.zone=document.getElementById('zone').value.trim();
@@ -9,7 +8,9 @@ function syncFromForm(){
   data.teams=[...document.querySelectorAll('.team-line')].map(row=>({
     id:slugify(row.querySelector('.t-name').value),
     name:row.querySelector('.t-name').value.trim(),
-    rating:Number(row.querySelector('.t-rating').value)||70
+    city:row.querySelector('.t-city').value.trim(),
+    state:row.querySelector('.t-state').value.trim(),
+    reputation:Number(row.querySelector('.t-reputation').value)||1
   })).filter(t=>t.name);
   updateTextAndValidation();
 }
@@ -31,12 +32,13 @@ function render(){
   document.getElementById('teams').innerHTML=(data.teams||[]).map(t=>teamLine(t)).join('');
   bindLines(); updateTextAndValidation();
 }
-function teamLine(t={name:'',rating:70}){ return `<div class="team-line"><input class="input t-name" value="${escapeHTML(t.name||'')}" placeholder="Nome"><input class="input t-rating" type="number" min="1" max="99" value="${t.rating||70}"><button class="btn btn-red rm" type="button">×</button></div>`; }
+function teamLine(t={name:'',city:'',state:'',reputation:1}){ return `<div class="team-line"><input class="input t-name" value="${escapeHTML(t.name||'')}" placeholder="Nome"><input class="input t-city" value="${escapeHTML(t.city||'')}" placeholder="Cidade"><input class="input t-state" value="${escapeHTML(t.state||'')}" placeholder="UF"><select class="input t-reputation">${[1,2,3,4,5,6,7].map(n=>`<option value="${n}" ${Number(t.reputation)===n?'selected':''}>${n} - ${reputationLabel(n)}</option>`).join('')}</select><button class="btn btn-red rm" type="button"><i class="fa-solid fa-trash"></i></button></div>`; }
 function bindLines(){
   document.querySelectorAll('.rm').forEach(b=>b.onclick=()=>{b.closest('.team-line').remove();syncFromForm();});
-  document.querySelectorAll('.t-name,.t-rating').forEach(i=>i.oninput=syncFromForm);
+  document.querySelectorAll('.t-name,.t-city,.t-state,.t-reputation').forEach(i=>i.oninput=syncFromForm);
 }
-window.addEventListener('DOMContentLoaded',()=>{
+window.addEventListener('DOMContentLoaded',async()=>{
+  try{ data=await loadDefaultConfig(); }catch(err){ alert(err.message); data=normalizeConfig({id:'campeonato_brasileiro',zone:'Campeonato Brasileiro de Futebol',leagues:['Série A'],teams:[]}); }
   render();
   ['id','zone','leagues'].forEach(id=>document.getElementById(id).oninput=syncFromForm);
   document.getElementById('add-team').onclick=()=>{document.getElementById('teams').insertAdjacentHTML('beforeend',teamLine());bindLines();syncFromForm();};
