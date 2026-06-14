@@ -364,3 +364,15 @@ body.simulation-active .content{align-items:flex-start;justify-content:center;pa
   #competition-view .round-results,
   #competition-view .cup-card{max-width:none!important;}
 }
+
+/* V22: estatísticas e elencos */
+#panel-stats{padding:0;}
+#stats{width:100%;max-width:1180px;margin:0 auto;}
+.stats-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;align-items:start;}
+#stats .result-section{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;margin:0;}
+#stats .result-section h3{font-size:12px;padding:9px 10px;border-bottom:1px solid var(--line);background:#080808;}
+#stats .tbl-wrap{border:0!important;border-radius:0!important;background:transparent!important;}
+#stats table{width:100%;}
+#stats th,#stats td{font-size:12px;padding:7px 9px;}
+#stats .awards{margin-top:12px;}
+@media(max-width:900px){.stats-grid{grid-template-columns:1fr;}}

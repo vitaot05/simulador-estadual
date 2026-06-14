@@ -1,334 +1,3000 @@
 {
-  "id": "campeonato_brasileiro",
-  "zone": "Campeonato Brasileiro de Futebol",
+  "id": "br",
+  "zone": "Brasil",
   "cup": "Copa do Brasil",
   "supercup": "Supercopa do Brasil",
   "leagues": [
-    "Série A",
-    "Série B",
-    "Série C",
-    "Série D"
+    "Brasileirão Série A",
+    "Brasileirão Série B"
   ],
   "teams": [
     {
       "id": "flamengo",
       "name": "Flamengo",
-      "reputation": 7
+      "reputation": 7,
+      "players": [
+        {
+          "name": "Agustín Rossi",
+          "nationality": "ar",
+          "age": 30,
+          "position": "GOL",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Varela",
+          "nationality": "uy",
+          "age": 33,
+          "position": "LAT",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Léo Ortiz",
+          "nationality": "br",
+          "age": 30,
+          "position": "ZAG",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Léo Pereira",
+          "nationality": "br",
+          "age": 30,
+          "position": "ZAG",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Alex Sandro",
+          "nationality": "br",
+          "age": 35,
+          "position": "LAT",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Erick Pulgar",
+          "nationality": "br",
+          "age": 32,
+          "position": "VOL",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "De la Cruz",
+          "nationality": "uy",
+          "age": 29,
+          "position": "MEC",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Arrascaeta",
+          "nationality": "uy",
+          "age": 32,
+          "position": "MEI",
+          "status": "starter",
+          "reputation": "star"
+        },
+        {
+          "name": "Luiz Araújo",
+          "nationality": "br",
+          "age": 30,
+          "position": "PNT",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Pedro",
+          "nationality": "br",
+          "age": 29,
+          "position": "ATA",
+          "status": "starter",
+          "reputation": "star"
+        },
+        {
+          "name": "Bruno Henrique",
+          "nationality": "br",
+          "age": 35,
+          "position": "ATA",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Matheus Cunha",
+          "nationality": "br",
+          "age": 27,
+          "position": "GOL",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Danilo",
+          "nationality": "br",
+          "age": 22,
+          "position": "ZAG",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Ayrton Lucas",
+          "nationality": "br",
+          "age": 18,
+          "position": "LAT",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Allan",
+          "nationality": "br",
+          "age": 18,
+          "position": "VOL",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Gerson",
+          "nationality": "br",
+          "age": 24,
+          "position": "MEI",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Everton Cebolinha",
+          "nationality": "br",
+          "age": 19,
+          "position": "PNT",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Juninho",
+          "nationality": "br",
+          "age": 18,
+          "position": "ATA",
+          "status": "substitute",
+          "reputation": "normal"
+        }
+      ]
     },
     {
       "id": "palmeiras",
       "name": "Palmeiras",
-      "reputation": 7
+      "reputation": 7,
+      "players": [
+        {
+          "name": "Weverton",
+          "nationality": "br",
+          "age": 38,
+          "position": "GOL",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Marcos Rocha",
+          "nationality": "br",
+          "age": 37,
+          "position": "LAT",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Gustavo Gómez",
+          "nationality": "py",
+          "age": 33,
+          "position": "ZAG",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Murilo",
+          "nationality": "br",
+          "age": 29,
+          "position": "ZAG",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Piquerez",
+          "nationality": "uy",
+          "age": 28,
+          "position": "LAT",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Aníbal Moreno",
+          "nationality": "ar",
+          "age": 27,
+          "position": "VOL",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Raphael Veiga",
+          "nationality": "br",
+          "age": 31,
+          "position": "MEC",
+          "status": "starter",
+          "reputation": "star"
+        },
+        {
+          "name": "Maurício",
+          "nationality": "br",
+          "age": 25,
+          "position": "MEI",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Felipe Anderson",
+          "nationality": "br",
+          "age": 33,
+          "position": "PNT",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Flaco López",
+          "nationality": "ar",
+          "age": 25,
+          "position": "ATA",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Vitor Roque",
+          "nationality": "br",
+          "age": 21,
+          "position": "ATA",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Marcelo Lomba",
+          "nationality": "br",
+          "age": 31,
+          "position": "GOL",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Mayke",
+          "nationality": "br",
+          "age": 23,
+          "position": "ZAG",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Vanderlan",
+          "nationality": "br",
+          "age": 30,
+          "position": "LAT",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Richard Ríos",
+          "nationality": "br",
+          "age": 23,
+          "position": "VOL",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Zé Rafael",
+          "nationality": "br",
+          "age": 26,
+          "position": "MEI",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Dudu",
+          "nationality": "br",
+          "age": 29,
+          "position": "PNT",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Rony",
+          "nationality": "br",
+          "age": 31,
+          "position": "ATA",
+          "status": "substitute",
+          "reputation": "normal"
+        }
+      ]
     },
     {
       "id": "corinthians",
       "name": "Corinthians",
-      "reputation": 7
+      "reputation": 6,
+      "players": [
+        {
+          "name": "Hugo Souza",
+          "nationality": "br",
+          "age": 27,
+          "position": "GOL",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Matheuzinho",
+          "nationality": "br",
+          "age": 27,
+          "position": "LAT",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Félix Torres",
+          "nationality": "br",
+          "age": 29,
+          "position": "ZAG",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Gustavo Henrique",
+          "nationality": "br",
+          "age": 33,
+          "position": "ZAG",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Matheus Bidu",
+          "nationality": "br",
+          "age": 27,
+          "position": "LAT",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Raniele",
+          "nationality": "br",
+          "age": 29,
+          "position": "VOL",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Maycon",
+          "nationality": "br",
+          "age": 28,
+          "position": "MEC",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Rodrigo Garro",
+          "nationality": "br",
+          "age": 28,
+          "position": "MEI",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Memphis Depay",
+          "nationality": "nl",
+          "age": 32,
+          "position": "PNT",
+          "status": "starter",
+          "reputation": "star"
+        },
+        {
+          "name": "Yuri Alberto",
+          "nationality": "br",
+          "age": 25,
+          "position": "ATA",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Talles Magno",
+          "nationality": "br",
+          "age": 24,
+          "position": "ATA",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Matheus Donelli",
+          "nationality": "br",
+          "age": 24,
+          "position": "GOL",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Cacá",
+          "nationality": "br",
+          "age": 32,
+          "position": "ZAG",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Hugo",
+          "nationality": "br",
+          "age": 30,
+          "position": "LAT",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "José Martínez",
+          "nationality": "br",
+          "age": 22,
+          "position": "VOL",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Breno Bidon",
+          "nationality": "br",
+          "age": 29,
+          "position": "MEI",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Ángel Romero",
+          "nationality": "br",
+          "age": 21,
+          "position": "PNT",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Pedro Raul",
+          "nationality": "br",
+          "age": 25,
+          "position": "ATA",
+          "status": "substitute",
+          "reputation": "normal"
+        }
+      ]
     },
     {
       "id": "sao_paulo",
       "name": "São Paulo",
-      "reputation": 7
+      "reputation": 6,
+      "players": [
+        {
+          "name": "Rafael",
+          "nationality": "br",
+          "age": 37,
+          "position": "GOL",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Cédric",
+          "nationality": "br",
+          "age": 34,
+          "position": "LAT",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Arboleda",
+          "nationality": "ec",
+          "age": 34,
+          "position": "ZAG",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Alan Franco",
+          "nationality": "ec",
+          "age": 28,
+          "position": "ZAG",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Wendell",
+          "nationality": "br",
+          "age": 33,
+          "position": "LAT",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Alisson",
+          "nationality": "br",
+          "age": 33,
+          "position": "VOL",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Bobadilla",
+          "nationality": "br",
+          "age": 24,
+          "position": "MEC",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Lucas Moura",
+          "nationality": "br",
+          "age": 33,
+          "position": "MEI",
+          "status": "starter",
+          "reputation": "star"
+        },
+        {
+          "name": "Oscar",
+          "nationality": "br",
+          "age": 34,
+          "position": "PNT",
+          "status": "starter",
+          "reputation": "star"
+        },
+        {
+          "name": "Luciano",
+          "nationality": "br",
+          "age": 33,
+          "position": "ATA",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Calleri",
+          "nationality": "ar",
+          "age": 32,
+          "position": "ATA",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Jandrei",
+          "nationality": "br",
+          "age": 29,
+          "position": "GOL",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Ferraresi",
+          "nationality": "br",
+          "age": 29,
+          "position": "ZAG",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Patryck",
+          "nationality": "br",
+          "age": 24,
+          "position": "LAT",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Pablo Maia",
+          "nationality": "br",
+          "age": 30,
+          "position": "VOL",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Rodriguinho",
+          "nationality": "br",
+          "age": 21,
+          "position": "MEI",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Ferreira",
+          "nationality": "br",
+          "age": 20,
+          "position": "PNT",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "André Silva",
+          "nationality": "br",
+          "age": 27,
+          "position": "ATA",
+          "status": "substitute",
+          "reputation": "normal"
+        }
+      ]
     },
     {
       "id": "santos",
       "name": "Santos",
-      "reputation": 6
+      "reputation": 6,
+      "players": [
+        {
+          "name": "Gabriel Brazão",
+          "nationality": "br",
+          "age": 25,
+          "position": "GOL",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Aderlan",
+          "nationality": "br",
+          "age": 35,
+          "position": "LAT",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Gil",
+          "nationality": "br",
+          "age": 39,
+          "position": "ZAG",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Luan Peres",
+          "nationality": "br",
+          "age": 31,
+          "position": "ZAG",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Escobar",
+          "nationality": "br",
+          "age": 29,
+          "position": "LAT",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "João Schmidt",
+          "nationality": "br",
+          "age": 33,
+          "position": "VOL",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Diego Pituca",
+          "nationality": "br",
+          "age": 34,
+          "position": "MEC",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Neymar",
+          "nationality": "br",
+          "age": 34,
+          "position": "MEI",
+          "status": "starter",
+          "reputation": "world_star"
+        },
+        {
+          "name": "Guilherme",
+          "nationality": "br",
+          "age": 31,
+          "position": "PNT",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Soteldo",
+          "nationality": "ve",
+          "age": 29,
+          "position": "ATA",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Tiquinho Soares",
+          "nationality": "br",
+          "age": 35,
+          "position": "ATA",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "João Paulo",
+          "nationality": "br",
+          "age": 29,
+          "position": "GOL",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Zé Ivaldo",
+          "nationality": "br",
+          "age": 29,
+          "position": "ZAG",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Souza",
+          "nationality": "br",
+          "age": 22,
+          "position": "LAT",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Willian Arão",
+          "nationality": "br",
+          "age": 25,
+          "position": "VOL",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Rincon",
+          "nationality": "br",
+          "age": 18,
+          "position": "MEI",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Barreal",
+          "nationality": "br",
+          "age": 23,
+          "position": "PNT",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Lautaro Díaz",
+          "nationality": "br",
+          "age": 26,
+          "position": "ATA",
+          "status": "substitute",
+          "reputation": "normal"
+        }
+      ]
     },
     {
       "id": "fluminense",
       "name": "Fluminense",
-      "reputation": 6
-    },
-    {
-      "id": "vasco_da_gama",
-      "name": "Vasco da Gama",
-      "reputation": 6
+      "reputation": 5,
+      "players": [
+        {
+          "name": "Fábio",
+          "nationality": "br",
+          "age": 45,
+          "position": "GOL",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Samuel Xavier",
+          "nationality": "br",
+          "age": 36,
+          "position": "LAT",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Thiago Silva",
+          "nationality": "br",
+          "age": 41,
+          "position": "ZAG",
+          "status": "starter",
+          "reputation": "star"
+        },
+        {
+          "name": "Freytes",
+          "nationality": "br",
+          "age": 25,
+          "position": "ZAG",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Renê",
+          "nationality": "br",
+          "age": 33,
+          "position": "LAT",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Martinelli",
+          "nationality": "br",
+          "age": 24,
+          "position": "VOL",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Hércules",
+          "nationality": "br",
+          "age": 25,
+          "position": "MEC",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "PH Ganso",
+          "nationality": "br",
+          "age": 36,
+          "position": "MEI",
+          "status": "starter",
+          "reputation": "star"
+        },
+        {
+          "name": "Arias",
+          "nationality": "co",
+          "age": 28,
+          "position": "PNT",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Keno",
+          "nationality": "br",
+          "age": 36,
+          "position": "ATA",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Cano",
+          "nationality": "ar",
+          "age": 38,
+          "position": "ATA",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Vitor Eudes",
+          "nationality": "br",
+          "age": 18,
+          "position": "GOL",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Manoel",
+          "nationality": "br",
+          "age": 28,
+          "position": "ZAG",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Guga",
+          "nationality": "br",
+          "age": 19,
+          "position": "LAT",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Nonato",
+          "nationality": "br",
+          "age": 29,
+          "position": "VOL",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Lima",
+          "nationality": "br",
+          "age": 29,
+          "position": "MEI",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Serna",
+          "nationality": "br",
+          "age": 32,
+          "position": "PNT",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Everaldo",
+          "nationality": "br",
+          "age": 35,
+          "position": "ATA",
+          "status": "substitute",
+          "reputation": "normal"
+        }
+      ]
     },
     {
       "id": "botafogo",
       "name": "Botafogo",
-      "reputation": 6
-    },
-    {
-      "id": "gremio",
-      "name": "Grêmio",
-      "reputation": 6
-    },
-    {
-      "id": "internacional",
-      "name": "Internacional",
-      "reputation": 6
+      "reputation": 5,
+      "players": [
+        {
+          "name": "John",
+          "nationality": "br",
+          "age": 30,
+          "position": "GOL",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Vitinho",
+          "nationality": "br",
+          "age": 26,
+          "position": "LAT",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Bastos",
+          "nationality": "br",
+          "age": 34,
+          "position": "ZAG",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Barboza",
+          "nationality": "br",
+          "age": 31,
+          "position": "ZAG",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Marçal",
+          "nationality": "br",
+          "age": 37,
+          "position": "LAT",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Marlon Freitas",
+          "nationality": "br",
+          "age": 31,
+          "position": "VOL",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Gregore",
+          "nationality": "br",
+          "age": 32,
+          "position": "MEC",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Savarino",
+          "nationality": "ve",
+          "age": 29,
+          "position": "MEI",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Artur",
+          "nationality": "br",
+          "age": 28,
+          "position": "PNT",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Matheus Martins",
+          "nationality": "br",
+          "age": 22,
+          "position": "ATA",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Igor Jesus",
+          "nationality": "br",
+          "age": 25,
+          "position": "ATA",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Raul",
+          "nationality": "br",
+          "age": 27,
+          "position": "GOL",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Lucas Halter",
+          "nationality": "br",
+          "age": 30,
+          "position": "ZAG",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Cuiabano",
+          "nationality": "br",
+          "age": 30,
+          "position": "LAT",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Danilo Barbosa",
+          "nationality": "br",
+          "age": 27,
+          "position": "VOL",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Tchê Tchê",
+          "nationality": "br",
+          "age": 25,
+          "position": "MEI",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Jeffinho",
+          "nationality": "br",
+          "age": 23,
+          "position": "PNT",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Tiquinho Soares",
+          "nationality": "br",
+          "age": 35,
+          "position": "ATA",
+          "status": "substitute",
+          "reputation": "normal"
+        }
+      ]
     },
     {
       "id": "atletico_mineiro",
       "name": "Atlético Mineiro",
-      "reputation": 6
-    },
-    {
-      "id": "cruzeiro",
-      "name": "Cruzeiro",
-      "reputation": 6
-    },
-    {
-      "id": "athletico_paranaense",
-      "name": "Athletico Paranaense",
-      "reputation": 5
+      "reputation": 6,
+      "players": [
+        {
+          "name": "Everson",
+          "nationality": "br",
+          "age": 35,
+          "position": "GOL",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Saravia",
+          "nationality": "br",
+          "age": 33,
+          "position": "LAT",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Lyanco",
+          "nationality": "br",
+          "age": 29,
+          "position": "ZAG",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Junior Alonso",
+          "nationality": "py",
+          "age": 33,
+          "position": "ZAG",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Guilherme Arana",
+          "nationality": "br",
+          "age": 29,
+          "position": "LAT",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Alan Franco",
+          "nationality": "ec",
+          "age": 28,
+          "position": "VOL",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Fausto Vera",
+          "nationality": "ar",
+          "age": 26,
+          "position": "MEC",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Gustavo Scarpa",
+          "nationality": "br",
+          "age": 32,
+          "position": "MEI",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Bernard",
+          "nationality": "br",
+          "age": 33,
+          "position": "PNT",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Hulk",
+          "nationality": "br",
+          "age": 39,
+          "position": "ATA",
+          "status": "starter",
+          "reputation": "star"
+        },
+        {
+          "name": "Rony",
+          "nationality": "br",
+          "age": 31,
+          "position": "ATA",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Matheus Mendes",
+          "nationality": "br",
+          "age": 29,
+          "position": "GOL",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Rômulo",
+          "nationality": "br",
+          "age": 18,
+          "position": "ZAG",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Rubens",
+          "nationality": "br",
+          "age": 22,
+          "position": "LAT",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Otávio",
+          "nationality": "br",
+          "age": 29,
+          "position": "VOL",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Igor Gomes",
+          "nationality": "br",
+          "age": 19,
+          "position": "MEI",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Deyverson",
+          "nationality": "br",
+          "age": 25,
+          "position": "PNT",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Cadu",
+          "nationality": "br",
+          "age": 22,
+          "position": "ATA",
+          "status": "substitute",
+          "reputation": "normal"
+        }
+      ]
     },
     {
       "id": "bahia",
       "name": "Bahia",
-      "reputation": 5
+      "reputation": 4,
+      "players": [
+        {
+          "name": "Marcos Felipe",
+          "nationality": "br",
+          "age": 30,
+          "position": "GOL",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Santiago Arias",
+          "nationality": "co",
+          "age": 34,
+          "position": "LAT",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Kanu",
+          "nationality": "br",
+          "age": 29,
+          "position": "ZAG",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "David Duarte",
+          "nationality": "br",
+          "age": 30,
+          "position": "ZAG",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Luciano Juba",
+          "nationality": "br",
+          "age": 26,
+          "position": "LAT",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Caio Alexandre",
+          "nationality": "br",
+          "age": 27,
+          "position": "VOL",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Jean Lucas",
+          "nationality": "br",
+          "age": 28,
+          "position": "MEC",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Everton Ribeiro",
+          "nationality": "br",
+          "age": 37,
+          "position": "MEI",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Cauly",
+          "nationality": "br",
+          "age": 30,
+          "position": "PNT",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Ademir",
+          "nationality": "br",
+          "age": 31,
+          "position": "ATA",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Everaldo",
+          "nationality": "br",
+          "age": 35,
+          "position": "ATA",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Danilo Fernandes",
+          "nationality": "br",
+          "age": 31,
+          "position": "GOL",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Gabriel Xavier",
+          "nationality": "br",
+          "age": 28,
+          "position": "ZAG",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Iago Borduchi",
+          "nationality": "br",
+          "age": 24,
+          "position": "LAT",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Rezende",
+          "nationality": "br",
+          "age": 23,
+          "position": "VOL",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Michel Araújo",
+          "nationality": "br",
+          "age": 23,
+          "position": "MEI",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Biel",
+          "nationality": "br",
+          "age": 25,
+          "position": "PNT",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Willian José",
+          "nationality": "br",
+          "age": 26,
+          "position": "ATA",
+          "status": "substitute",
+          "reputation": "normal"
+        }
+      ]
     },
     {
-      "id": "fortaleza",
-      "name": "Fortaleza",
-      "reputation": 5
+      "id": "cruzeiro",
+      "name": "Cruzeiro",
+      "reputation": 5,
+      "players": [
+        {
+          "name": "Cássio",
+          "nationality": "br",
+          "age": 39,
+          "position": "GOL",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "William",
+          "nationality": "br",
+          "age": 31,
+          "position": "LAT",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Fabrício Bruno",
+          "nationality": "br",
+          "age": 30,
+          "position": "ZAG",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "João Marcelo",
+          "nationality": "br",
+          "age": 26,
+          "position": "ZAG",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Marlon",
+          "nationality": "br",
+          "age": 29,
+          "position": "LAT",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Lucas Romero",
+          "nationality": "br",
+          "age": 32,
+          "position": "VOL",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Lucas Silva",
+          "nationality": "br",
+          "age": 33,
+          "position": "MEC",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Matheus Pereira",
+          "nationality": "br",
+          "age": 30,
+          "position": "MEI",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Wanderson",
+          "nationality": "br",
+          "age": 31,
+          "position": "PNT",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Gabigol",
+          "nationality": "br",
+          "age": 29,
+          "position": "ATA",
+          "status": "starter",
+          "reputation": "star"
+        },
+        {
+          "name": "Kaio Jorge",
+          "nationality": "br",
+          "age": 24,
+          "position": "ATA",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Anderson",
+          "nationality": "br",
+          "age": 26,
+          "position": "GOL",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Kaiki",
+          "nationality": "br",
+          "age": 21,
+          "position": "ZAG",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Jonathan Jesus",
+          "nationality": "br",
+          "age": 20,
+          "position": "LAT",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Walace",
+          "nationality": "br",
+          "age": 23,
+          "position": "VOL",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Eduardo",
+          "nationality": "br",
+          "age": 18,
+          "position": "MEI",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Marquinhos",
+          "nationality": "br",
+          "age": 21,
+          "position": "PNT",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Dinenno",
+          "nationality": "br",
+          "age": 28,
+          "position": "ATA",
+          "status": "substitute",
+          "reputation": "normal"
+        }
+      ]
     },
     {
-      "id": "ceara",
-      "name": "Ceará",
-      "reputation": 5
+      "id": "gremio",
+      "name": "Grêmio",
+      "reputation": 5,
+      "players": [
+        {
+          "name": "Tiago Volpi",
+          "nationality": "br",
+          "age": 35,
+          "position": "GOL",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "João Pedro",
+          "nationality": "br",
+          "age": 29,
+          "position": "LAT",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Jemerson",
+          "nationality": "br",
+          "age": 33,
+          "position": "ZAG",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Kannemann",
+          "nationality": "br",
+          "age": 35,
+          "position": "ZAG",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Reinaldo",
+          "nationality": "br",
+          "age": 29,
+          "position": "LAT",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Dodi",
+          "nationality": "br",
+          "age": 30,
+          "position": "VOL",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Villasanti",
+          "nationality": "br",
+          "age": 29,
+          "position": "MEC",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Cristaldo",
+          "nationality": "br",
+          "age": 29,
+          "position": "MEI",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Pavón",
+          "nationality": "br",
+          "age": 30,
+          "position": "PNT",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Braithwaite",
+          "nationality": "dk",
+          "age": 35,
+          "position": "ATA",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "André Henrique",
+          "nationality": "br",
+          "age": 24,
+          "position": "ATA",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Gabriel Grando",
+          "nationality": "br",
+          "age": 21,
+          "position": "GOL",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Rodrigo Ely",
+          "nationality": "br",
+          "age": 19,
+          "position": "ZAG",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Mayk",
+          "nationality": "br",
+          "age": 19,
+          "position": "LAT",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Pepê",
+          "nationality": "br",
+          "age": 31,
+          "position": "VOL",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Monsalve",
+          "nationality": "br",
+          "age": 26,
+          "position": "MEI",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Aravena",
+          "nationality": "br",
+          "age": 19,
+          "position": "PNT",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Diego Costa",
+          "nationality": "br",
+          "age": 27,
+          "position": "ATA",
+          "status": "substitute",
+          "reputation": "normal"
+        }
+      ]
     },
     {
-      "id": "sport",
-      "name": "Sport",
-      "reputation": 5
+      "id": "internacional",
+      "name": "Internacional",
+      "reputation": 5,
+      "players": [
+        {
+          "name": "Rochet",
+          "nationality": "uy",
+          "age": 33,
+          "position": "GOL",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Bruno Gomes",
+          "nationality": "br",
+          "age": 25,
+          "position": "LAT",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Vitão",
+          "nationality": "br",
+          "age": 26,
+          "position": "ZAG",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Mercado",
+          "nationality": "br",
+          "age": 39,
+          "position": "ZAG",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Bernabei",
+          "nationality": "ar",
+          "age": 25,
+          "position": "LAT",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Fernando",
+          "nationality": "br",
+          "age": 38,
+          "position": "VOL",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Thiago Maia",
+          "nationality": "br",
+          "age": 29,
+          "position": "MEC",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Alan Patrick",
+          "nationality": "br",
+          "age": 35,
+          "position": "MEI",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Wesley",
+          "nationality": "br",
+          "age": 27,
+          "position": "PNT",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Enner Valencia",
+          "nationality": "ec",
+          "age": 36,
+          "position": "ATA",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Borré",
+          "nationality": "co",
+          "age": 30,
+          "position": "ATA",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Anthoni",
+          "nationality": "br",
+          "age": 21,
+          "position": "GOL",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Igor Gomes",
+          "nationality": "br",
+          "age": 24,
+          "position": "ZAG",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Renê",
+          "nationality": "br",
+          "age": 33,
+          "position": "LAT",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Bruno Henrique",
+          "nationality": "br",
+          "age": 35,
+          "position": "VOL",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Gabriel Carvalho",
+          "nationality": "br",
+          "age": 25,
+          "position": "MEI",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Tabata",
+          "nationality": "br",
+          "age": 31,
+          "position": "PNT",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Lucca",
+          "nationality": "br",
+          "age": 31,
+          "position": "ATA",
+          "status": "substitute",
+          "reputation": "normal"
+        }
+      ]
     },
     {
-      "id": "vitoria",
-      "name": "Vitória",
-      "reputation": 5
-    },
-    {
-      "id": "coritiba",
-      "name": "Coritiba",
-      "reputation": 5
-    },
-    {
-      "id": "goias",
-      "name": "Goiás",
-      "reputation": 5
-    },
-    {
-      "id": "america_mineiro",
-      "name": "América Mineiro",
-      "reputation": 4
-    },
-    {
-      "id": "juventude",
-      "name": "Juventude",
-      "reputation": 4
-    },
-    {
-      "id": "cuiaba",
-      "name": "Cuiabá",
-      "reputation": 4
-    },
-    {
-      "id": "atletico_goianiense",
-      "name": "Atlético Goianiense",
-      "reputation": 4
-    },
-    {
-      "id": "ponte_preta",
-      "name": "Ponte Preta",
-      "reputation": 4
-    },
-    {
-      "id": "guarani",
-      "name": "Guarani",
-      "reputation": 4
-    },
-    {
-      "id": "portuguesa",
-      "name": "Portuguesa",
-      "reputation": 4
-    },
-    {
-      "id": "criciuma",
-      "name": "Criciúma",
-      "reputation": 4
-    },
-    {
-      "id": "avai",
-      "name": "Avaí",
-      "reputation": 4
-    },
-    {
-      "id": "chapecoense",
-      "name": "Chapecoense",
-      "reputation": 4
-    },
-    {
-      "id": "nautico",
-      "name": "Náutico",
-      "reputation": 4
-    },
-    {
-      "id": "santa_cruz",
-      "name": "Santa Cruz",
-      "reputation": 4
-    },
-    {
-      "id": "paysandu",
-      "name": "Paysandu",
-      "reputation": 4
-    },
-    {
-      "id": "remo",
-      "name": "Remo",
-      "reputation": 4
-    },
-    {
-      "id": "vila_nova",
-      "name": "Vila Nova",
-      "reputation": 4
-    },
-    {
-      "id": "figueirense",
-      "name": "Figueirense",
-      "reputation": 4
-    },
-    {
-      "id": "botafogo_sp",
-      "name": "Botafogo SP",
-      "reputation": 3
+      "id": "vasco_da_gama",
+      "name": "Vasco da Gama",
+      "reputation": 5,
+      "players": [
+        {
+          "name": "Léo Jardim",
+          "nationality": "br",
+          "age": 31,
+          "position": "GOL",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Paulo Henrique",
+          "nationality": "br",
+          "age": 30,
+          "position": "LAT",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "João Victor",
+          "nationality": "br",
+          "age": 28,
+          "position": "ZAG",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Lucas Freitas",
+          "nationality": "br",
+          "age": 25,
+          "position": "ZAG",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Lucas Piton",
+          "nationality": "br",
+          "age": 26,
+          "position": "LAT",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Hugo Moura",
+          "nationality": "br",
+          "age": 28,
+          "position": "VOL",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Jair",
+          "nationality": "br",
+          "age": 31,
+          "position": "MEC",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Payet",
+          "nationality": "fr",
+          "age": 39,
+          "position": "MEI",
+          "status": "starter",
+          "reputation": "star"
+        },
+        {
+          "name": "Philippe Coutinho",
+          "nationality": "br",
+          "age": 34,
+          "position": "PNT",
+          "status": "starter",
+          "reputation": "star"
+        },
+        {
+          "name": "Vegetti",
+          "nationality": "ar",
+          "age": 37,
+          "position": "ATA",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Rayan",
+          "nationality": "br",
+          "age": 20,
+          "position": "ATA",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Keiller",
+          "nationality": "br",
+          "age": 30,
+          "position": "GOL",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Maicon",
+          "nationality": "br",
+          "age": 37,
+          "position": "ZAG",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Victor Luís",
+          "nationality": "br",
+          "age": 27,
+          "position": "LAT",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Sforza",
+          "nationality": "br",
+          "age": 25,
+          "position": "VOL",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Paulinho",
+          "nationality": "br",
+          "age": 18,
+          "position": "MEI",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "David",
+          "nationality": "br",
+          "age": 29,
+          "position": "PNT",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Alex Teixeira",
+          "nationality": "br",
+          "age": 23,
+          "position": "ATA",
+          "status": "substitute",
+          "reputation": "normal"
+        }
+      ]
     },
     {
       "id": "mirassol",
       "name": "Mirassol",
-      "reputation": 3
+      "reputation": 2,
+      "players": [
+        {
+          "name": "Walter",
+          "nationality": "br",
+          "age": 38,
+          "position": "GOL",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Lucas Ramon",
+          "nationality": "br",
+          "age": 32,
+          "position": "LAT",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "João Victor",
+          "nationality": "br",
+          "age": 28,
+          "position": "ZAG",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Jemmes",
+          "nationality": "br",
+          "age": 31,
+          "position": "ZAG",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Reinaldo",
+          "nationality": "br",
+          "age": 29,
+          "position": "LAT",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Danielzinho",
+          "nationality": "br",
+          "age": 32,
+          "position": "VOL",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "José Aldo",
+          "nationality": "br",
+          "age": 28,
+          "position": "MEC",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Gabriel",
+          "nationality": "br",
+          "age": 31,
+          "position": "MEI",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Negueba",
+          "nationality": "br",
+          "age": 26,
+          "position": "PNT",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Chico",
+          "nationality": "br",
+          "age": 31,
+          "position": "ATA",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Dellatorre",
+          "nationality": "br",
+          "age": 34,
+          "position": "ATA",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Alex Muralha",
+          "nationality": "br",
+          "age": 22,
+          "position": "GOL",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Luiz Otávio",
+          "nationality": "br",
+          "age": 22,
+          "position": "ZAG",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Zeca",
+          "nationality": "br",
+          "age": 22,
+          "position": "LAT",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Neto Moura",
+          "nationality": "br",
+          "age": 31,
+          "position": "VOL",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Fernandinho",
+          "nationality": "br",
+          "age": 41,
+          "position": "MEI",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Iury Castilho",
+          "nationality": "br",
+          "age": 25,
+          "position": "PNT",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Cristian",
+          "nationality": "br",
+          "age": 22,
+          "position": "ATA",
+          "status": "substitute",
+          "reputation": "normal"
+        }
+      ]
     },
     {
-      "id": "novorizontino",
-      "name": "Novorizontino",
-      "reputation": 3
+      "id": "red_bull_bragantino",
+      "name": "Red Bull Bragantino",
+      "reputation": 4,
+      "players": [
+        {
+          "name": "Cleiton",
+          "nationality": "br",
+          "age": 29,
+          "position": "GOL",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Andrés Hurtado",
+          "nationality": "ec",
+          "age": 24,
+          "position": "LAT",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Pedro Henrique",
+          "nationality": "br",
+          "age": 30,
+          "position": "ZAG",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Eduardo Santos",
+          "nationality": "br",
+          "age": 28,
+          "position": "ZAG",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Juninho Capixaba",
+          "nationality": "br",
+          "age": 29,
+          "position": "LAT",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Jadsom",
+          "nationality": "br",
+          "age": 25,
+          "position": "VOL",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Lucas Evangelista",
+          "nationality": "br",
+          "age": 31,
+          "position": "MEC",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Eric Ramires",
+          "nationality": "br",
+          "age": 26,
+          "position": "MEI",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Helinho",
+          "nationality": "br",
+          "age": 26,
+          "position": "PNT",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Eduardo Sasha",
+          "nationality": "br",
+          "age": 34,
+          "position": "ATA",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Thiago Borbas",
+          "nationality": "uy",
+          "age": 24,
+          "position": "ATA",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Lucão",
+          "nationality": "br",
+          "age": 25,
+          "position": "GOL",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Guilherme Lopes",
+          "nationality": "br",
+          "age": 26,
+          "position": "ZAG",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Luan Cândido",
+          "nationality": "br",
+          "age": 32,
+          "position": "LAT",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Matheus Fernandes",
+          "nationality": "br",
+          "age": 23,
+          "position": "VOL",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Lincoln",
+          "nationality": "br",
+          "age": 18,
+          "position": "MEI",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Vitinho",
+          "nationality": "br",
+          "age": 26,
+          "position": "PNT",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Talisson",
+          "nationality": "br",
+          "age": 21,
+          "position": "ATA",
+          "status": "substitute",
+          "reputation": "normal"
+        }
+      ]
     },
     {
-      "id": "operario_pr",
-      "name": "Operário PR",
-      "reputation": 3
+      "id": "vitoria",
+      "name": "Vitória",
+      "reputation": 3,
+      "players": [
+        {
+          "name": "Lucas Arcanjo",
+          "nationality": "br",
+          "age": 28,
+          "position": "GOL",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Claudinho",
+          "nationality": "br",
+          "age": 26,
+          "position": "LAT",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Wagner Leonardo",
+          "nationality": "br",
+          "age": 27,
+          "position": "ZAG",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Neris",
+          "nationality": "br",
+          "age": 33,
+          "position": "ZAG",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "PK",
+          "nationality": "br",
+          "age": 29,
+          "position": "LAT",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Willian Oliveira",
+          "nationality": "br",
+          "age": 33,
+          "position": "VOL",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Ricardo Ryller",
+          "nationality": "br",
+          "age": 31,
+          "position": "MEC",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Matheuzinho",
+          "nationality": "br",
+          "age": 27,
+          "position": "MEI",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Osvaldo",
+          "nationality": "br",
+          "age": 39,
+          "position": "PNT",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Janderson",
+          "nationality": "br",
+          "age": 27,
+          "position": "ATA",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Carlinhos",
+          "nationality": "br",
+          "age": 29,
+          "position": "ATA",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Muriel",
+          "nationality": "br",
+          "age": 29,
+          "position": "GOL",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Edu",
+          "nationality": "br",
+          "age": 18,
+          "position": "ZAG",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Lucas Esteves",
+          "nationality": "br",
+          "age": 23,
+          "position": "LAT",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Dudu",
+          "nationality": "br",
+          "age": 18,
+          "position": "VOL",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Luan",
+          "nationality": "br",
+          "age": 18,
+          "position": "MEI",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Carlos Eduardo",
+          "nationality": "br",
+          "age": 18,
+          "position": "PNT",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Zé Hugo",
+          "nationality": "br",
+          "age": 32,
+          "position": "ATA",
+          "status": "substitute",
+          "reputation": "normal"
+        }
+      ]
     },
     {
-      "id": "londrina",
-      "name": "Londrina",
-      "reputation": 3
+      "id": "ceara",
+      "name": "Ceará",
+      "reputation": 3,
+      "players": [
+        {
+          "name": "Bruno Ferreira",
+          "nationality": "br",
+          "age": 20,
+          "position": "GOL",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Rafael Ramos",
+          "nationality": "br",
+          "age": 33,
+          "position": "LAT",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Marllon",
+          "nationality": "br",
+          "age": 34,
+          "position": "ZAG",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Matheus Bahia",
+          "nationality": "br",
+          "age": 27,
+          "position": "ZAG",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Richardson",
+          "nationality": "br",
+          "age": 34,
+          "position": "LAT",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Lucas Mugni",
+          "nationality": "br",
+          "age": 24,
+          "position": "VOL",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Aylon",
+          "nationality": "br",
+          "age": 20,
+          "position": "MEC",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Pedro Raul",
+          "nationality": "br",
+          "age": 35,
+          "position": "MEI",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Erick Pulga",
+          "nationality": "br",
+          "age": 24,
+          "position": "PNT",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Saulo Mineiro",
+          "nationality": "br",
+          "age": 20,
+          "position": "ATA",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Galeano",
+          "nationality": "br",
+          "age": 23,
+          "position": "ATA",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Dieguinho",
+          "nationality": "br",
+          "age": 18,
+          "position": "GOL",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "João Pedro",
+          "nationality": "br",
+          "age": 29,
+          "position": "ZAG",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Lourenço",
+          "nationality": "br",
+          "age": 25,
+          "position": "LAT",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Jean Irmer",
+          "nationality": "br",
+          "age": 31,
+          "position": "VOL",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Recalde",
+          "nationality": "br",
+          "age": 22,
+          "position": "MEI",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Nicolas",
+          "nationality": "br",
+          "age": 29,
+          "position": "PNT",
+          "status": "substitute",
+          "reputation": "normal"
+        }
+      ]
     },
     {
-      "id": "parana_clube",
-      "name": "Paraná Clube",
-      "reputation": 3
+      "id": "fortaleza",
+      "name": "Fortaleza",
+      "reputation": 4,
+      "players": [
+        {
+          "name": "João Ricardo",
+          "nationality": "br",
+          "age": 20,
+          "position": "GOL",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Tinga",
+          "nationality": "br",
+          "age": 32,
+          "position": "LAT",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Brítez",
+          "nationality": "br",
+          "age": 35,
+          "position": "ZAG",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Titi",
+          "nationality": "br",
+          "age": 25,
+          "position": "ZAG",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Bruno Pacheco",
+          "nationality": "br",
+          "age": 22,
+          "position": "LAT",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Zé Welison",
+          "nationality": "br",
+          "age": 26,
+          "position": "VOL",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Hércules",
+          "nationality": "br",
+          "age": 25,
+          "position": "MEC",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Calebe",
+          "nationality": "br",
+          "age": 27,
+          "position": "MEI",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Pochettino",
+          "nationality": "ar",
+          "age": 30,
+          "position": "PNT",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Marinho",
+          "nationality": "br",
+          "age": 34,
+          "position": "ATA",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Lucero",
+          "nationality": "ar",
+          "age": 33,
+          "position": "ATA",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Santos",
+          "nationality": "br",
+          "age": 25,
+          "position": "GOL",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Kuscevic",
+          "nationality": "cl",
+          "age": 18,
+          "position": "ZAG",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Dudu",
+          "nationality": "br",
+          "age": 30,
+          "position": "LAT",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Moisés",
+          "nationality": "br",
+          "age": 24,
+          "position": "VOL",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Breno Lopes",
+          "nationality": "br",
+          "age": 22,
+          "position": "MEI",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Renato Kayzer",
+          "nationality": "br",
+          "age": 29,
+          "position": "PNT",
+          "status": "substitute",
+          "reputation": "normal"
+        }
+      ]
     },
     {
-      "id": "joinville",
-      "name": "Joinville",
-      "reputation": 3
+      "id": "juventude",
+      "name": "Juventude",
+      "reputation": 2,
+      "players": [
+        {
+          "name": "Gabriel",
+          "nationality": "br",
+          "age": 31,
+          "position": "GOL",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "João Lucas",
+          "nationality": "br",
+          "age": 35,
+          "position": "LAT",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Danilo Boza",
+          "nationality": "br",
+          "age": 22,
+          "position": "ZAG",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Rodrigo Sam",
+          "nationality": "br",
+          "age": 35,
+          "position": "ZAG",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Alan Ruschel",
+          "nationality": "br",
+          "age": 30,
+          "position": "LAT",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Jadson",
+          "nationality": "br",
+          "age": 35,
+          "position": "VOL",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Mandaca",
+          "nationality": "br",
+          "age": 32,
+          "position": "MEC",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Nenê",
+          "nationality": "br",
+          "age": 32,
+          "position": "MEI",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Erick Farias",
+          "nationality": "br",
+          "age": 21,
+          "position": "PNT",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Gilberto",
+          "nationality": "br",
+          "age": 21,
+          "position": "ATA",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Marcelinho",
+          "nationality": "br",
+          "age": 28,
+          "position": "ATA",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Mateus Claus",
+          "nationality": "br",
+          "age": 27,
+          "position": "GOL",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Ewerthon",
+          "nationality": "br",
+          "age": 30,
+          "position": "ZAG",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Jean Carlos",
+          "nationality": "br",
+          "age": 27,
+          "position": "LAT",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Lucas Barbosa",
+          "nationality": "br",
+          "age": 25,
+          "position": "VOL",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Rildo",
+          "nationality": "br",
+          "age": 27,
+          "position": "MEI",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Bill",
+          "nationality": "br",
+          "age": 23,
+          "position": "PNT",
+          "status": "substitute",
+          "reputation": "normal"
+        }
+      ]
     },
     {
-      "id": "brasil_de_pelotas",
-      "name": "Brasil de Pelotas",
-      "reputation": 3
-    },
-    {
-      "id": "caxias",
-      "name": "Caxias",
-      "reputation": 3
-    },
-    {
-      "id": "abc",
-      "name": "ABC",
-      "reputation": 3
-    },
-    {
-      "id": "america_rn",
-      "name": "América RN",
-      "reputation": 3
-    },
-    {
-      "id": "csa",
-      "name": "CSA",
-      "reputation": 3
-    },
-    {
-      "id": "crb",
-      "name": "CRB",
-      "reputation": 3
-    },
-    {
-      "id": "sampaio_correa",
-      "name": "Sampaio Corrêa",
-      "reputation": 3
-    },
-    {
-      "id": "maranhao",
-      "name": "Maranhão",
-      "reputation": 2
-    },
-    {
-      "id": "ferroviario",
-      "name": "Ferroviário",
-      "reputation": 2
-    },
-    {
-      "id": "confianca",
-      "name": "Confiança",
-      "reputation": 2
-    },
-    {
-      "id": "sergipe",
-      "name": "Sergipe",
-      "reputation": 2
-    },
-    {
-      "id": "botafogo_pb",
-      "name": "Botafogo PB",
-      "reputation": 2
-    },
-    {
-      "id": "treze",
-      "name": "Treze",
-      "reputation": 2
-    },
-    {
-      "id": "campinense",
-      "name": "Campinense",
-      "reputation": 2
-    },
-    {
-      "id": "volta_redonda",
-      "name": "Volta Redonda",
-      "reputation": 2
-    },
-    {
-      "id": "bangu",
-      "name": "Bangu",
-      "reputation": 2
-    },
-    {
-      "id": "madureira",
-      "name": "Madureira",
-      "reputation": 2
-    },
-    {
-      "id": "ituano",
-      "name": "Ituano",
-      "reputation": 2
-    },
-    {
-      "id": "santo_andre",
-      "name": "Santo André",
-      "reputation": 2
-    },
-    {
-      "id": "sao_bernardo",
-      "name": "São Bernardo",
-      "reputation": 2
-    },
-    {
-      "id": "brusque",
-      "name": "Brusque",
-      "reputation": 2
+      "id": "sport",
+      "name": "Sport",
+      "reputation": 3,
+      "players": [
+        {
+          "name": "Caique França",
+          "nationality": "br",
+          "age": 34,
+          "position": "GOL",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Hereda",
+          "nationality": "br",
+          "age": 30,
+          "position": "LAT",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Chico",
+          "nationality": "br",
+          "age": 31,
+          "position": "ZAG",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Rafael Thyere",
+          "nationality": "br",
+          "age": 30,
+          "position": "ZAG",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Felipe Jonatan",
+          "nationality": "br",
+          "age": 27,
+          "position": "LAT",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Fabricio Domínguez",
+          "nationality": "br",
+          "age": 31,
+          "position": "VOL",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Barletta",
+          "nationality": "br",
+          "age": 30,
+          "position": "MEC",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Lucas Lima",
+          "nationality": "br",
+          "age": 20,
+          "position": "MEI",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Chrystian Barletta",
+          "nationality": "br",
+          "age": 27,
+          "position": "PNT",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Pablo",
+          "nationality": "br",
+          "age": 34,
+          "position": "ATA",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Zé Roberto",
+          "nationality": "br",
+          "age": 22,
+          "position": "ATA",
+          "status": "starter",
+          "reputation": "normal"
+        },
+        {
+          "name": "Jordan",
+          "nationality": "br",
+          "age": 22,
+          "position": "GOL",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Igor Cariús",
+          "nationality": "br",
+          "age": 28,
+          "position": "ZAG",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Fabinho",
+          "nationality": "br",
+          "age": 26,
+          "position": "LAT",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Wellington Silva",
+          "nationality": "br",
+          "age": 21,
+          "position": "VOL",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Gustavo Coutinho",
+          "nationality": "br",
+          "age": 24,
+          "position": "MEI",
+          "status": "substitute",
+          "reputation": "normal"
+        },
+        {
+          "name": "Romarinho",
+          "nationality": "br",
+          "age": 30,
+          "position": "PNT",
+          "status": "substitute",
+          "reputation": "normal"
+        }
+      ]
     }
   ]
 }

@@ -38,7 +38,16 @@ export function normalizeConfig(input){
   cfg.teams = Array.isArray(cfg.teams) ? cfg.teams.map((t,i)=>({
     id: slugify(t.id || t.name || `team_${i+1}`),
     name: String(t.name || t.id || `Time ${i+1}`),
-    reputation: Math.max(1, Math.min(7, Number(t.reputation ?? 1)))
+    reputation: Math.max(1, Math.min(7, Number(t.reputation ?? 1))),
+    players: Array.isArray(t.players) ? t.players.map((p,j)=>({
+      name: String(p.name || `Player ${j+1}`),
+      nationality: String(p.nationality || 'br').toLowerCase(),
+      age: Math.max(15, Math.min(50, Number(p.age || 25))),
+      position: String(p.position || (j===0 ? 'GOL' : 'ATA')).toUpperCase(),
+      status: String(p.status || (j<11 ? 'starter' : 'substitute')),
+      reputation: String(p.reputation || 'normal'),
+      rating: p.rating ? Number(p.rating) : undefined
+    })) : []
   })) : [];
   return cfg;
 }
@@ -55,6 +64,12 @@ export function validateConfig(cfg){
     if(!t.id || !t.name) errors.push('Todos os times precisam de id e name.');
     if(ids.has(t.id)) errors.push(`ID de time duplicado: ${t.id}`);
     if(Number(t.reputation)<1 || Number(t.reputation)>7) errors.push(`Reputação inválida em ${t.name}: use 1 a 7.`);
+    const starters=(t.players||[]).filter(p=>p.status==='starter');
+    const keepers=starters.filter(p=>String(p.position).toUpperCase()==='GOL');
+    if((t.players||[]).length && starters.length !== 11) errors.push(`${t.name} precisa ter exatamente 11 titulares.`);
+    if((t.players||[]).length && keepers.length !== 1) errors.push(`${t.name} precisa ter exatamente 1 goleiro titular.`);
+    const validPos=['GOL','ZAG','LAT','VOL','MEC','MEI','PNT','ATA'];
+    for(const p of (t.players||[])){ if(!validPos.includes(String(p.position).toUpperCase())) errors.push(`${t.name}: posição inválida em ${p.name}.`); }
     ids.add(t.id);
   }
   return [...new Set(errors)];
