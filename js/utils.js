@@ -36,9 +36,7 @@ export function normalizeConfig(input){
   cfg.teams = Array.isArray(cfg.teams) ? cfg.teams.map((t,i)=>({
     id: slugify(t.id || t.name || `team_${i+1}`),
     name: String(t.name || t.id || `Time ${i+1}`),
-    city: t.city || '',
-    state: t.state || '',
-    reputation: Math.max(1, Math.min(7, Number(t.reputation ?? t.rating ?? 1)))
+    reputation: Math.max(1, Math.min(7, Number(t.reputation ?? 1)))
   })) : [];
   return cfg;
 }
@@ -78,7 +76,7 @@ export function splitTeams(config, shouldShuffle=false){
   });
   return divisions;
 }
-export function makeSchedule(teamIds){
+function singleRoundSchedule(teamIds){
   const ids=[...teamIds];
   if(ids.length < 2) return [];
   const teams = ids.length % 2 ? [...ids, '__bye__'] : ids;
@@ -96,6 +94,11 @@ export function makeSchedule(teamIds){
   }
   return rounds;
 }
+export function makeSchedule(teamIds){
+  const first = singleRoundSchedule(teamIds);
+  const second = first.map(round => round.map(([home,away]) => [away,home]));
+  return [...first, ...second];
+}
 export function newTable(teams){
   const table={};
   teams.forEach(t=>table[t.id]={...t, points:0, played:0, won:0, drawn:0, lost:0, goalsFor:0, goalsAgainst:0, goalDifference:0});
@@ -107,5 +110,5 @@ export function sortTable(table){
   );
 }
 export function escapeHTML(s){
-  return String(s ?? '').replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  return String(s ?? '').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
 }

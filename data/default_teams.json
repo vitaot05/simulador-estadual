@@ -11,281 +11,201 @@
     {
       "id": "aurora_manaus",
       "name": "Aurora Manaus",
-      "city": "Manaus",
-      "state": "AM",
       "reputation": 5
     },
     {
       "id": "estrelas_de_belem",
       "name": "Estrelas de Belém",
-      "city": "Belém",
-      "state": "PA",
       "reputation": 4
     },
     {
       "id": "real_macapa",
       "name": "Real Macapá",
-      "city": "Macapá",
-      "state": "AP",
       "reputation": 2
     },
     {
       "id": "rio_branco_do_norte",
       "name": "Rio Branco do Norte",
-      "city": "Boa Vista",
-      "state": "RR",
       "reputation": 2
     },
     {
       "id": "palmeiras_do_tocantins",
       "name": "Palmeiras do Tocantins",
-      "city": "Palmas",
-      "state": "TO",
       "reputation": 3
     },
     {
       "id": "serra_do_acre",
       "name": "Serra do Acre",
-      "city": "Rio Branco",
-      "state": "AC",
       "reputation": 2
     },
     {
       "id": "porto_velho_atletico",
       "name": "Porto Velho Atlético",
-      "city": "Porto Velho",
-      "state": "RO",
       "reputation": 3
     },
     {
       "id": "amazonas_ocidental",
       "name": "Amazonas Ocidental",
-      "city": "Tefé",
-      "state": "AM",
       "reputation": 1
     },
     {
       "id": "bahia_do_sol",
       "name": "Bahia do Sol",
-      "city": "Salvador",
-      "state": "BA",
       "reputation": 5
     },
     {
       "id": "fortaleza_litoranea",
       "name": "Fortaleza Litorânea",
-      "city": "Fortaleza",
-      "state": "CE",
       "reputation": 5
     },
     {
       "id": "recife_navegantes",
       "name": "Recife Navegantes",
-      "city": "Recife",
-      "state": "PE",
       "reputation": 4
     },
     {
       "id": "natal_estrelado",
       "name": "Natal Estrelado",
-      "city": "Natal",
-      "state": "RN",
       "reputation": 3
     },
     {
       "id": "maceio_praiano",
       "name": "Maceió Praiano",
-      "city": "Maceió",
-      "state": "AL",
       "reputation": 3
     },
     {
       "id": "aracaju_marinho",
       "name": "Aracaju Marinho",
-      "city": "Aracaju",
-      "state": "SE",
       "reputation": 2
     },
     {
       "id": "teresina_rubro",
       "name": "Teresina Rubro",
-      "city": "Teresina",
-      "state": "PI",
       "reputation": 2
     },
     {
       "id": "sertao_carcara",
       "name": "Sertão Carcará",
-      "city": "Juazeiro do Norte",
-      "state": "CE",
       "reputation": 1
     },
     {
       "id": "capital_cerrado",
       "name": "Capital Cerrado",
-      "city": "Brasília",
-      "state": "DF",
       "reputation": 5
     },
     {
       "id": "goiania_esporte",
       "name": "Goiânia Esporte",
-      "city": "Goiânia",
-      "state": "GO",
       "reputation": 4
     },
     {
       "id": "campo_grande_uniao",
       "name": "Campo Grande União",
-      "city": "Campo Grande",
-      "state": "MS",
       "reputation": 3
     },
     {
       "id": "cuiaba_dourado",
       "name": "Cuiabá Dourado",
-      "city": "Cuiabá",
-      "state": "MT",
       "reputation": 4
     },
     {
       "id": "rondonia_central",
       "name": "Rondônia Central",
-      "city": "Vilhena",
-      "state": "RO",
       "reputation": 2
     },
     {
       "id": "brasiliense_real",
       "name": "Brasiliense Real",
-      "city": "Taguatinga",
-      "state": "DF",
       "reputation": 3
     },
     {
       "id": "verde_pantanal",
       "name": "Verde Pantanal",
-      "city": "Corumbá",
-      "state": "MS",
       "reputation": 2
     },
     {
       "id": "araguaia_clube",
       "name": "Araguaia Clube",
-      "city": "Aragarças",
-      "state": "GO",
       "reputation": 1
     },
     {
       "id": "metropole_atletico",
       "name": "Metrópole Atlético",
-      "city": "São Paulo",
-      "state": "SP",
       "reputation": 7
     },
     {
       "id": "rio_imperial",
       "name": "Rio Imperial",
-      "city": "Rio de Janeiro",
-      "state": "RJ",
       "reputation": 7
     },
     {
       "id": "belo_horizonte_ferro",
       "name": "Belo Horizonte Ferro",
-      "city": "Belo Horizonte",
-      "state": "MG",
       "reputation": 6
     },
     {
       "id": "vitoria_do_mar",
       "name": "Vitória do Mar",
-      "city": "Vitória",
-      "state": "ES",
       "reputation": 4
     },
     {
       "id": "campinas_estudantil",
       "name": "Campinas Estudantil",
-      "city": "Campinas",
-      "state": "SP",
       "reputation": 5
     },
     {
       "id": "niteroi_canoas",
       "name": "Niterói Canoas",
-      "city": "Niterói",
-      "state": "RJ",
       "reputation": 3
     },
     {
       "id": "triangulo_mineiro",
       "name": "Triângulo Mineiro",
-      "city": "Uberlândia",
-      "state": "MG",
       "reputation": 4
     },
     {
       "id": "vale_do_paraiba",
       "name": "Vale do Paraíba",
-      "city": "São José dos Campos",
-      "state": "SP",
       "reputation": 3
     },
     {
       "id": "curitiba_pioneiros",
       "name": "Curitiba Pioneiros",
-      "city": "Curitiba",
-      "state": "PR",
       "reputation": 6
     },
     {
       "id": "porto_alegre_federal",
       "name": "Porto Alegre Federal",
-      "city": "Porto Alegre",
-      "state": "RS",
       "reputation": 6
     },
     {
       "id": "florianopolis_ilha",
       "name": "Florianópolis Ilha",
-      "city": "Florianópolis",
-      "state": "SC",
       "reputation": 5
     },
     {
       "id": "londrina_norte",
       "name": "Londrina Norte",
-      "city": "Londrina",
-      "state": "PR",
       "reputation": 4
     },
     {
       "id": "caxias_serrana",
       "name": "Caxias Serrana",
-      "city": "Caxias do Sul",
-      "state": "RS",
       "reputation": 4
     },
     {
       "id": "joinville_operario",
       "name": "Joinville Operário",
-      "city": "Joinville",
-      "state": "SC",
       "reputation": 3
     },
     {
       "id": "pelotas_sulino",
       "name": "Pelotas Sulino",
-      "city": "Pelotas",
-      "state": "RS",
       "reputation": 2
     },
     {
       "id": "foz_fronteira",
       "name": "Foz Fronteira",
-      "city": "Foz do Iguaçu",
-      "state": "PR",
       "reputation": 2
     }
   ]

@@ -8,8 +8,6 @@ function syncFromForm(){
   data.teams=[...document.querySelectorAll('.team-line')].map(row=>({
     id:slugify(row.querySelector('.t-name').value),
     name:row.querySelector('.t-name').value.trim(),
-    city:row.querySelector('.t-city').value.trim(),
-    state:row.querySelector('.t-state').value.trim(),
     reputation:Number(row.querySelector('.t-reputation').value)||1
   })).filter(t=>t.name);
   updateTextAndValidation();
@@ -32,10 +30,10 @@ function render(){
   document.getElementById('teams').innerHTML=(data.teams||[]).map(t=>teamLine(t)).join('');
   bindLines(); updateTextAndValidation();
 }
-function teamLine(t={name:'',city:'',state:'',reputation:1}){ return `<div class="team-line"><input class="input t-name" value="${escapeHTML(t.name||'')}" placeholder="Nome"><input class="input t-city" value="${escapeHTML(t.city||'')}" placeholder="Cidade"><input class="input t-state" value="${escapeHTML(t.state||'')}" placeholder="UF"><select class="input t-reputation">${[1,2,3,4,5,6,7].map(n=>`<option value="${n}" ${Number(t.reputation)===n?'selected':''}>${n} - ${reputationLabel(n)}</option>`).join('')}</select><button class="btn btn-red rm" type="button"><i class="fa-solid fa-trash"></i></button></div>`; }
+function teamLine(t={name:'',reputation:1}){ return `<div class="team-line"><input class="input t-name" value="${escapeHTML(t.name||'')}" placeholder="Nome do clube"><select class="input t-reputation">${[1,2,3,4,5,6,7].map(n=>`<option value="${n}" ${Number(t.reputation)===n?'selected':''}>${n} - ${reputationLabel(n)}</option>`).join('')}</select><button class="btn btn-red rm" type="button"><i class="fa-solid fa-trash"></i></button></div>`; }
 function bindLines(){
   document.querySelectorAll('.rm').forEach(b=>b.onclick=()=>{b.closest('.team-line').remove();syncFromForm();});
-  document.querySelectorAll('.t-name,.t-city,.t-state,.t-reputation').forEach(i=>i.oninput=syncFromForm);
+  document.querySelectorAll('.t-name,.t-reputation').forEach(i=>i.oninput=syncFromForm);
 }
 window.addEventListener('DOMContentLoaded',async()=>{
   try{ data=await loadDefaultConfig(); }catch(err){ alert(err.message); data=normalizeConfig({id:'campeonato_brasileiro',zone:'Campeonato Brasileiro de Futebol',leagues:['Série A'],teams:[]}); }
@@ -44,6 +42,6 @@ window.addEventListener('DOMContentLoaded',async()=>{
   document.getElementById('add-team').onclick=()=>{document.getElementById('teams').insertAdjacentHTML('beforeend',teamLine());bindLines();syncFromForm();};
   document.getElementById('apply-json').onclick=()=>{try{data=normalizeConfig(JSON.parse(document.getElementById('json').value));render();}catch(e){alert('JSON inválido: '+e.message)}};
   document.getElementById('download').onclick=()=>{syncFromForm();downloadJSON(`${data.id||'league'}.json`,normalizeConfig(data));};
-  document.getElementById('save-config').onclick=()=>{syncFromForm(); sessionStorage.setItem('avanci_pending_config', JSON.stringify(normalizeConfig(data))); location.href='game.html?new=1&fromEditor=1';};
+  document.getElementById('save-config').onclick=()=>{syncFromForm(); sessionStorage.setItem('avanci_pending_config', JSON.stringify(normalizeConfig(data))); location.href='menu.html';};
   document.getElementById('import').onchange=async e=>{ if(e.target.files[0]){try{data=normalizeConfig(await readJSONFile(e.target.files[0]));render();}catch(err){alert('Não foi possível importar: '+err.message)}}};
 });
