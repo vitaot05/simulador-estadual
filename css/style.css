@@ -21,7 +21,7 @@
 @media(max-width:720px){.game-topbar{grid-template-columns:1fr auto}.brand{min-width:auto}.brand strong{font-size:16px}.game-actions{grid-column:1/-1;width:100%;display:grid;grid-template-columns:1fr auto auto}.competition-select{min-width:0;width:100%}.calendar-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.match-line{grid-template-columns:minmax(0,1fr) 58px minmax(0,1fr);gap:5px;font-size:12px}}
 
 /* V11: temporada, rodadas e barra inferior */
-body{padding-bottom:58px}.game-topbar{grid-template-columns:112px 1fr auto}.brand{min-width:112px}.season-select{width:104px;min-width:104px;font-weight:800;text-align:center}.tabs{justify-content:center}.game-actions{display:flex;align-items:center}.competition-select{min-width:180px}.content{min-height:calc(100vh - 108px)}.panel-bar{justify-content:flex-start;margin-bottom:12px}.panel-bar .small-input{min-width:180px}.bottombar{position:fixed;left:0;right:0;bottom:0;height:58px;background:#000;border-top:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0 14px;z-index:30}.bottom-left,.bottom-right{display:flex;align-items:center;gap:8px}.bottom-icon{width:38px;height:38px;border:1px solid var(--line2);background:#080808;color:#ddd;border-radius:var(--r);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;font-size:16px}.bottom-icon:hover,.bottom-icon.active{background:#fff;color:#000;border-color:#fff}.week-label{color:#ddd;font-size:13px;font-weight:700;white-space:nowrap}.round-results{margin-top:0}.results-list{max-width:620px}.match-line{width:100%}.result-block{background:transparent;border:0;padding:0;margin:0}.cup-winner{font-size:13px;margin-top:10px}.calendar-grid{grid-template-columns:repeat(auto-fill,minmax(104px,1fr));gap:7px}.calendar-day{min-height:84px}.calendar-day.league{border-left-color:#25b45b}.calendar-day.cup{border-left-color:#d8ad18}.calendar-day.supercup{border-left-color:#8754d6}
+body{padding-bottom:58px}.game-topbar{grid-template-columns:112px 1fr auto}.brand{min-width:112px}.season-select{width:104px;min-width:104px;font-weight:800;text-align:center}.tabs{justify-content:center}.game-actions{display:flex;align-items:center}.competition-select{min-width:180px}.content{min-height:calc(100vh - 108px)}.panel-bar{justify-content:flex-start;margin-bottom:12px}.panel-bar .small-input{min-width:180px}.bottombar{position:fixed;left:0;right:0;bottom:0;height:58px;background:#000;border-top:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0 14px;z-index:30}.bottom-left,.bottom-right{display:flex;align-items:center;gap:8px}.bottom-icon{position:relative;width:38px;height:38px;border:1px solid var(--line2);background:#080808;color:#ddd;border-radius:var(--r);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;font-size:16px}.bottom-icon:hover,.bottom-icon.active{background:#fff;color:#000;border-color:#fff}.week-label{color:#ddd;font-size:13px;font-weight:700;white-space:nowrap}.round-results{margin-top:0}.results-list{max-width:620px}.match-line{width:100%}.result-block{background:transparent;border:0;padding:0;margin:0}.cup-winner{font-size:13px;margin-top:10px}.calendar-grid{grid-template-columns:repeat(auto-fill,minmax(104px,1fr));gap:7px}.calendar-day{min-height:84px}.calendar-day.league{border-left-color:#25b45b}.calendar-day.cup{border-left-color:#d8ad18}.calendar-day.supercup{border-left-color:#8754d6}
 @media(max-width:720px){body{padding-bottom:70px}.game-topbar{grid-template-columns:1fr auto}.brand{min-width:0}.season-select{width:100%;min-width:0}.tabs{grid-column:1/-1;order:3}.game-actions{grid-column:1/-1;width:100%;grid-template-columns:1fr auto}.bottombar{height:70px;align-items:stretch;padding:8px 10px}.bottom-right{margin-left:auto}.week-label{font-size:12px;max-width:150px;overflow:hidden;text-overflow:ellipsis}.calendar-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.results-list{max-width:none}}
 
 
@@ -376,3 +376,130 @@ body.simulation-active .content{align-items:flex-start;justify-content:center;pa
 #stats th,#stats td{font-size:12px;padding:7px 9px;}
 #stats .awards{margin-top:12px;}
 @media(max-width:900px){.stats-grid{grid-template-columns:1fr;}}
+
+/* V26: museu por temporada, inbox e alertas internos */
+#toast-stack{position:fixed;right:14px;bottom:68px;z-index:90;display:grid;gap:8px;width:min(330px,calc(100vw - 28px));}
+.toast-message{background:#111;border:1px solid #444;border-radius:var(--r);padding:10px 12px;box-shadow:0 10px 30px rgba(0,0,0,.35);animation:toastIn .14s ease-out;color:#fff;}
+.toast-message strong{display:block;font-size:13px;margin-bottom:2px;}
+.toast-message span{display:block;font-size:12px;color:var(--muted);line-height:1.35;}
+.toast-message.out{opacity:0;transform:translateY(5px);transition:.2s ease;}
+@keyframes toastIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.mail-icon{position:relative;}
+.inbox-count{position:absolute;top:-5px;right:-5px;min-width:17px;height:17px;border-radius:999px;background:#fff;color:#000;border:1px solid #000;font-size:10px;font-weight:900;display:flex;align-items:center;justify-content:center;padding:0 4px;}
+.inbox-modal{width:min(560px,96vw);max-height:min(720px,88vh);display:flex;flex-direction:column;}
+.inbox-list{display:grid;gap:7px;overflow:auto;margin-top:12px;padding-right:2px;}
+.email-card{background:#090909;border:1px solid var(--line);border-radius:var(--r);padding:10px;cursor:pointer;}
+.email-card:hover{border-color:#666;}
+.email-card.read{opacity:.68;}
+.email-card div{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:4px;}
+.email-card strong{font-size:13px;}
+.email-card span{font-size:11px;color:var(--muted);white-space:nowrap;}
+.email-card p{font-size:12px;color:#d5d5d5;line-height:1.35;margin:0;}
+#museum{width:100%;max-width:1180px;margin:0 auto;display:grid;gap:12px;}
+#museum .museum-table table{min-width:760px;}
+#museum .museum-section{margin:0;}
+#museum .museum-section h3{font-size:12px;padding:9px 10px;border:1px solid var(--line);border-bottom:0;background:#080808;border-radius:var(--r) var(--r) 0 0;}
+#museum .museum-section .tbl-wrap{border-radius:0 0 var(--r) var(--r)!important;}
+@media(max-width:720px){#toast-stack{right:10px;bottom:74px}.email-card div{display:block}.email-card span{display:block;margin-top:2px}.inbox-modal{max-height:84vh}}
+
+/* V29: coesão, museu e inbox refinados */
+.input,
+.btn,
+.bottom-icon,
+.tbl-wrap,
+.email-card,
+.modal{
+  border-color:var(--line)!important;
+}
+.btn:disabled{
+  opacity:.45;
+  cursor:wait;
+}
+#museum{
+  width:100%;
+  max-width:1180px;
+  margin:0 auto;
+  display:grid;
+  gap:12px;
+}
+.museum-block{
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:var(--r);
+  overflow:hidden;
+}
+.museum-block h3{
+  margin:0;
+  padding:9px 10px;
+  font-size:11px;
+  font-weight:800;
+  text-transform:uppercase;
+  letter-spacing:.04em;
+  color:#fff;
+  background:#080808;
+  border-bottom:1px solid var(--line);
+}
+.museum-block .tbl-wrap{
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+}
+.museum-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+.inbox-toolbar{
+  display:flex;
+  gap:8px;
+  justify-content:flex-end;
+  padding:10px 0 2px;
+  border-bottom:1px solid var(--line);
+}
+.btn.small{
+  padding:5px 9px;
+  font-size:11px;
+  min-height:28px;
+}
+.btn.danger{
+  color:#f3d3d3;
+  border-color:#3c1f1f!important;
+  background:#120909;
+}
+.btn.danger:hover{
+  background:#1b0d0d;
+}
+.email-card div{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) auto auto;
+  align-items:center!important;
+}
+.mail-delete{
+  width:24px;
+  height:24px;
+  border:1px solid var(--line);
+  background:#080808;
+  color:var(--muted);
+  border-radius:var(--r);
+  cursor:pointer;
+}
+.mail-delete:hover{
+  color:#fff;
+  border-color:#666;
+}
+#settings-modal .menu-actions{
+  gap:8px;
+}
+#settings-modal .field{
+  margin:10px 0 12px;
+}
+@media(max-width:900px){
+  .museum-grid{grid-template-columns:1fr;}
+}
+@media(max-width:720px){
+  .inbox-toolbar{justify-content:stretch;}
+  .inbox-toolbar .btn{flex:1;}
+  .email-card div{grid-template-columns:1fr auto!important;}
+  .email-card span{grid-column:1/2;}
+  .mail-delete{grid-column:2/3;grid-row:1/3;}
+}

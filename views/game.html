@@ -2,7 +2,7 @@
 <header class="topbar game-topbar">
   <nav class="tabs main-tabs">
     <button class="tab active" data-panel="panel-table">Classificação</button>
-    <button class="tab" data-panel="panel-results">Resultados</button><button class="tab" data-panel="panel-stats">Estatísticas</button><button class="tab" data-panel="panel-transfers">Transferências</button>
+    <button class="tab" data-panel="panel-results">Resultados</button><button class="tab" data-panel="panel-stats">Estatísticas</button>
   </nav>
   <div class="top-actions game-actions">
     <select id="competition-select" class="input competition-select" aria-label="Competição"></select>
@@ -14,7 +14,6 @@
   <section id="panel-table" class="panel"><div id="competition-view"></div></section>
   <section id="panel-results" class="panel hidden"><div id="results"></div></section>
   <section id="panel-stats" class="panel hidden"><div id="stats"></div></section>
-  <section id="panel-transfers" class="panel hidden"><div id="transfers"></div></section>
   <section id="panel-simulation" class="panel hidden"><div id="simulation-view"></div></section>
   <section id="panel-calendar" class="panel hidden"><div id="calendar"></div></section>
   <section id="panel-museum" class="panel hidden"><div id="museum"></div></section>
@@ -23,8 +22,11 @@
   <div class="bottom-left">
     <button class="bottom-icon" data-panel="panel-calendar" title="Calendário"><i class="fa-regular fa-calendar-days"></i></button>
     <button class="bottom-icon" data-panel="panel-museum" title="Museu"><i class="fa-solid fa-trophy"></i></button>
+    <button class="bottom-icon mail-icon" id="inbox-btn" title="E-mails"><i class="fa-regular fa-envelope"></i><span id="inbox-count" class="inbox-count hidden"></span></button>
   </div>
   <div class="bottom-right"><span id="week-label" class="week-label">Semana 1: Liga</span><button class="btn primary" id="skip-round">Avançar</button></div>
 </footer>
-<div class="modal-overlay" id="settings-modal"><section class="modal"><div class="section-head"><h2>Configurações</h2><button class="btn icon-btn" id="close-settings"><i class="fa-solid fa-xmark"></i></button></div><div class="field"><label>Autosave</label><select id="autosave-frequency" class="input"><option value="1">A cada rodada</option><option value="3">A cada 3 rodadas</option><option value="5">A cada 5 rodadas</option><option value="season">Por temporada</option></select></div><div class="field"><label>Velocidade da simulação</label><select id="simulation-speed" class="input"><option value="900">Lenta</option><option value="600">Normal</option><option value="320">Rápida</option><option value="120">Turbo</option></select></div><div class="sep"></div><div class="menu-actions"><a class="btn" href="menu.html"><i class="fa-solid fa-arrow-left"></i> Voltar ao menu principal</a><button class="btn" id="export-save"><i class="fa-solid fa-file-export"></i> Exportar save</button><label class="btn"><i class="fa-solid fa-file-import"></i> Importar save<input id="import-save" type="file" accept="application/json" hidden></label></div></section></div>
+<div class="modal-overlay" id="settings-modal"><section class="modal"><div class="section-head"><h2>Configurações</h2><button class="btn icon-btn" id="close-settings"><i class="fa-solid fa-xmark"></i></button></div><div class="field"><label>Autosave</label><select id="autosave-frequency" class="input"><option value="1">A cada rodada</option><option value="3">A cada 3 rodadas</option><option value="5">A cada 5 rodadas</option><option value="season">Por temporada</option></select></div><div class="sep"></div><div class="menu-actions"><a class="btn" href="menu.html"><i class="fa-solid fa-arrow-left"></i> Voltar ao menu principal</a><button class="btn" id="export-save"><i class="fa-solid fa-file-export"></i> Exportar save</button></div></section></div>
+
+<div class="modal-overlay" id="inbox-modal"><section class="modal inbox-modal"><div class="section-head"><h2>Caixa de entrada</h2><button class="btn icon-btn" id="close-inbox"><i class="fa-solid fa-xmark"></i></button></div><div class="inbox-toolbar"><button class="btn small danger" id="delete-read-mails"><i class="fa-regular fa-trash-can"></i> Excluir lidos</button><button class="btn small danger" id="delete-all-mails"><i class="fa-solid fa-trash-can"></i> Excluir todos</button></div><div id="inbox-list" class="inbox-list"></div></section></div>
 <script type="module" src="../js/game.js"></script></body></html>

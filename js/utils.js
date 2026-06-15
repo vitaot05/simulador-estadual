@@ -32,9 +32,33 @@ export function normalizeConfig(input){
   const cfg=structuredClone(input||{});
   cfg.id = slugify(cfg.id || cfg.zone || 'custom_league');
   cfg.zone = String(cfg.zone || 'Liga Personalizada');
-  cfg.cup = String(cfg.cup || 'Copa Nacional');
-  cfg.supercup = String(cfg.supercup || 'Supercopa Nacional');
-  cfg.leagues = Array.isArray(cfg.leagues) ? cfg.leagues.map(String).filter(Boolean) : ['Série A'];
+  function normalizeCompetition(value, fallbackName){
+    if(value && typeof value === 'object'){
+      const name = String(value.name || value.id || fallbackName);
+      return {id: slugify(value.id || name), name};
+    }
+    const name = String(value || fallbackName);
+    return {id: slugify(name), name};
+  }
+  const cupComp = normalizeCompetition(cfg.cup, 'Copa Nacional');
+  const supercupComp = normalizeCompetition(cfg.supercup, 'Supercopa Nacional');
+  cfg.cup = cupComp.id;
+  cfg.cupName = cupComp.name;
+  cfg.supercup = supercupComp.id;
+  cfg.supercupName = supercupComp.name;
+  cfg.competitionNames = {[cfg.cup]: cfg.cupName, [cfg.supercup]: cfg.supercupName};
+  const rawLeagues = Array.isArray(cfg.leagues) && cfg.leagues.length ? cfg.leagues : ['Série A'];
+  cfg.leagueList = rawLeagues.map((l,i)=>{
+    if(l && typeof l === 'object'){
+      const name = String(l.name || l.id || `Liga ${i+1}`);
+      return {id: slugify(l.id || name), name};
+    }
+    const name = String(l || `Liga ${i+1}`);
+    return {id: slugify(name), name};
+  }).filter(l=>l.id && l.name);
+  cfg.leagueNames = Object.fromEntries(cfg.leagueList.map(l=>[l.id,l.name]));
+  cfg.leagues = cfg.leagueList.map(l=>l.id);
+  cfg.competitionNames = {...cfg.competitionNames, ...cfg.leagueNames};
   cfg.teams = Array.isArray(cfg.teams) ? cfg.teams.map((t,i)=>({
     id: slugify(t.id || t.name || `team_${i+1}`),
     name: String(t.name || t.id || `Time ${i+1}`),
@@ -65,11 +89,9 @@ export function validateConfig(cfg){
     if(ids.has(t.id)) errors.push(`ID de time duplicado: ${t.id}`);
     if(Number(t.reputation)<1 || Number(t.reputation)>7) errors.push(`Reputação inválida em ${t.name}: use 1 a 7.`);
     const starters=(t.players||[]).filter(p=>p.status==='starter');
-    const keepers=starters.filter(p=>String(p.position).toUpperCase()==='GOL');
+    const keepers=starters.filter(p=>String(p.position).toUpperCase()==='GOL' || p.position==='goalkeeper');
     if((t.players||[]).length && starters.length !== 11) errors.push(`${t.name} precisa ter exatamente 11 titulares.`);
     if((t.players||[]).length && keepers.length !== 1) errors.push(`${t.name} precisa ter exatamente 1 goleiro titular.`);
-    const validPos=['GOL','ZAG','LAT','VOL','MEC','MEI','PNT','ATA'];
-    for(const p of (t.players||[])){ if(!validPos.includes(String(p.position).toUpperCase())) errors.push(`${t.name}: posição inválida em ${p.name}.`); }
     ids.add(t.id);
   }
   return [...new Set(errors)];

@@ -1,5 +1,5 @@
 import {getSlot, upsertSave, downloadJSON, readJSONFile, getSettings, setSettings, shouldAutosave} from './storage.js';
-import {normalizeConfig, validateConfig, splitTeams, makeSchedule, newTable, sortTable, escapeHTML, loadDefaultConfig, generateRatingFromReputation} from './utils.js';
+import {normalizeConfig, validateConfig, splitTeams, makeSchedule, newTable, sortTable, escapeHTML, loadDefaultConfig, generateRatingFromReputation, slugify} from './utils.js';
 
 const params = new URLSearchParams(location.search);
 let game = null;
@@ -12,6 +12,43 @@ let simulationTimer = null;
 const PROMOTION_SLOTS = 2;
 const RELEGATION_SLOTS = 2;
 
+function leagueName(id){ return game?.config?.leagueNames?.[id] || game?.config?.competitionNames?.[id] || id; }
+function competitionName(id){ return game?.config?.competitionNames?.[id] || game?.config?.leagueNames?.[id] || id; }
+function makeCompetitionId(name){ return slugify(name); }
+function toast(title, body=''){
+  let wrap=document.getElementById('toast-stack');
+  if(!wrap){ wrap=document.createElement('div'); wrap.id='toast-stack'; document.body.appendChild(wrap); }
+  const el=document.createElement('div');
+  el.className='toast-message';
+  el.innerHTML=`<strong>${escapeHTML(title)}</strong>${body?`<span>${escapeHTML(body)}</span>`:''}`;
+  wrap.appendChild(el);
+  setTimeout(()=>el.classList.add('out'), 3600);
+  setTimeout(()=>el.remove(), 4300);
+}
+function notify(subject, body='', category='system'){
+  toast(subject, body);
+}
+function addEmail(subject, body='', category='season'){
+  if(!game) return;
+  const email={id:'mail_'+Date.now()+'_'+Math.floor(Math.random()*9999), season:game.season||null, week:null, subject, body, category, read:false, createdAt:new Date().toISOString()};
+  game.emails ||= [];
+  game.emails.unshift(email);
+  if(game.emails.length>120) game.emails.length=120;
+  upsertSave(game);
+  renderInbox();
+  toast(subject, body);
+}
+function seasonReportEmail(previous){
+  if(!previous) return;
+  const leagues=(game.config.leagues||[]).map(id=>`${competitionName(id)}: ${previous.winners?.[id] || '-'}`).join(' • ');
+  const parts=[leagues];
+  if(previous.cupWinner) parts.push(`${competitionName(game.config.cup)}: ${previous.cupWinner}`);
+  if(previous.supercupWinner) parts.push(`${competitionName(game.config.supercup)}: ${previous.supercupWinner}`);
+  if(previous.awards?.bestPlayer?.player) parts.push(`Melhor jogador: ${previous.awards.bestPlayer.player}`);
+  if(previous.awards?.bestGoalkeeper?.player) parts.push(`Melhor goleiro: ${previous.awards.bestGoalkeeper.player}`);
+  addEmail(`Temporada ${game.season} iniciada`, `Relatório ${previous.season}: ${parts.filter(Boolean).join(' • ')}`,'season_start');
+}
+
 function clamp(n, min, max){ return Math.max(min, Math.min(max, n)); }
 function rand(min, max){ return min + Math.random() * (max - min); }
 function poisson(lambda){ const L=Math.exp(-lambda); let k=0,p=1; do{k++;p*=Math.random();}while(p>L); return k-1; }
@@ -20,9 +57,47 @@ const POSITIONS=['GOL','ZAG','LAT','VOL','MEC','MEI','PNT','ATA'];
 const DEFAULT_FORMATION=['GOL','LAT','ZAG','ZAG','LAT','VOL','MEC','MEI','PNT','ATA','ATA'];
 const POSITION_GOAL_WEIGHTS={GOL:0,ZAG:.08,LAT:.12,VOL:.18,MEC:.28,MEI:.50,PNT:.72,ATA:1};
 const POSITION_ASSIST_WEIGHTS={GOL:0,ZAG:.10,LAT:.34,VOL:.30,MEC:.46,MEI:.80,PNT:.78,ATA:.38};
-const NATIONALITIES=['br','ar','uy','co','py','cl','ec','pe','ve','bo','us','pt','es','it'];
-const REGEN_FIRST=['Lucas','Gabriel','João','Pedro','Matheus','Rafael','Bruno','Felipe','Caio','Thiago','Vitor','André'];
-const REGEN_LAST=['Silva','Santos','Oliveira','Souza','Costa','Pereira','Lima','Alves','Ribeiro','Gomes','Rocha','Barbosa'];
+
+
+function uniqueClean(arr){
+  return [...new Set((arr||[]).map(v=>String(v||'').trim()).filter(Boolean))];
+}
+function namePieces(name){
+  return String(name||'').replace(/[()]/g,' ').split(/\s+/).map(t=>t.trim()).filter(t=>t.length>=4 && /^[\p{L}'’-]+$/u.test(t));
+}
+function buildRegenPool(){
+  const players=[];
+  const sources=[];
+  if(game?.divisions) sources.push(...Object.values(game.divisions).flat());
+  if(game?.config?.teams) sources.push(...game.config.teams);
+  sources.forEach(t=>{
+    (t.players||[]).forEach(p=>players.push(p));
+  });
+  const nationalities=uniqueClean(players.map(p=>String(p.nationality||'').toLowerCase())).filter(n=>/^[a-z]{2,3}$/.test(n));
+  const first=[];
+  const last=[];
+  players.forEach(p=>{
+    const pieces=namePieces(p.name);
+    if(pieces.length===1){ first.push(pieces[0]); return; }
+    if(pieces.length>1){ first.push(pieces[0]); last.push(pieces[pieces.length-1]); }
+  });
+  const firstNames=uniqueClean(first);
+  const lastNames=uniqueClean(last.length ? last : first);
+  return {
+    nationalities: nationalities.length ? nationalities : ['br'],
+    firstNames: firstNames.length ? firstNames : ['Novo'],
+    lastNames: lastNames.length ? lastNames : ['Atleta']
+  };
+}
+function randomFrom(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+function regenIdentity(preferredNationality=null){
+  const pool=buildRegenPool();
+  const first=randomFrom(pool.firstNames);
+  const last=randomFrom(pool.lastNames);
+  const nationality=preferredNationality || randomFrom(pool.nationalities);
+  return {name:`${first} ${last}`, nationality};
+}
+
 function normalizePosition(pos, idx=0){
   const raw=String(pos||'').toUpperCase();
   const map={GOLEIRO:'GOL',GK:'GOL',GOALKEEPER:'GOL',OUTFIELD:DEFAULT_FORMATION[idx]||'ATA',CB:'ZAG',ZAGUEIRO:'ZAG',DF:'ZAG',LB:'LAT',RB:'LAT',LATERAL:'LAT',DM:'VOL',VOLANTE:'VOL',CM:'MEC',MC:'MEC',MEC:'MEC',AM:'MEI',MEIA:'MEI',MEI:'MEI',W:'PNT',WINGER:'PNT',PONTA:'PNT',PNT:'PNT',FW:'ATA',ST:'ATA',STRIKER:'ATA',ATACANTE:'ATA',ATA:'ATA'};
@@ -130,13 +205,61 @@ function shouldInsertCupAfterLeague(){
   return cupRoundsPlayed() < total-1 && game.round < maxRounds();
 }
 
+
+function migrateLeagueKeyedObject(obj){
+  if(!obj || !game?.config?.leagueList) return obj;
+  const out={...obj};
+  game.config.leagueList.forEach(l=>{
+    if(out[l.id] == null && out[l.name] != null){ out[l.id]=out[l.name]; delete out[l.name]; }
+  });
+  return out;
+}
+function migrateCompetitionKeyedObject(obj){
+  if(!obj) return obj;
+  const out={...obj};
+  const pairs=[
+    [game.config.cup, game.config.cupName],
+    [game.config.supercup, game.config.supercupName],
+    ...(game.config.leagueList||[]).map(l=>[l.id,l.name])
+  ];
+  pairs.forEach(([id,name])=>{
+    if(id && name && out[id] == null && out[name] != null){ out[id]=out[name]; delete out[name]; }
+  });
+  return out;
+}
+function migrateCompetitionKeys(){
+  game.playerStats ||= {competitions:{}, total:{}};
+  game.playerStats.competitions=migrateCompetitionKeyedObject(game.playerStats.competitions||{});
+  (game.history||[]).forEach(h=>{
+    if(h.playerStats?.competitions) h.playerStats.competitions=migrateCompetitionKeyedObject(h.playerStats.competitions);
+  });
+  (game.seasonHistory||[]).forEach(h=>{ h.champions=migrateCompetitionKeyedObject(h.champions||{}); });
+  Object.values(game.museum||{}).forEach(entry=>{
+    entry.byCompetition=migrateCompetitionKeyedObject(entry.byCompetition||{});
+    entry.byLeague=migrateCompetitionKeyedObject(entry.byLeague||{});
+    entry.seasonsByCompetition=migrateCompetitionKeyedObject(entry.seasonsByCompetition||{});
+  });
+}
+function migrateLeagueKeys(){
+  game.divisions=migrateLeagueKeyedObject(game.divisions||{});
+  game.tables=migrateLeagueKeyedObject(game.tables||{});
+  game.schedules=migrateLeagueKeyedObject(game.schedules||{});
+  (game.results||[]).forEach(r=>{ const found=game.config.leagueList.find(l=>l.name===r.league); if(found) r.league=found.id; });
+  (game.history||[]).forEach(h=>{
+    h.winners=migrateLeagueKeyedObject(h.winners||{});
+    h.finalTables=migrateLeagueKeyedObject(h.finalTables||{});
+    (h.leagueResults||[]).forEach(r=>{ const found=game.config.leagueList.find(l=>l.name===r.league); if(found) r.league=found.id; });
+  });
+  migrateCompetitionKeys();
+}
+
 function createGame(config, slot, shouldShuffle=false){
   const cfg = normalizeConfig(config);
   const divisions = splitTeams(cfg, shouldShuffle);
   Object.keys(divisions).forEach(l => divisions[l] = divisions[l].map(sanitizeTeam));
   Object.values(divisions).flat().forEach(normalizeSquadStatuses);
   const built = buildSeason(divisions);
-  const g = {id:'slot_'+slot, slot:Number(slot), name:`Slot ${slot} • ${cfg.zone}`, config:cfg, zone:cfg.zone, season:2026, round:0, divisions, tables:built.tables, schedules:built.schedules, results:[], cupResults:[], history:[], museum:{}, playerStats:{competitions:{}, total:{}}, awards:[], transferHistory:[], lastTransfers:[], lastMovements:[], cup:null, supercup:null, phase:'league', pendingSupercup:null, updatedAt:new Date().toISOString()};
+  const g = {id:'slot_'+slot, slot:Number(slot), name:`Slot ${slot} • ${cfg.zone}`, config:cfg, zone:cfg.zone, season:2026, round:0, divisions, tables:built.tables, schedules:built.schedules, results:[], cupResults:[], history:[], museum:{}, playerStats:{competitions:{}, total:{}}, awards:[], transferHistory:[], emails:[], seasonHistory:[], lastTransfers:[], lastMovements:[], cup:null, supercup:null, phase:'league', pendingSupercup:null, updatedAt:new Date().toISOString()};
   game = g;
   game.cup = buildCup();
   return g;
@@ -149,11 +272,11 @@ function buildSeason(divisions){
 function buildCup(){
   const teams = allTeams();
   const size = cupSize(teams.length);
-  if(!size) return {name:game.config.cup, size:0, active:false, participants:[], roundIndex:0, history:[], winner:null, runnerUp:null};
+  if(!size) return {name:competitionName(game.config.cup), size:0, active:false, participants:[], roundIndex:0, history:[], winner:null, runnerUp:null};
   const seeded = teams.slice().sort((a,b)=>effectiveRating(b)-effectiveRating(a) || a.name.localeCompare(b.name)).slice(0,size);
   const mixed = [];
   for(let i=0;i<size/2;i++){ mixed.push(seeded[i], seeded[size-1-i]); }
-  return {name:game.config.cup, size, active:true, participants:mixed.map(t=>t.id), roundIndex:0, history:[], winner:null, runnerUp:null};
+  return {name:competitionName(game.config.cup), size, active:true, participants:mixed.map(t=>t.id), roundIndex:0, history:[], winner:null, runnerUp:null};
 }
 function currentRoundMatches(){
   const out=[];
@@ -195,8 +318,8 @@ function applyResult(league, home, away, hg, ag){
 }
 function movementInfo(league,i,count){
   const leagues=game.config.leagues, idx=leagues.indexOf(league);
-  if(idx>0 && i<PROMOTION_SLOTS) return {cls:'pos-promo', label:'Acesso', title:`Sobe para ${leagues[idx-1]}`};
-  if(idx<leagues.length-1 && i>=count-RELEGATION_SLOTS) return {cls:'pos-releg', label:'Queda', title:`Cai para ${leagues[idx+1]}`};
+  if(idx>0 && i<PROMOTION_SLOTS) return {cls:'pos-promo', label:'Acesso', title:`Sobe para ${leagueName(leagues[idx-1])}`};
+  if(idx<leagues.length-1 && i>=count-RELEGATION_SLOTS) return {cls:'pos-releg', label:'Queda', title:`Cai para ${leagueName(leagues[idx+1])}`};
   return {cls:'', label:'', title:'Permanece'};
 }
 function stripTeam(t){
@@ -310,11 +433,10 @@ function developPlayersAndRegens(divisions){
   return regens;
 }
 function makeRegenFrom(p){
-  const first=REGEN_FIRST[Math.floor(Math.random()*REGEN_FIRST.length)];
-  const last=REGEN_LAST[Math.floor(Math.random()*REGEN_LAST.length)];
+  const identity=regenIdentity(p.nationality || null);
   const age=Math.random()<.5?17:18;
   const rating=clamp(Math.round(Number(p.rating||60)-rand(14,24)),35,72);
-  return {name:`${first} ${last}`, nationality:p.nationality||'br', age, position:normalizePosition(p.position), status:'substitute', reputation:'normal', rating, stamina:100, marketValue:0};
+  return {name:identity.name, nationality:identity.nationality, age, position:normalizePosition(p.position), status:'substitute', reputation:'normal', rating, stamina:100, marketValue:0};
 }
 function restoreLoans(divisions){
   const teams=Object.values(divisions).flat();
@@ -341,11 +463,10 @@ function teamBudget(teamObj){
   return Number(teamObj.budget ?? (rep*rep*4200000 + rand(1000000,9000000)));
 }
 function randomFreeAgent(pos, rep=3){
-  const first=REGEN_FIRST[Math.floor(Math.random()*REGEN_FIRST.length)];
-  const last=REGEN_LAST[Math.floor(Math.random()*REGEN_LAST.length)];
+  const identity=regenIdentity();
   const age=Math.round(rand(18,31));
   const rating=clamp(Math.round({1:45,2:51,3:57,4:63,5:69,6:74,7:78}[rep] + rand(-8,8)),35,86);
-  return {name:`${first} ${last}`, nationality:NATIONALITIES[Math.floor(Math.random()*NATIONALITIES.length)], age, position:pos, status:'substitute', reputation:'normal', rating, stamina:100, marketValue:0};
+  return {name:identity.name, nationality:identity.nationality, age, position:pos, status:'substitute', reputation:'normal', rating, stamina:100, marketValue:0};
 }
 function performTransferWindow(divisions){
   restoreLoans(divisions);
@@ -387,7 +508,7 @@ function normalizeSquadStatuses(teamObj){
 
 function autosave(silent=true){
   upsertSave(game);
-  if(!silent) alert('Save atualizado no slot '+game.slot+'.');
+  if(!silent) notify('Save atualizado', 'Slot '+game.slot);
 }
 function competitionOptions(){
   const opts=[...(game.config.leagues||[])];
@@ -418,7 +539,7 @@ function renderCompetitionSelect(){
   if(!sel) return;
   const opts=competitionOptions();
   activeCompetition = opts.includes(activeCompetition) ? activeCompetition : opts[0];
-  sel.innerHTML=opts.map(l=>`<option value="${escapeHTML(l)}" ${l===activeCompetition?'selected':''}>${escapeHTML(l)}</option>`).join('');
+  sel.innerHTML=opts.map(l=>`<option value="${escapeHTML(l)}" ${l===activeCompetition?'selected':''}>${escapeHTML(competitionName(l))}</option>`).join('');
   sel.onchange=()=>{activeCompetition=sel.value; activeResultsRound=null; render();};
 }
 function showPanel(id){ activePanel=id; document.querySelectorAll('.panel').forEach(p=>p.classList.add('hidden')); document.getElementById(id).classList.remove('hidden'); document.querySelectorAll('[data-panel]').forEach(b=>b.classList.toggle('active', b.dataset.panel===id)); render(); }
@@ -502,7 +623,7 @@ function supercupForSeason(season){
 }
 function renderMiniTable(league, rows){
   if(!rows?.length) return '';
-  const title = league ? `<h3>${escapeHTML(league)}</h3>` : '';
+  const title = league ? `<h3>${escapeHTML(leagueName(league))}</h3>` : '';
   return `<section class="result-section">${title}<div class="tbl-wrap compact"><table><thead><tr><th class="pos-col">#</th><th class="club-col">Clube</th><th>Pts</th><th>J</th><th>V</th><th>E</th><th>D</th><th>SG</th></tr></thead><tbody>${rows.map((t,i)=>`<tr><td class="pos-col">${i+1}</td><td class="club-col">${escapeHTML(t.name)}</td><td class="pts">${t.points}</td><td>${t.played}</td><td>${t.won}</td><td>${t.drawn}</td><td>${t.lost}</td><td>${t.goalDifference}</td></tr>`).join('')}</tbody></table></div></section>`;
 }
 function resultOptionsForCompetition(season, comp){
@@ -539,7 +660,7 @@ function renderResults(){
     html = phases.length ? `<div class="results-stack cup-stack">${phases.map(name=>`<section class="round-results"><h3>${escapeHTML(name)}</h3><div class="results-list">${byPhase[name].map(matchLine).join('')}</div></section>`).join('')}</div>` : '<p class="empty-text">Sem resultados.</p>';
   } else if(isSupercupCompetition(comp)){
     const sc=supercupForSeason(season);
-    html = sc ? `<section class="round-results"><h3>${escapeHTML(comp)}</h3><div class="results-list">${matchLine(sc)}</div><p class="cup-winner">Campeão: ${escapeHTML(sc.winner)}</p></section>` : '<p class="empty-text">Sem resultados.</p>';
+    html = sc ? `<section class="round-results"><h3>${escapeHTML(competitionName(comp))}</h3><div class="results-list">${matchLine(sc)}</div><p class="cup-winner">Campeão: ${escapeHTML(sc.winner)}</p></section>` : '<p class="empty-text">Sem resultados.</p>';
   }
   box.innerHTML=html;
 }
@@ -549,7 +670,7 @@ function calendarEvents(){
   if(hasSupercup){
     const base = game.pendingSupercup || game.supercup || {};
     const sub = game.supercup ? `${game.supercup.home} × ${game.supercup.away}` : `${base.mainChampion || '-'} × ${base.cupWinner || '-'}`;
-    events.push({kind:'supercup', title:game.config.supercup || 'Supercopa', sub, status:game.supercup?'done':'todo'});
+    events.push({kind:'supercup', title:competitionName(game.config.supercup) || 'Supercopa', sub, status:game.supercup?'done':'todo'});
   }
   const max=maxRounds();
   const total=cupRoundsTotal();
@@ -560,14 +681,14 @@ function calendarEvents(){
       const played=game.cup.history?.[cupIdx];
       const remaining=game.cup.size / Math.pow(2, cupIdx);
       const title=played?.name || cupRoundName(game.cup.size, remaining);
-      events.push({kind:'cup', title, sub:game.config.cup || 'Copa', status:played?'done':'todo'});
+      events.push({kind:'cup', title, sub:competitionName(game.config.cup) || 'Copa', status:played?'done':'todo'});
       cupIdx++;
     }
   }
   if(game.cup?.size){
     const finalIdx=total-1;
     const played=game.cup.history?.[finalIdx];
-    events.push({kind:'cup', title:played?.name || 'Final', sub:game.config.cup || 'Copa', status:played?'done':'todo'});
+    events.push({kind:'cup', title:played?.name || 'Final', sub:competitionName(game.config.cup) || 'Copa', status:played?'done':'todo'});
   }
   return events;
 }
@@ -586,55 +707,42 @@ function renderCups(){
   const supercup=game.supercup;
   const cupStatus = !cup.size ? 'Copa indisponível: mínimo de 8 clubes.' : cup.winner ? `Campeão: ${cup.winner}` : `${cup.size} clubes · próxima fase: ${cupRoundName(cup.size, cup.participants.length)}`;
   const cupHistory = (cup.history||[]).slice().reverse().map(round=>`<section class="round-results"><h3>${escapeHTML(round.name)}</h3><div class="results-grid">${round.matches.map(r=>`<div class="match-line"><span>${escapeHTML(r.home)}</span><strong>${formatCupScore(r)}</strong><span>${escapeHTML(r.away)}</span></div>`).join('')}</div></section>`).join('') || '<p class="muted">Nenhum jogo de copa disputado ainda.</p>';
-  const superHtml = supercup ? `<div class="cup-card"><h3>${escapeHTML(game.config.supercup)}</h3><p class="muted">${escapeHTML(supercup.home)} ${supercup.homeGoals} × ${supercup.awayGoals} ${escapeHTML(supercup.away)}</p><div class="cup-winner">${escapeHTML(supercup.winner)}</div></div>` : `<div class="cup-card"><h3>${escapeHTML(game.config.supercup)}</h3><p class="muted">Será disputada entre campeão da liga principal e campeão da copa.</p></div>`;
+  const superHtml = supercup ? `<div class="cup-card"><h3>${escapeHTML(competitionName(game.config.supercup))}</h3><p class="muted">${escapeHTML(supercup.home)} ${supercup.homeGoals} × ${supercup.awayGoals} ${escapeHTML(supercup.away)}</p><div class="cup-winner">${escapeHTML(supercup.winner)}</div></div>` : `<div class="cup-card"><h3>${escapeHTML(competitionName(game.config.supercup))}</h3><p class="muted">Será disputada entre campeão da liga principal e campeão da copa.</p></div>`;
   box.innerHTML = `<div class="cup-card"><h3>${escapeHTML(cup.name)}</h3><p class="muted">${escapeHTML(cupStatus)}</p>${cup.winner?`<div class="cup-winner">${escapeHTML(cup.winner)}</div>`:''}</div>${cupHistory}${superHtml}`;
 }
-function museumEntries(){
-  const competitions=[...game.config.leagues, game.config.cup, game.config.supercup].filter(Boolean);
-  const map={};
-  const ensure=(team)=>{
-    const key=String(team||'').toLowerCase();
-    map[key] ||= {team, seasonsByCompetition:{}};
-    return map[key];
-  };
-  Object.values(game.museum||{}).forEach(item=>{
-    const entry=ensure(item.team);
-    const seasons=item.seasonsByCompetition || {};
-    Object.entries(seasons).forEach(([comp,years])=>{
-      entry.seasonsByCompetition[comp] ||= new Set();
-      (years||[]).forEach(y=>entry.seasonsByCompetition[comp].add(Number(y)));
-    });
-    // Compatibility with older saves that only had counts.
-    Object.entries(item.byCompetition||{}).forEach(([comp,count])=>{
-      entry.seasonsByCompetition[comp] ||= new Set();
-      if(!entry.seasonsByCompetition[comp].size && count>0) entry.seasonsByCompetition[comp].add(Number(game.season));
-    });
-  });
+function seasonMuseumRows(){
+  const bySeason=new Map();
   (game.history||[]).forEach(h=>{
-    Object.entries(h.winners||{}).forEach(([comp,team])=>{ const e=ensure(team); e.seasonsByCompetition[comp] ||= new Set(); e.seasonsByCompetition[comp].add(Number(h.season)); });
-    if(h.cupWinner){ const e=ensure(h.cupWinner); e.seasonsByCompetition[game.config.cup] ||= new Set(); e.seasonsByCompetition[game.config.cup].add(Number(h.season)); }
-    if(h.supercupWinner){ const e=ensure(h.supercupWinner); e.seasonsByCompetition[game.config.supercup] ||= new Set(); e.seasonsByCompetition[game.config.supercup].add(Number(h.season)); }
+    const champions={...(h.winners||{})};
+    if(h.cupWinner) champions[game.config.cup]=h.cupWinner;
+    if(h.supercupWinner) champions[game.config.supercup]=h.supercupWinner;
+    bySeason.set(Number(h.season), {season:Number(h.season), champions, awards:h.awards||null});
   });
-  return Object.values(map).map(e=>{
-    const detail=competitions.map(comp=>{
-      const years=[...(e.seasonsByCompetition[comp]||[])].sort((a,b)=>b-a);
-      return years.length ? `${escapeHTML(comp)}: ${years.join(', ')}` : '';
-    }).filter(Boolean);
-    const total=competitions.reduce((sum,comp)=>sum + ((e.seasonsByCompetition[comp]||new Set()).size),0);
-    return {...e,total,detail};
-  }).filter(e=>e.total>0).sort((a,b)=>b.total-a.total || a.team.localeCompare(b.team));
+  return [...bySeason.values()].sort((a,b)=>b.season-a.season);
+}
+function titleRanking(rows){
+  const map={};
+  rows.forEach(row=>Object.values(row.champions||{}).forEach(teamName=>{
+    if(!teamName || teamName==='-') return;
+    const key=teamName.toLowerCase();
+    map[key] ||= {team:teamName,total:0};
+    map[key].total++;
+  }));
+  return Object.values(map).sort((a,b)=>b.total-a.total || a.team.localeCompare(b.team));
 }
 function renderMuseum(){
-  const box=document.getElementById('museum');
-  const rows=museumEntries();
-  const titleTable = rows.length ? `<div class="tbl-wrap compact museum-table"><table><thead><tr><th class="club-col">Clube</th><th>Total</th><th class="club-col">Títulos por temporada</th></tr></thead><tbody>${rows.map(r=>`<tr><td class="club-col"><strong>${escapeHTML(r.team)}</strong></td><td class="pts">${r.total}</td><td class="club-col">${r.detail.map(d=>`<div class="museum-detail">${d}</div>`).join('')}</td></tr>`).join('')}</tbody></table></div>` : '<p class="muted">Nenhum título registrado ainda.</p>';
+  const box=document.getElementById('museum'); if(!box) return;
+  const rows=seasonMuseumRows();
+  const comps=[...(game.config.leagues||[]), game.config.cup, game.config.supercup].filter(Boolean);
+  const historyTable = rows.length ? `<section class="museum-block"><h3>Campeões por temporada</h3><div class="tbl-wrap museum-table"><table><thead><tr><th>Temporada</th>${comps.map(c=>`<th>${escapeHTML(competitionName(c))}</th>`).join('')}</tr></thead><tbody>${rows.map(r=>`<tr><td class="pts">${r.season}</td>${comps.map(c=>`<td>${escapeHTML(r.champions?.[c] || '-')}</td>`).join('')}</tr>`).join('')}</tbody></table></div></section>` : '<p class="empty-text">Nenhuma temporada concluída ainda.</p>';
+  const ranking=titleRanking(rows);
+  const rankingTable = ranking.length ? `<section class="museum-block"><h3>Ranking de títulos</h3><div class="tbl-wrap compact"><table><thead><tr><th class="pos-col">#</th><th class="club-col">Clube</th><th>Total</th></tr></thead><tbody>${ranking.map((r,i)=>`<tr><td class="pos-col">${i+1}</td><td class="club-col">${escapeHTML(r.team)}</td><td class="pts">${r.total}</td></tr>`).join('')}</tbody></table></div></section>` : '';
   const awardsBySeason = new Map();
-  [...(game.history||[]).map(h=>h.awards).filter(Boolean), ...(game.awards||[])]
-    .filter(Boolean)
-    .forEach(a=>{ if(a && a.season!=null) awardsBySeason.set(String(a.season), a); });
+  rows.forEach(r=>{ if(r.awards) awardsBySeason.set(String(r.season), r.awards); });
+  (game.awards||[]).filter(Boolean).forEach(a=>{ if(a && a.season!=null) awardsBySeason.set(String(a.season), a); });
   const awards=[...awardsBySeason.values()].sort((a,b)=>Number(b.season)-Number(a.season));
-  const awardsTable = awards.length ? `<section class="result-section"><h3>Premiações</h3><div class="tbl-wrap compact"><table><thead><tr><th>Temporada</th><th>Melhor jogador</th><th>Melhor goleiro</th></tr></thead><tbody>${awards.map(a=>`<tr><td>${a.season}</td><td>${escapeHTML(a.bestPlayer?.player||'-')} <span class="muted">${escapeHTML(a.bestPlayer?.team||'')}</span></td><td>${escapeHTML(a.bestGoalkeeper?.player||'-')} <span class="muted">${escapeHTML(a.bestGoalkeeper?.team||'')}</span></td></tr>`).join('')}</tbody></table></div></section>` : '';
-  box.innerHTML = titleTable + awardsTable;
+  const awardsTable = awards.length ? `<section class="museum-block"><h3>Premiações individuais</h3><div class="tbl-wrap compact"><table><thead><tr><th>Temporada</th><th>Melhor jogador</th><th>Melhor goleiro</th></tr></thead><tbody>${awards.map(a=>`<tr><td class="pts">${a.season}</td><td>${escapeHTML(a.bestPlayer?.player||'-')} <span class="muted">${escapeHTML(a.bestPlayer?.team||'')}</span></td><td>${escapeHTML(a.bestGoalkeeper?.player||'-')} <span class="muted">${escapeHTML(a.bestGoalkeeper?.team||'')}</span></td></tr>`).join('')}</tbody></table></div></section>` : '';
+  box.innerHTML = historyTable + `<div class="museum-grid">${rankingTable}${awardsTable}</div>`;
 }
 
 
@@ -648,9 +756,9 @@ function renderStats(){
   const compBucket=game.playerStats?.competitions?.[comp] || {};
   const totalBucket=game.playerStats?.total || {};
   box.innerHTML = `<div class="stats-grid">
-    ${statTable(`Artilheiros · ${comp}`, rowsFromStats(compBucket,'goals'), 'goals')}
-    ${statTable(`Assistências · ${comp}`, rowsFromStats(compBucket,'assists'), 'assists')}
-    ${statTable(`Clean sheets · ${comp}`, rowsFromStats(compBucket,'cleanSheets',true), 'cleanSheets')}
+    ${statTable(`Artilheiros · ${competitionName(comp)}`, rowsFromStats(compBucket,'goals'), 'goals')}
+    ${statTable(`Assistências · ${competitionName(comp)}`, rowsFromStats(compBucket,'assists'), 'assists')}
+    ${statTable(`Clean sheets · ${competitionName(comp)}`, rowsFromStats(compBucket,'cleanSheets',true), 'cleanSheets')}
     ${statTable('Artilheiros · Total', rowsFromStats(totalBucket,'goals'), 'goals')}
     ${statTable('Assistências · Total', rowsFromStats(totalBucket,'assists'), 'assists')}
     ${statTable('Clean sheets · Total', rowsFromStats(totalBucket,'cleanSheets',true), 'cleanSheets')}
@@ -670,36 +778,72 @@ function renderTransfers(){
 function renderHistory(){
   const box=document.getElementById('history');
   const moves=(game.lastMovements||[]).length ? `<div class="notice"><strong>Movimentações</strong>${game.lastMovements.map(m=>`<p class="muted">${m.type==='promotion'?'↑':'↓'} ${escapeHTML(m.team)}: ${escapeHTML(m.from)} → ${escapeHTML(m.to)}</p>`).join('')}</div>` : '';
-  const seasons=game.history?.length ? game.history.slice().reverse().map(h=>`<div class="save-card"><strong>${escapeHTML(game.zone)} · ${h.season}</strong>${Object.entries(h.winners).map(([l,w])=>`<p class="muted">${escapeHTML(l)}: ${escapeHTML(w)}</p>`).join('')}${h.cupWinner?`<p class="muted">${escapeHTML(game.config.cup)}: ${escapeHTML(h.cupWinner)}</p>`:''}${h.supercupWinner?`<p class="muted">${escapeHTML(game.config.supercup)}: ${escapeHTML(h.supercupWinner)}</p>`:''}</div>`).join('') : '<p class="muted">Nenhuma temporada concluída.</p>';
+  const seasons=game.history?.length ? game.history.slice().reverse().map(h=>`<div class="save-card"><strong>${escapeHTML(game.zone)} · ${h.season}</strong>${Object.entries(h.winners).map(([l,w])=>`<p class="muted">${escapeHTML(leagueName(l))}: ${escapeHTML(w)}</p>`).join('')}${h.cupWinner?`<p class="muted">${escapeHTML(competitionName(game.config.cup))}: ${escapeHTML(h.cupWinner)}</p>`:''}${h.supercupWinner?`<p class="muted">${escapeHTML(competitionName(game.config.supercup))}: ${escapeHTML(h.supercupWinner)}</p>`:''}</div>`).join('') : '<p class="muted">Nenhuma temporada concluída.</p>';
   box.innerHTML = moves + seasons;
 }
+
+function openInbox(){
+  const m=document.getElementById('inbox-modal');
+  if(m){ m.classList.add('on'); renderInbox(); }
+}
+function closeInbox(){ document.getElementById('inbox-modal')?.classList.remove('on'); }
+function renderInbox(){
+  const box=document.getElementById('inbox-list');
+  const badge=document.getElementById('inbox-count');
+  const deleteRead=document.getElementById('delete-read-mails');
+  const deleteAll=document.getElementById('delete-all-mails');
+  if(!box && !badge) return;
+  const emails=game?.emails||[];
+  const unread=emails.filter(e=>!e.read).length;
+  if(badge){ badge.textContent=unread ? String(unread) : ''; badge.classList.toggle('hidden', !unread); }
+  if(deleteRead) deleteRead.onclick=()=>{ game.emails=(game.emails||[]).filter(e=>!e.read); autosave(true); renderInbox(); };
+  if(deleteAll) deleteAll.onclick=()=>{ game.emails=[]; autosave(true); renderInbox(); };
+  if(!box) return;
+  if(!emails.length){ box.innerHTML='<p class="empty-text">Nenhum e-mail recebido.</p>'; return; }
+  box.innerHTML=emails.map(e=>`<article class="email-card ${e.read?'read':''}" data-mail="${escapeHTML(e.id)}"><div><strong>${escapeHTML(e.subject)}</strong><span>${e.season?`Temporada ${e.season}`:'Sistema'}</span><button class="mail-delete" data-delete-mail="${escapeHTML(e.id)}" title="Excluir"><i class="fa-regular fa-trash-can"></i></button></div>${e.body?`<p>${escapeHTML(e.body)}</p>`:''}</article>`).join('');
+  box.querySelectorAll('[data-delete-mail]').forEach(btn=>btn.onclick=(ev)=>{
+    ev.stopPropagation();
+    game.emails=(game.emails||[]).filter(e=>e.id!==btn.dataset.deleteMail);
+    autosave(true);
+    renderInbox();
+  });
+  box.querySelectorAll('[data-mail]').forEach(el=>el.onclick=()=>{
+    const msg=(game.emails||[]).find(e=>e.id===el.dataset.mail);
+    if(msg){ msg.read=true; autosave(true); renderInbox(); }
+  });
+}
+
 function renderSettings(){
   const settings=getSettings();
   const auto=document.getElementById('autosave-frequency');
-  const speed=document.getElementById('simulation-speed');
   if(auto && document.activeElement!==auto) auto.value=settings.autosaveFrequency||'1';
-  if(speed && document.activeElement!==speed) speed.value=String(settings.simulationSpeed||600);
 }
 function currentWeekLabel(){
   const done = (game.supercup ? 1 : 0) + Number(game.round||0) + cupRoundsPlayed();
   let type = 'Liga';
-  if(shouldPlaySupercupNow()) type = game.config.supercup || 'Supercopa';
-  else if(shouldPlayCupNow()) type = game.config.cup || 'Copa';
-  else if(game.round>=maxRounds() && game.cup?.size && !game.cup.winner) type = game.config.cup || 'Copa';
+  if(shouldPlaySupercupNow()) type = competitionName(game.config.supercup) || 'Supercopa';
+  else if(shouldPlayCupNow()) type = competitionName(game.config.cup) || 'Copa';
+  else if(game.round>=maxRounds() && game.cup?.size && !game.cup.winner) type = competitionName(game.config.cup) || 'Copa';
   else if(game.round>=maxRounds() && (!game.cup?.size || game.cup.winner)) type = 'Encerrar temporada';
   return `Semana ${done+1}: ${type}`;
 }
 function renderBottomNav(){
-  document.querySelectorAll('.bottom-icon').forEach(b=>{
+  document.querySelectorAll('.bottom-icon[data-panel]').forEach(b=>{
     b.classList.toggle('active', b.dataset.panel===activePanel);
     b.onclick=()=>{ clearSimulationTimer(); simulationContext=null; syncSimulationMode(); showPanel(b.dataset.panel); };
   });
+  const inboxBtn=document.getElementById('inbox-btn');
+  if(inboxBtn){
+    inboxBtn.classList.remove('active');
+    inboxBtn.onclick=(ev)=>{ ev.preventDefault(); openInbox(); };
+  }
   const label=document.getElementById('week-label'); if(label) label.textContent=currentWeekLabel();
   const sim=document.getElementById('sim-round'); if(sim) sim.textContent = nextActionLabel();
+  const adv=document.getElementById('skip-round'); if(adv && !adv.disabled) adv.textContent=nextActionLabel();
 }
 function render(){
   syncSimulationMode();
-  renderSeasonSelect(); renderCompetitionSelect(); renderCompetition(); renderResults(); renderCalendar(); renderMuseum(); renderStats(); renderTransfers(); renderSimulation(); renderSettings(); renderBottomNav();
+  renderSeasonSelect(); renderCompetitionSelect(); renderCompetition(); renderResults(); renderCalendar(); renderMuseum(); renderStats(); renderTransfers(); renderSimulation(); renderSettings(); renderBottomNav(); renderInbox();
 }
 function simulateCupRound(){
   const cup=game.cup; if(!cup || !cup.size || cup.winner || cup.participants.length<2) return;
@@ -773,7 +917,7 @@ function buildSupercupSimulationContext(){
   const home=allTeams().find(t=>t.name===mainChampion) || {id:mainChampion,name:mainChampion,rating:78,reputation:4};
   const away=allTeams().find(t=>t.name===opponent) || {id:opponent,name:opponent,rating:78,reputation:4};
   const r=simKnockout(home, away);
-  return {type:'supercup', label:game.config.supercup || 'Supercopa', matches:[{homeId:home.id, awayId:away.id, home:home.name, away:away.name, homeGoals:r.homeGoals, awayGoals:r.awayGoals, penalties:r.penalties, winnerId:r.winner.id, winner:r.winner.name}]};
+  return {type:'supercup', label:competitionName(game.config.supercup) || 'Supercopa', matches:[{homeId:home.id, awayId:away.id, home:home.name, away:away.name, homeGoals:r.homeGoals, awayGoals:r.awayGoals, penalties:r.penalties, winnerId:r.winner.id, winner:r.winner.name}]};
 }
 function buildSimulationContext(){
   let ctx=null;
@@ -798,7 +942,7 @@ function renderSimulationMatches(ctx, stage){
   if(ctx.type==='league'){
     const grouped={};
     ctx.matches.forEach(m=>{ (grouped[m.league] ||= []).push(m); });
-    return `<div class="simulation-groups">${Object.entries(grouped).map(([league,matches])=>`<section class="simulation-group"><h3>${escapeHTML(league)}</h3><div class="simulation-list">${matches.map(line).join('')}</div></section>`).join('')}</div>`;
+    return `<div class="simulation-groups">${Object.entries(grouped).map(([league,matches])=>`<section class="simulation-group"><h3>${escapeHTML(leagueName(league))}</h3><div class="simulation-list">${matches.map(line).join('')}</div></section>`).join('')}</div>`;
   }
   return `<div class="simulation-list">${ctx.matches.map(line).join('')}</div>`;
 }
@@ -868,17 +1012,28 @@ function commitNextInstant(){
 function completedCalendarEvents(){
   return calendarEvents().filter(e=>e.status==='done').length;
 }
+function setAdvanceLoading(isLoading){
+  const btn=document.getElementById('skip-round');
+  if(!btn) return;
+  btn.disabled=!!isLoading;
+  btn.textContent=isLoading ? 'Aguarde...' : nextActionLabel();
+}
 function skipCurrentWeek(){
+  const btn=document.getElementById('skip-round');
+  if(btn?.disabled) return;
+  setAdvanceLoading(true);
   clearSimulationTimer();
   simulationContext=null;
-  commitNextInstant();
-  syncSimulationMode();
-  render();
+  setTimeout(()=>{
+    commitNextInstant();
+    syncSimulationMode();
+    render();
+    setAdvanceLoading(false);
+  }, 20);
 }
 function skipToCalendarIndex(targetIndex){
   if(!Number.isFinite(targetIndex)) return;
-  const ok = confirm(`Simular automaticamente até a semana ${targetIndex+1}?`);
-  if(!ok) return;
+  toast('Calendário', `Simulando até a semana ${targetIndex+1}.`);
   clearSimulationTimer();
   simulationContext=null;
   let guard=0;
@@ -926,13 +1081,16 @@ function finishSeason(){
     const rows=sorted[league]||[], canPromote=idx>0, canRelegate=idx<leagues.length-1;
     const stayStart=canPromote?PROMOTION_SLOTS:0, stayEnd=canRelegate?Math.max(stayStart, rows.length-RELEGATION_SLOTS):rows.length;
     nextDivisions[league]=rows.slice(stayStart,stayEnd).map(stripTeam);
-    if(canPromote) rows.slice(0,PROMOTION_SLOTS).forEach(t=>movements.push({type:'promotion',team:t.name,from:league,to:leagues[idx-1]}));
-    if(canRelegate) rows.slice(-RELEGATION_SLOTS).forEach(t=>movements.push({type:'relegation',team:t.name,from:league,to:leagues[idx+1]}));
+    if(canPromote) rows.slice(0,PROMOTION_SLOTS).forEach(t=>movements.push({type:'promotion',team:t.name,from:leagueName(league),to:leagueName(leagues[idx-1])}));
+    if(canRelegate) rows.slice(-RELEGATION_SLOTS).forEach(t=>movements.push({type:'relegation',team:t.name,from:leagueName(league),to:leagueName(leagues[idx+1])}));
   });
   leagues.forEach((league,idx)=>{ if(idx>0) nextDivisions[league].push(...(sorted[leagues[idx-1]]||[]).slice(-RELEGATION_SLOTS).map(stripTeam)); if(idx<leagues.length-1) nextDivisions[league].push(...(sorted[leagues[idx+1]]||[]).slice(0,PROMOTION_SLOTS).map(stripTeam)); });
   const regens=developPlayersAndRegens(nextDivisions);
-  game.history.push({season:game.season, zone:game.zone, winners, cupWinner:game.cup?.winner||null, supercupWinner:game.supercup?.winner||null, supercup:game.supercup||null, awards, playerStats:structuredClone(game.playerStats||{competitions:{},total:{}}), transfers:(game.transferHistory||[]).filter(t=>Number(t.season)===Number(game.season)), regens:regens.map(r=>({player:r.name,position:r.position})), movements, finalTables:Object.fromEntries(leagues.map(l=>[l, sorted[l]||[]])), leagueResults:[...(game.results||[])], cupResults:[...(game.cupResults||[])]});
-  game.season++; activeViewSeason=game.season; game.round=0; game.pendingSupercup={season:game.season, mainChampion:winners[leagues[0]], cupWinner:game.cup?.winner||null}; game.supercup=null; game.phase=game.pendingSupercup?.cupWinner ? 'supercup' : 'league'; game.divisions=nextDivisions; game.lastTransfers=performTransferWindow(game.divisions); Object.values(game.divisions||{}).flat().forEach(normalizeSquadStatuses); const built=buildSeason(game.divisions); game.tables=built.tables; game.schedules=built.schedules; game.results=[]; game.cupResults=[]; game.playerStats={competitions:{}, total:{}}; game.lastMovements=movements; game.cup=buildCup(); activeCompetition=game.config?.leagues?.[0] || activeCompetition; autosave(true); alert('Nova temporada iniciada.'); render();
+  const seasonRecord={season:game.season, zone:game.zone, winners, cupWinner:game.cup?.winner||null, supercupWinner:game.supercup?.winner||null, supercup:game.supercup||null, awards, playerStats:structuredClone(game.playerStats||{competitions:{},total:{}}), transfers:(game.transferHistory||[]).filter(t=>Number(t.season)===Number(game.season)), regens:regens.map(r=>({player:r.name,position:r.position})), movements, finalTables:Object.fromEntries(leagues.map(l=>[l, sorted[l]||[]])), leagueResults:[...(game.results||[])], cupResults:[...(game.cupResults||[])]};
+  game.history.push(seasonRecord);
+  game.seasonHistory ||= [];
+  game.seasonHistory.push({season:seasonRecord.season, champions:{...winners, ...(seasonRecord.cupWinner?{[game.config.cup]:seasonRecord.cupWinner}:{}), ...(seasonRecord.supercupWinner?{[game.config.supercup]:seasonRecord.supercupWinner}:{})}, awards});
+  game.season++; activeViewSeason=game.season; game.round=0; game.pendingSupercup={season:game.season, mainChampion:winners[leagues[0]], cupWinner:game.cup?.winner||null}; game.supercup=null; game.phase=game.pendingSupercup?.cupWinner ? 'supercup' : 'league'; game.divisions=nextDivisions; game.lastTransfers=performTransferWindow(game.divisions); Object.values(game.divisions||{}).flat().forEach(normalizeSquadStatuses); const built=buildSeason(game.divisions); game.tables=built.tables; game.schedules=built.schedules; game.results=[]; game.cupResults=[]; game.playerStats={competitions:{}, total:{}}; game.lastMovements=movements; game.cup=buildCup(); activeCompetition=game.config?.leagues?.[0] || activeCompetition; autosave(true); seasonReportEmail(seasonRecord); render();
 }
 function openSettings(){ document.getElementById('settings-modal').classList.add('on'); renderSettings(); }
 function closeSettings(){ document.getElementById('settings-modal').classList.remove('on'); }
@@ -941,19 +1099,18 @@ async function init(){
   if(params.get('save')) game=getSlot(slot) || null;
   if(!game){
     let cfg=await loadDefaultConfig(); const pending=sessionStorage.getItem('avanci_pending_config'); if(pending){ cfg=JSON.parse(pending); sessionStorage.removeItem('avanci_pending_config'); }
-    const errors=validateConfig(normalizeConfig(cfg)); if(errors.length) alert('Configuração inicial inválida: '+errors.join(' '));
-    const shouldShuffle=confirm('Deseja embaralhar os times antes de dividir as ligas?'); game=createGame(cfg,slot,shouldShuffle); autosave(true);
+    const errors=validateConfig(normalizeConfig(cfg)); if(errors.length) toast('Configuração inicial inválida', errors.join(' '));
+    const shouldShuffle=false; game=createGame(cfg,slot,shouldShuffle); autosave(true);
   }
   game.config=normalizeConfig(game.config || await loadDefaultConfig());
+  migrateLeagueKeys();
   Object.keys(game.divisions||{}).forEach(l=>game.divisions[l]=game.divisions[l].map(sanitizeTeam)); Object.values(game.divisions||{}).flat().forEach(normalizeSquadStatuses);
-  game.museum ||= {}; game.playerStats ||= {competitions:{}, total:{}}; game.awards ||= []; game.transferHistory ||= []; game.lastTransfers ||= []; if(!game.tables || !game.schedules){ const built=buildSeason(game.divisions); game.tables=built.tables; game.schedules=built.schedules; }
+  game.museum ||= {}; game.seasonHistory ||= []; game.emails ||= []; game.playerStats ||= {competitions:{}, total:{}}; game.awards ||= []; game.transferHistory ||= []; game.lastTransfers ||= []; if(!game.tables || !game.schedules){ const built=buildSeason(game.divisions); game.tables=built.tables; game.schedules=built.schedules; }
   game.cup ||= buildCup(); game.cupResults ||= []; game.results ||= []; game.history ||= []; game.pendingSupercup ||= null; if(game.pendingSupercup && !game.supercup) game.phase='supercup'; game.phase ||= 'league';
   activeCompetition=competitionOptions().includes(activeCompetition) ? activeCompetition : competitionOptions()[0]; activeViewSeason=game.season;
-  document.getElementById('skip-round').onclick=skipCurrentWeek; document.getElementById('settings-btn').onclick=openSettings; document.getElementById('close-settings').onclick=closeSettings;
+  document.getElementById('skip-round').onclick=skipCurrentWeek; document.getElementById('settings-btn').onclick=openSettings; document.getElementById('close-settings').onclick=closeSettings; document.getElementById('inbox-btn').onclick=openInbox; document.getElementById('close-inbox').onclick=closeInbox;
   document.getElementById('export-save').onclick=()=>downloadJSON(`${game.id}.json`, game);
-  document.getElementById('import-save').onchange=async e=>{ if(!e.target.files[0])return; try{ const imported=await readJSONFile(e.target.files[0]); imported.slot=game.slot; imported.id='slot_'+game.slot; game=imported; game.config=normalizeConfig(game.config); activeCompetition=game.config?.leagues?.[0] || Object.keys(game.divisions||{})[0]; autosave(true); render(); closeSettings(); }catch(err){ alert('Save inválido: '+err.message); } };
-  document.getElementById('autosave-frequency').onchange=e=>setSettings({autosaveFrequency:e.target.value});
-  document.getElementById('simulation-speed').onchange=e=>setSettings({simulationSpeed:Number(e.target.value)});
+  const autoField=document.getElementById('autosave-frequency'); if(autoField) autoField.onchange=e=>setSettings({autosaveFrequency:e.target.value});
   renderTabs(); render(); showPanel('panel-table');
 }
 window.addEventListener('DOMContentLoaded', init);
